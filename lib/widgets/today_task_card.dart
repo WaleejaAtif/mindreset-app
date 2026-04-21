@@ -1,0 +1,319 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class TodayTaskCard extends StatelessWidget {
+  const TodayTaskCard({Key? key}) : super(key: key);
+
+  // ✅ Correct path: users/{uid}/tasks
+  String get _userId => FirebaseAuth.instance.currentUser?.uid ?? '';
+
+  // ✅ Today's date matching planner format exactly
+  String get _todayKey {
+    final now = DateTime.now();
+    return "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+  }
+
+  Color _colorForPriority(String priority) {
+    if (priority == 'High') return const Color(0xFF976565);
+    if (priority == 'Medium') return const Color(0xFF7D509F);
+    return const Color(0xFF957C2E);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      // REPLACE this stream:
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc(_userId)
+          .collection('tasks')
+          .where('done', isEqualTo: false)
+          .snapshots(),
+      builder: (context, snapshot) {
+        // Loading
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: CircularProgressIndicator(
+                valueColor:
+                AlwaysStoppedAnimation<Color>(Color(0xFF755F84)),
+              ),
+            ),
+          );
+        }
+
+        // Error
+        if (snapshot.hasError) {
+          return Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Text(
+              'Error loading tasks: ${snapshot.error}',
+              style: const TextStyle(color: Colors.red),
+            ),
+          );
+        }
+
+        final docs = snapshot.data?.docs ?? [];
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Today's Top Tasks",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF608BA5),
+                    fontFamily: 'LeagueSpartan',
+                  ),
+                ),
+                if (docs.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF755F84).withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      '${docs.length} task${docs.length > 1 ? 's' : ''}',
+                      style: const TextStyle(
+                        color: Color(0xFF755F84),
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // ✅ Empty state
+            if (docs.isEmpty)
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.white24),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.check_circle_outline,
+                        color: Colors.white60, size: 28),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'No tasks for today!\nAdd tasks in your Planner.',
+                        style:
+                        TextStyle(color: Colors.white70, height: 1.5),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            // ✅ Task list
+            if (docs.isNotEmpty)
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: docs.length,
+                itemBuilder: (context, index) {
+                  final data =
+                  docs[index].data() as Map<String, dynamic>;
+                  final color =
+                  _colorForPriority(data['priority'] ?? 'Low');
+                  final isLast = index == docs.length - 1;
+
+                  return _TimelineTaskRow(
+                    title: data['title'] ?? 'Untitled',
+                    time: data['time'] ?? '',
+                    category: data['category'] ?? '',
+                    priority: data['priority'] ?? 'Low',
+                    color: color,
+                    isLast: isLast,
+                  );
+                },
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _TimelineTaskRow extends StatelessWidget {
+  final String title;
+  final String time;
+  final String category;
+  final String priority;
+  final Color color;
+  final bool isLast;
+
+  const _TimelineTaskRow({
+    required this.title,
+    required this.time,
+    required this.category,
+    required this.priority,
+    required this.color,
+    required this.isLast,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Left: Category pill
+          Column(
+            children: [
+              Container(
+                width: 60,
+                padding: const EdgeInsets.symmetric(vertical: 22),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: RotatedBox(
+                  quarterTurns: 3,
+                  child: Center(
+                    child: Text(
+                      category,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ),
+              if (!isLast)
+                Expanded(
+                  child: CustomPaint(
+                    size: const Size(1, double.infinity),
+                    painter: _DashedLinePainter(color: color),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(width: 16),
+
+          // Right: Task card
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.25),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: color.withOpacity(0.3)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.04),
+                      offset: const Offset(3, 3),
+                      blurRadius: 0,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: color.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            priority,
+                            style: TextStyle(
+                              color: color,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        if (time.isNotEmpty) ...[
+                          const SizedBox(width: 8),
+                          Icon(Icons.access_time, size: 13, color: color),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              time,
+                              style: TextStyle(
+                                color: color,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        const Icon(Icons.circle,
+                            size: 7, color: Colors.white70),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DashedLinePainter extends CustomPainter {
+  final Color color;
+  _DashedLinePainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    double dashHeight = 5, dashSpace = 3, startY = 10;
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 1.5;
+    while (startY < size.height) {
+      canvas.drawLine(
+          Offset(0, startY), Offset(0, startY + dashHeight), paint);
+      startY += dashHeight + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}

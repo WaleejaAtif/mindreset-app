@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "279196897707",
+    "project_id": "mindreset-f15f3",
+    "storage_bucket": "mindreset-f15f3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279196897707:android:6fca533039fd6dcbc742ee",
+        "android_client_info": {
+          "package_name": "com.example.mindreset"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-spmCyYJLihwD7MfzBmxbeXHnWdjRQhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

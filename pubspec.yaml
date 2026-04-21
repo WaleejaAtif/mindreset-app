@@ -1,0 +1,91 @@
+name: projects
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # 🔥 Firebase
+  firebase_core: ^3.0.0
+  firebase_auth: ^5.0.0
+  cloud_firestore: ^5.0.0
+
+  # 📊 Charts
+  fl_chart: ^0.68.0
+
+  # 🎨 Animation
+  flutter_animate: ^4.5.0
+
+  # 🔊 Audio + 📳 Vibration (ADDED ✅)
+  just_audio: ^0.9.46
+  audio_session: ^0.1.25
+  vibration: ^2.0.0
+
+  # 📅 Utilities
+  intl: ^0.19.0
+  shared_preferences: ^2.5.5
+
+  # 🍏 Icons
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/logo.png
+    - assets/images/splash1.jpg
+    - assets/images/splash2.jpg
+    - assets/images/splash3.jpg
+    - assets/images/login2.jpg
+    - assets/images/login3.jpg
+    - assets/images/male.jpg
+    - assets/images/female.jpg
+    - assets/images/bg1.jpg
+    - assets/images/verylow.jpg
+    - assets/images/low.png
+    - assets/images/okay.jpg
+    - assets/images/good.png
+    - assets/images/great.jpg
+    - assets/images/bg6.jpg
+    - assets/images/gift-box.png
+    - assets/images/bg15.png
+    - assets/images/bg16.jpg
+    - assets/images/bg17.jpg
+    - assets/images/bg18.jpg
+    - assets/images/bg19.jpg
+    - assets/images/bg13.jpg
+    - assets/images/breathing.jpg
+    - assets/images/sound.jpg
+    - assets/images/grounding.jpg
+
+    # 🔊 Audio folder (IMPORTANT)
+    - assets/audio/calm.mp3
+
+  fonts:
+    - family: Bilderberg
+      fonts:
+        - asset: assets/fonts/Bilderberg-Regular.otf
+        - asset: assets/fonts/Bilderberg-Italic.otf
+
+    - family: Mileast
+      fonts:
+        - asset: assets/fonts/Mileast.otf
+
+    - family: LeagueSpartan
+      fonts:
+        - asset: assets/fonts/LeagueSpartan-Bold.otf
+
+    - family: Milker
+      fonts:
+        - asset: assets/fonts/Milker.otf

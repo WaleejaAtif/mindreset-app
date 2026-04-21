@@ -1,0 +1,10 @@
+# flutter_native_splash configuration
+flutter_native_splash:
+  color: "#d3dbe6"          # Background color of splash screen (light calming blue)
+  image: assets/images/logo.png  # Path to your app logo or image (optional)
+  android: true               # Enable for Android
+  ios: true                   # Enable for iOS
+  web: false                  # Disable for web (optional)
+  android_gravity: center     # Position of image on Android
+  ios_content_mode: scaleAspectFit # Image scaling on iOS
+  fill: true                  # Fill the background with the color
