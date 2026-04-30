@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'add_task_screen.dart';
+import '../../widgets/animated_background.dart';
 
-const Color _primaryColor = Color(0xFF755F84);
-const Color _highColor = Color(0xFF976565);
-const Color _medColor = Color(0xFF7D509F);
-const Color _lowColor = Color(0xFF957C2E);
+const Color _primaryColor = Color(0xFF8C52FF); // Vibrant Purple
+const Color _highColor = Color(0xFF5E17EB); // Deep Purple
+const Color _medColor = Color(0xFF38B6FF); // Light Blue
+const Color _lowColor = Color(0xFF5CE1E6); // Mint/Cyan
 
 class TodayTasksScreen extends StatelessWidget {
   const TodayTasksScreen({super.key});
@@ -40,42 +41,33 @@ class TodayTasksScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
+    return AnimatedBackground(
+      isLightMode: true,
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text(
-          "Today's Tasks",
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold),
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: const Text('Today\'s Tasks',
+              style: TextStyle(color: Color(0xFF2D3142), fontWeight: FontWeight.bold)),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF2D3142)),
+            onPressed: () => Navigator.pop(context),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add_circle_outline,
+                  color: Color(0xFF2D3142)),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const AddTaskScreen()),
+              ),
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add_circle_outline,
-                color: Colors.white),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => const AddTaskScreen()),
-            ),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset('assets/images/bg17.jpg',
-                fit: BoxFit.cover),
-          ),
-          Positioned.fill(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-              child:
-              Container(color: Colors.black.withOpacity(0.15)),
-            ),
-          ),
-          SafeArea(
+        body: SafeArea(
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('users')
@@ -151,21 +143,19 @@ class TodayTasksScreen extends StatelessWidget {
                       ...done.map((doc) => _taskTile(
                           doc, _colorFor(doc['priority'] ?? 'Low'))),
                     ],
-                    const SizedBox(height: 80),
                   ],
                 );
               },
             ),
           ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const AddTaskScreen()),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AddTaskScreen()),
+          ),
+          backgroundColor: _primaryColor,
+          child: const Icon(Icons.add, color: Colors.white),
         ),
-        backgroundColor: _primaryColor,
-        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
@@ -175,7 +165,7 @@ class TodayTasksScreen extends StatelessWidget {
     child: Text(
       label,
       style: TextStyle(
-          color: color,
+          color: color == Colors.white70 ? const Color(0xFF2D3142) : color,
           fontWeight: FontWeight.bold,
           fontSize: 15),
     ),
@@ -203,13 +193,15 @@ class TodayTasksScreen extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: done
-              ? Colors.white.withOpacity(0.12)
-              : color.withOpacity(0.25),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: done ? Colors.white24 : color.withOpacity(0.4),
-          ),
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.15),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Row(
           children: [
@@ -241,13 +233,13 @@ class TodayTasksScreen extends StatelessWidget {
                   Text(
                     data['title'] ?? '',
                     style: TextStyle(
-                      color: done ? Colors.white38 : Colors.white,
+                      color: done ? const Color(0xFF9CA3AF) : const Color(0xFF2D3142),
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
                       decoration: done
                           ? TextDecoration.lineThrough
                           : null,
-                      decorationColor: Colors.white38,
+                      decorationColor: const Color(0xFF9CA3AF),
                     ),
                   ),
                   if ((data['description'] ?? '').toString().isNotEmpty)
@@ -256,7 +248,7 @@ class TodayTasksScreen extends StatelessWidget {
                       child: Text(
                         data['description'],
                         style: const TextStyle(
-                            color: Colors.white60, fontSize: 12),
+                            color: Color(0xFF6B7280), fontSize: 12),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

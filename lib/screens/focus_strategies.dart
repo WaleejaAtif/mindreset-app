@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FocusStrategiesScreen extends StatefulWidget {
   const FocusStrategiesScreen({super.key});
@@ -12,98 +14,112 @@ class _FocusStrategiesScreenState extends State<FocusStrategiesScreen> {
   static const Color _bgColor = Color(0xFFF9F8FD);
 
   // Strategy list with all your new additions and assigned design properties
-  final List<Map<String, dynamic>> strategies = [
+  final List<Map<String, dynamic>> _defaultStrategies = [
     {
       "title": "Pause & Breathe",
       "desc": "Slow breathing calms the mind and resets attention.",
-      "icon": Icons.air,
-      "color": const Color(0xFFb3957c)
+      "iconCode": Icons.air.codePoint,
+      "colorHex": 0xFFb3957c
     },
     {
       "title": "Change Posture",
       "desc": "Physical movement reactivates the brain and energy.",
-      "icon": Icons.accessibility_new,
-      "color": const Color(0xFFc2a7c3)
+      "iconCode": Icons.accessibility_new.codePoint,
+      "colorHex": 0xFFc2a7c3
     },
     {
       "title": "Clear Workspace",
       "desc": "Remove visual clutter to reduce mental noise.",
-      "icon": Icons.cleaning_services,
-      "color": const Color(0xFF6f7f61)
+      "iconCode": Icons.cleaning_services.codePoint,
+      "colorHex": 0xFF6f7f61
     },
     {
       "title": "Write Thoughts",
       "desc": "Park them on paper so your mind can return to the task.",
-      "icon": Icons.edit_note,
-      "color": const Color(0xFF9a882a)
+      "iconCode": Icons.edit_note.codePoint,
+      "colorHex": 0xFF9a882a
     },
     {
       "title": "Break Tasks",
       "desc": "Smaller actions feel manageable and re-engage focus.",
-      "icon": Icons.account_tree,
-      "color": const Color(0xFFb3957c)
+      "iconCode": Icons.account_tree.codePoint,
+      "colorHex": 0xFFb3957c
     },
     {
       "title": "Timed Session",
       "desc": "10–25 minute sessions create urgency and structure.",
-      "icon": Icons.timer,
-      "color": const Color(0xFFc2a7c3)
+      "iconCode": Icons.timer.codePoint,
+      "colorHex": 0xFFc2a7c3
     },
     {
       "title": "Digital Peace",
       "desc": "Silence notifications and close unused tabs.",
-      "icon": Icons.do_not_disturb_on,
-      "color": const Color(0xFF6f7f61)
+      "iconCode": Icons.do_not_disturb_on.codePoint,
+      "colorHex": 0xFF6f7f61
     },
     {
       "title": "Switch Tasks",
       "desc": "Keeps momentum without losing direction.",
-      "icon": Icons.swap_horiz,
-      "color": const Color(0xFF9a882a)
+      "iconCode": Icons.swap_horiz.codePoint,
+      "colorHex": 0xFF9a882a
     },
     {
       "title": "Hydrate & Snack",
       "desc": "Low energy reduces concentration. Fuel up.",
-      "icon": Icons.local_cafe,
-      "color": const Color(0xFFb3957c)
+      "iconCode": Icons.local_cafe.codePoint,
+      "colorHex": 0xFFb3957c
     },
     {
       "title": "Rest Your Eyes",
       "desc": "Look away from screens for 30–60 seconds.",
-      "icon": Icons.visibility_off,
-      "color": const Color(0xFFc2a7c3)
+      "iconCode": Icons.visibility_off.codePoint,
+      "colorHex": 0xFFc2a7c3
     },
     {
       "title": "Re-read Goal",
       "desc": "Reminds you why the task matters.",
-      "icon": Icons.flag,
-      "color": const Color(0xFF6f7f61)
+      "iconCode": Icons.flag.codePoint,
+      "colorHex": 0xFF6f7f61
     },
     {
       "title": "Self-Talk",
       "desc": "Say: “Just start. Progress over perfection.”",
-      "icon": Icons.record_voice_over,
-      "color": const Color(0xFF9a882a)
+      "iconCode": Icons.record_voice_over.codePoint,
+      "colorHex": 0xFF9a882a
     },
     {
       "title": "New Setting",
       "desc": "Different lighting or location refreshes attention.",
-      "icon": Icons.landscape,
-      "color": const Color(0xFFb3957c)
+      "iconCode": Icons.landscape.codePoint,
+      "colorHex": 0xFFb3957c
     },
     {
       "title": "No Multitasking",
       "desc": "Focus on one task only to regain depth.",
-      "icon": Icons.filter_1,
-      "color": const Color(0xFFc2a7c3)
+      "iconCode": Icons.filter_1.codePoint,
+      "colorHex": 0xFFc2a7c3
     },
     {
       "title": "Short Walk",
       "desc": "Even 2–5 minutes can reset concentration.",
-      "icon": Icons.directions_walk,
-      "color": const Color(0xFF6f7f61)
+      "iconCode": Icons.directions_walk.codePoint,
+      "colorHex": 0xFF6f7f61
     },
   ];
+
+  Future<List<Map<String, dynamic>>> _fetchStrategies() async {
+    final snapshot = await FirebaseFirestore.instance.collection('content_focus_strategies').get();
+    
+    if (snapshot.docs.isEmpty) {
+      // Seed data if empty
+      for (var strat in _defaultStrategies) {
+        await FirebaseFirestore.instance.collection('content_focus_strategies').add(strat);
+      }
+      return _defaultStrategies;
+    }
+
+    return snapshot.docs.map((doc) => doc.data()).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,20 +180,42 @@ class _FocusStrategiesScreenState extends State<FocusStrategiesScreen> {
           ),
 
           // 3. The Grid
-          SliverPadding(
-            padding: const EdgeInsets.all(20),
-            sliver: SliverGrid(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                childAspectRatio: 0.88,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                    (context, index) => _buildStrategyCard(strategies[index]),
-                childCount: strategies.length,
-              ),
-            ),
+          FutureBuilder<List<Map<String, dynamic>>>(
+            future: _fetchStrategies(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const SliverToBoxAdapter(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(40.0),
+                      child: CircularProgressIndicator(color: Color(0xff608ba5)),
+                    ),
+                  ),
+                );
+              }
+
+              if (snapshot.hasError || !snapshot.hasData) {
+                return const SliverToBoxAdapter(child: Center(child: Text("Error loading strategies.")));
+              }
+
+              final strats = snapshot.data!;
+
+              return SliverPadding(
+                padding: const EdgeInsets.all(20),
+                sliver: SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childAspectRatio: 0.88,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => _buildStrategyCard(strats[index]),
+                    childCount: strats.length,
+                  ),
+                ),
+              );
+            },
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 40)),
         ],
@@ -186,8 +224,11 @@ class _FocusStrategiesScreenState extends State<FocusStrategiesScreen> {
   }
 
   Widget _buildStrategyCard(Map<String, dynamic> item) {
+    final icon = IconData(item['iconCode'] ?? Icons.star.codePoint, fontFamily: 'MaterialIcons');
+    final color = Color(item['colorHex'] ?? 0xFFb3957c);
+
     return GestureDetector(
-      onTap: () => _showDetailSheet(item),
+      onTap: () => _showDetailSheet(item, icon, color),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -207,14 +248,14 @@ class _FocusStrategiesScreenState extends State<FocusStrategiesScreen> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: item['color'].withOpacity(0.12),
+                color: color.withOpacity(0.12),
                 shape: BoxShape.circle,
               ),
-              child: Icon(item['icon'], color: item['color'], size: 26),
+              child: Icon(icon, color: color, size: 26),
             ),
             const Spacer(),
             Text(
-              item['title'],
+              item['title'] ?? '',
               style: const TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 15,
@@ -223,7 +264,7 @@ class _FocusStrategiesScreenState extends State<FocusStrategiesScreen> {
             ),
             const SizedBox(height: 4),
             Text(
-              item['desc'],
+              item['desc'] ?? '',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontSize: 12, color: Colors.grey[500]),
@@ -234,7 +275,38 @@ class _FocusStrategiesScreenState extends State<FocusStrategiesScreen> {
     );
   }
 
-  void _showDetailSheet(Map<String, dynamic> item) {
+  Future<void> _tryStrategy(BuildContext context, Map<String, dynamic> item) async {
+    Navigator.pop(context); // close sheet
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'points': FieldValue.increment(10),
+        }, SetOptions(merge: true));
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Awesome! You earned 10 Loot points for trying '${item['title']}'!"),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } catch (e) {
+        debugPrint("Error adding points: $e");
+      }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Guest Mode: Great job trying '${item['title']}'!"),
+            backgroundColor: Colors.blueGrey,
+          ),
+        );
+      }
+    }
+  }
+
+  void _showDetailSheet(Map<String, dynamic> item, IconData icon, Color color) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -246,15 +318,15 @@ class _FocusStrategiesScreenState extends State<FocusStrategiesScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(item['icon'], size: 60, color: item['color']),
+            Icon(icon, size: 60, color: color),
             const SizedBox(height: 20),
             Text(
-              item['title'],
+              item['title'] ?? '',
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
             Text(
-              item['desc'],
+              item['desc'] ?? '',
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 16, color: Colors.black54),
             ),
@@ -264,10 +336,10 @@ class _FocusStrategiesScreenState extends State<FocusStrategiesScreen> {
               height: 55,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: item['color'],
+                  backgroundColor: color,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 ),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => _tryStrategy(context, item),
                 child: const Text(
                   "Try This Now",
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

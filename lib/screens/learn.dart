@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../widgets/navigation.dart';
+import '../widgets/animated_background.dart';
 
 class LearnScreen extends StatelessWidget {
   const LearnScreen({super.key});
@@ -10,36 +11,27 @@ class LearnScreen extends StatelessWidget {
     // ValueNotifier to track color changes based on scroll offset
     final ValueNotifier<Color> appBarColor = ValueNotifier<Color>(Colors.transparent);
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      extendBody: true, // 🟢 Ensures content flows behind the Nav Bar
-      bottomNavigationBar: const CustomBottomNav(currentIndex: 1),
-      body: Stack(
-        children: [
-          // 1️⃣ Global Background Image
-          Positioned.fill(
-            child: Image.asset(
-              "assets/images/bg17.jpg", // Using your bg17
-              fit: BoxFit.cover,
-            ),
-          ),
-
-          // 2️⃣ Global Glassmorphism Blur Effect
-          Positioned.fill(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-              child: Container(
-                color: Colors.black.withOpacity(0.2), // Dark tint for white text contrast
-              ),
-            ),
-          ),
-
-          // 3️⃣ Main Content Layer
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFFF3E5F5), Color(0xFFE3F2FD)], // Light purple to light blue gradient
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        extendBody: true, // 🟢 Ensures content flows behind the Nav Bar
+        bottomNavigationBar: const CustomBottomNav(currentIndex: 1),
+        body: Stack(
+          children: [
+            // Main Content Layer
           NotificationListener<ScrollNotification>(
             onNotification: (notification) {
               if (notification is ScrollUpdateNotification) {
                 if (notification.metrics.pixels > 50) {
-                  appBarColor.value = Colors.black.withOpacity(0.5);
+                  appBarColor.value = Colors.white.withValues(alpha: 0.9);
                 } else {
                   appBarColor.value = Colors.transparent;
                 }
@@ -61,15 +53,23 @@ class LearnScreen extends StatelessWidget {
                       elevation: 0,
                       backgroundColor: color,
                       surfaceTintColor: Colors.transparent,
-                      flexibleSpace: const FlexibleSpaceBar(
+                      flexibleSpace: FlexibleSpaceBar(
                         centerTitle: true,
-                        titlePadding: EdgeInsets.only(bottom: 16),
-                        title: Text(
-                          'Learning Today',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                        titlePadding: const EdgeInsets.only(bottom: 16),
+                        title: ShaderMask(
+                          blendMode: BlendMode.srcIn,
+                          shaderCallback: (bounds) => const LinearGradient(
+                            colors: [Color(0xFF884288), Color(0xFF608BA5)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height)),
+                          child: const Text(
+                            'Learning Today',
+                            style: TextStyle(
+                              color: Colors.white, // Overridden by ShaderMask
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ),
@@ -125,6 +125,15 @@ class LearnScreen extends StatelessWidget {
                           children: [
                             _buildLearnCard(
                               context,
+                              icon: Icons.smart_toy,
+                              title: 'Smart Bot',
+                              subtitle: 'Chat + suggestions',
+                              gradientColors: [const Color(0xFF4d7ea8), const Color(0xFF9ad1d4)],
+                              iconColor: const Color(0xFF2f5d7c),
+                              route: '/learningAssistant',
+                            ),
+                            _buildLearnCard(
+                              context,
                               icon: Icons.psychology,
                               title: 'Focus Strategies',
                               subtitle: 'Small steps',
@@ -164,6 +173,10 @@ class LearnScreen extends StatelessWidget {
 
                         const SizedBox(height: 20),
 
+                        _buildAssistantShowcase(context),
+
+                        const SizedBox(height: 20),
+
                         // Bottom List Tiles (Already has internal glass effect)
                         _buildModernListTile(
                           icon: Icons.local_fire_department,
@@ -187,6 +200,7 @@ class LearnScreen extends StatelessWidget {
           ),
         ],
       ),
+      ),
     );
   }
 
@@ -203,17 +217,22 @@ class LearnScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.12),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.white.withOpacity(0.2)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 15,
+                offset: const Offset(0, 5),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('👋 Hey!', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(
-                  0xFFBACCD8))),
+              const Text('👋 Hey!', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF5E17EB))),
               const SizedBox(height: 4),
-              Text('Ready to learn something small today?', style: TextStyle(fontSize: 15, color: Colors.white.withOpacity(0.7))),
+              Text('Ready to learn something small today?', style: TextStyle(fontSize: 15, color: Color(0xFF6B7280))),
             ],
           ),
         ),
@@ -292,9 +311,15 @@ class LearnScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.08),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: Colors.white.withOpacity(0.1)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: Row(
             children: [
@@ -304,13 +329,124 @@ class LearnScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    Text(subtitle, style: const TextStyle(color: Colors.white70, fontSize: 13)),
+                    Text(title, style: const TextStyle(color: Color(0xFF2D3142), fontWeight: FontWeight.bold)),
+                    Text(subtitle, style: const TextStyle(color: Color(0xFF6B7280), fontSize: 13)),
                   ],
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAssistantShowcase(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFF8C52FF), Color(0xFF38B6FF)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF8C52FF).withOpacity(0.28),
+            blurRadius: 18,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.14),
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: const Text(
+              'NEW SMART ASSISTANT',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+                fontSize: 11,
+                letterSpacing: 0.8,
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
+          const Text(
+            'Talk to a smart bot made for Learning Today.',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'Ask about focus, procrastination, exams, or burnout. It chats back with calm support and picks the best next tool for you, like Pomodoro, Focus Games, or Explore Your Peace.',
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.82),
+              height: 1.45,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: const [
+              _AssistantTag(label: 'Responsive chat'),
+              _AssistantTag(label: 'Smart recommendations'),
+              _AssistantTag(label: 'Multi-model ready'),
+            ],
+          ),
+          const SizedBox(height: 18),
+          ElevatedButton.icon(
+            onPressed: () => Navigator.pushNamed(context, '/learningAssistant'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: const Color(0xFF5E17EB),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              elevation: 0,
+            ),
+            icon: const Icon(Icons.auto_awesome),
+            label: const Text(
+              'Open Chat Assistant',
+              style: TextStyle(fontWeight: FontWeight.w800),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AssistantTag extends StatelessWidget {
+  final String label;
+
+  const _AssistantTag({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.16),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );

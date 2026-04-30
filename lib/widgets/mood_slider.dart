@@ -55,6 +55,44 @@ class _MoodSwipeAnalyzerState extends State<MoodSwipeAnalyzer> {
     _controller.addListener(() {
       setState(() => _page = _controller.page ?? _page);
     });
+    _checkIfMoodSet();
+  }
+
+  Future<void> _checkIfMoodSet() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final today = DateTime.now();
+    final dateKey = "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
+
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('daily_logs')
+          .doc(dateKey)
+          .get();
+
+      if (doc.exists && doc.data() != null && doc.data()!.containsKey('mood')) {
+        if (mounted) {
+          setState(() {
+            _isMoodSet = true;
+            final idx = doc.data()!['moodIndex'] as int?;
+            if (idx != null) {
+              _page = idx.toDouble();
+              // Try jumping to the correct page immediately
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (_controller.hasClients) {
+                  _controller.jumpToPage(idx);
+                }
+              });
+            }
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint("Error checking mood: $e");
+    }
   }
 
   @override
@@ -79,7 +117,14 @@ class _MoodSwipeAnalyzerState extends State<MoodSwipeAnalyzer> {
     setState(() => _isSaving = true);
     try {
       final user = FirebaseAuth.instance.currentUser;
-      if (user == null) return;
+      if (user == null) {
+        setState(() {
+          _isSaving = false;
+          _isMoodSet = true;
+        });
+        HapticFeedback.mediumImpact();
+        return;
+      }
 
       final today = DateTime.now();
       final dateKey =
@@ -115,12 +160,21 @@ class _MoodSwipeAnalyzerState extends State<MoodSwipeAnalyzer> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text(
-          "How are you feeling today?",
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-            color: _darkBgColor,
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => const LinearGradient(
+            colors: [Color(0xFF884288), Color(0xFF608BA5)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height)),
+          child: const Text(
+            "How are you feeling today?",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+              fontFamily: 'LeagueSpartan',
+              color: Colors.white, // Overridden by ShaderMask
+            ),
           ),
         ),
         const SizedBox(height: 2),
@@ -291,6 +345,38 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
   void initState() {
     super.initState();
     _currentValue = widget.initialIndex.toDouble();
+    _checkIfSleepSet();
+  }
+
+  Future<void> _checkIfSleepSet() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final today = DateTime.now();
+    final dateKey = "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
+
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('daily_logs')
+          .doc(dateKey)
+          .get();
+
+      if (doc.exists && doc.data() != null && doc.data()!.containsKey('sleep')) {
+        if (mounted) {
+          setState(() {
+            _isSleepSet = true;
+            final idx = doc.data()!['sleepIndex'] as int?;
+            if (idx != null) {
+              _currentValue = idx.toDouble();
+            }
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint("Error checking sleep: $e");
+    }
   }
 
   // ✅ SAVE SLEEP TO FIRESTORE
@@ -298,7 +384,14 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
     setState(() => _isSaving = true);
     try {
       final user = FirebaseAuth.instance.currentUser;
-      if (user == null) return;
+      if (user == null) {
+        setState(() {
+          _isSaving = false;
+          _isSleepSet = true;
+        });
+        HapticFeedback.mediumImpact();
+        return;
+      }
 
       final today = DateTime.now();
       final dateKey =
@@ -334,18 +427,38 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
     const Color sliderGreen = Color(0xffdca889);
     const Color headerBlue = Color(0xff608ba5);
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          "Rate your sleep?",
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-            color: headerBlue,
-          ),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0),
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10), // Reduced padding
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFCE4EC), Color(0xFFF8BBD0)], // Light pink
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        const SizedBox(height: 20),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white, width: 1.5), // Frosted white border
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05), // Soft elegant shadow
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            "Rate your sleep?",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+              color: Color(0xFF4A3554), // Dark deep purple
+              fontFamily: 'LeagueSpartan',
+            ),
+          ),
+          const SizedBox(height: 12), // Reduced spacing
 
         // Emoticon Row
         Padding(
@@ -359,22 +472,22 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
                 children: [
                   AnimatedScale(
                     duration: const Duration(milliseconds: 200),
-                    scale: isSelected ? 1.2 : 1.0,
+                    scale: isSelected ? 1.15 : 1.0, // Reduced scale
                     child: Icon(
                       _icons[i],
-                      size: 32,
+                      size: 26, // Smaller icon size
                       color: isSelected
                           ? activeColor
-                          : Colors.grey.withOpacity(0.4),
+                          : const Color(0xFF4A3554).withValues(alpha: 0.4), // Deep purple for visibility
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 4),
                   Text(
                     sleepLabels[i],
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: isSelected ? activeColor : Colors.grey,
+                      color: isSelected ? activeColor : const Color(0xFF4A3554).withValues(alpha: 0.6),
                     ),
                   ),
                   Text(
@@ -385,8 +498,8 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
                           ? FontWeight.w800
                           : FontWeight.normal,
                       color: isSelected
-                          ? activeColor.withOpacity(0.9)
-                          : Colors.grey.withOpacity(0.7),
+                          ? activeColor.withValues(alpha: 0.9)
+                          : const Color(0xFF4A3554).withValues(alpha: 0.5),
                     ),
                   ),
                 ],
@@ -400,13 +513,13 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
         // Slider
         SliderTheme(
           data: SliderThemeData(
-            trackHeight: 10,
+            trackHeight: 6, // Thinner track
             activeTrackColor: sliderGreen,
             inactiveTrackColor: sliderGreen.withOpacity(0.15),
             thumbColor: _isSleepSet ? Colors.grey : sliderGreen,
             overlayColor: sliderGreen.withOpacity(0.1),
             thumbShape: const RoundSliderThumbShape(
-              enabledThumbRadius: 12,
+              enabledThumbRadius: 10, // Smaller thumb
               elevation: 3,
             ),
             trackShape: const RoundedRectSliderTrackShape(),
@@ -473,8 +586,9 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
             ],
           ),
       ],
-    );
-  }
+    ),
+  );
+}
 }
 
 /// ===================== IMAGE CARD =====================

@@ -5,14 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/auth_service.dart';
 import 'profile_setup.dart';
 import 'home.dart';
+import '../widgets/animated_background.dart';
 
-// --- COLORS ---
-const Color _primaryColor = Color(0xFF755F84);
-const Color _darkBgColor = Color(0xFF4d3536);
+// --- NEW ZENIFY COLORS ---
+const Color _primaryColor = Color(0xFF8C52FF); // Vibrant Purple
+const Color _darkBgColor = Color(0xFF5E17EB); // Deep Purple
 const Color _textColor = Colors.white;
-
-const String _splashImage = 'assets/images/login3.jpg';
-const String _loginImage = 'assets/images/login2.jpg';
 
 enum ScreenType { splash, login, register }
 
@@ -29,6 +27,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _regEmailCtrl = TextEditingController();
   final _regPassCtrl = TextEditingController();
+  final _regFirstNameCtrl = TextEditingController();
+  final _regLastNameCtrl = TextEditingController();
+  final _regContactCtrl = TextEditingController();
 
   bool _remember = false;
   bool _loading = false;
@@ -109,6 +110,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final email = _regEmailCtrl.text.trim();
     final password = _regPassCtrl.text.trim();
+    final firstName = _regFirstNameCtrl.text.trim();
+    final lastName = _regLastNameCtrl.text.trim();
+    final contact = _regContactCtrl.text.trim();
 
     try {
       UserCredential cred =
@@ -123,6 +127,9 @@ class _LoginScreenState extends State<LoginScreen> {
           .doc(cred.user!.uid)
           .set({
         'email': email,
+        'firstName': firstName,
+        'lastName': lastName,
+        'contact': contact,
         'profileCompleted': false,
       });
 
@@ -140,10 +147,32 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  void _forgotPassword() async {
+    final email = _loginEmailCtrl.text.trim();
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter your email first to reset password.')),
+      );
+      return;
+    }
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password reset email sent! Check your inbox.')),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
+  }
+
   void _guest() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => ProfileSetupScreen()),
+      MaterialPageRoute(builder: (_) => const ProfileSetupScreen()),
     );
   }
 
@@ -163,90 +192,181 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // SPLASH
   Widget _buildSplashUI() {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(_splashImage),
-          fit: BoxFit.cover,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Spacer(flex: 2),
+              // We'll use the newly provided Illustration
+              Image.asset(
+                'assets/images/Illustration.png',
+                height: 260,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 40),
+              const Text(
+                "Welcome to Zenify!",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.black,
+                  letterSpacing: -0.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                "Your AI companion for a balanced mind.",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black54,
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const Spacer(flex: 2),
+              
+              // SIGN UP BUTTON
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: () =>
+                      setState(() => _currentScreen = ScreenType.register),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF8C52FF), // App's vibrant purple
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: const Text(
+                    "Sign up",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 12),
+
+              // SIGN IN BUTTON
+              TextButton(
+                onPressed: () =>
+                    setState(() => _currentScreen = ScreenType.login),
+                child: const Text(
+                  "Sign in",
+                  style: TextStyle(
+                    color: Color(0xFF8C52FF), // App's vibrant purple
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const Spacer(),
+            ],
+          ),
         ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            "The best app for your FOCUS",
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 100),
-
-          ElevatedButton(
-            onPressed: () =>
-                setState(() => _currentScreen = ScreenType.login),
-            child: Text("Sign In"),
-          ),
-
-          TextButton(
-            onPressed: () =>
-                setState(() => _currentScreen = ScreenType.register),
-            child: Text("Create Account"),
-          ),
-
-          const SizedBox(height: 40),
-        ],
       ),
     );
   }
 
   // LOGIN UI
   Widget _buildLoginUI() {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Login",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+    return AnimatedBackground(
+      isLightMode: true,
+      hasBlur: false,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => setState(() => _currentScreen = ScreenType.splash),
+          ),
+        ),
+        body: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(25),
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  )
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text("Welcome Back",
+                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: _primaryColor)),
+                  const SizedBox(height: 8),
+                  const Text("Log in to continue", style: TextStyle(color: Colors.black54)),
+                  const SizedBox(height: 30),
 
-            const SizedBox(height: 30),
+                  TextField(
+                    controller: _loginEmailCtrl,
+                    decoration: _inputDecoration("Email", Icons.email),
+                  ),
+                  const SizedBox(height: 20),
 
-            TextField(
-              controller: _loginEmailCtrl,
-              decoration: _inputDecoration("Email", Icons.email),
+                  TextField(
+                    controller: _loginPassCtrl,
+                    obscureText: true,
+                    decoration: _inputDecoration("Password", Icons.lock),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: _forgotPassword,
+                      child: const Text("Forgot Password?", style: TextStyle(color: _primaryColor)),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+
+                  if (_error.isNotEmpty)
+                    Text(_error, style: const TextStyle(color: Colors.red)),
+
+                  const SizedBox(height: 20),
+
+                  _loading
+                      ? const CircularProgressIndicator()
+                      : SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: _login,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: _primaryColor,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            ),
+                            child: const Text("Login", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                  
+                  const SizedBox(height: 12),
+
+                  TextButton(
+                    onPressed: _guest,
+                    child: const Text("Continue as Guest", style: TextStyle(color: Colors.black54)),
+                  ),
+                ],
+              ),
             ),
-
-            const SizedBox(height: 20),
-
-            TextField(
-              controller: _loginPassCtrl,
-              obscureText: true,
-              decoration: _inputDecoration("Password", Icons.lock),
-            ),
-
-            const SizedBox(height: 10),
-
-            if (_error.isNotEmpty)
-              Text(_error, style: TextStyle(color: Colors.red)),
-
-            const SizedBox(height: 20),
-
-            _loading
-                ? CircularProgressIndicator()
-                : ElevatedButton(
-              onPressed: _login,
-              child: Text("Login"),
-            ),
-
-            TextButton(
-              onPressed: _guest,
-              child: Text("Continue as Guest"),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -254,50 +374,110 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // REGISTER UI
   Widget _buildRegisterUI() {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Register",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+    return AnimatedBackground(
+      isLightMode: true,
+      hasBlur: false,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => setState(() => _currentScreen = ScreenType.splash),
+          ),
+        ),
+        body: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(25),
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  )
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text("Create Account",
+                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: _primaryColor)),
+                  const SizedBox(height: 8),
+                  const Text("Start your journey", style: TextStyle(color: Colors.black54)),
+                  const SizedBox(height: 30),
 
-            const SizedBox(height: 30),
+                  TextField(
+                    controller: _regFirstNameCtrl,
+                    decoration: _inputDecoration("First Name", Icons.person),
+                  ),
+                  const SizedBox(height: 20),
 
-            TextField(
-              controller: _regEmailCtrl,
-              decoration: _inputDecoration("Email", Icons.email),
+                  TextField(
+                    controller: _regLastNameCtrl,
+                    decoration: _inputDecoration("Last Name", Icons.person_outline),
+                  ),
+                  const SizedBox(height: 20),
+
+                  TextField(
+                    controller: _regContactCtrl,
+                    keyboardType: TextInputType.phone,
+                    decoration: _inputDecoration("Contact Number", Icons.phone),
+                  ),
+                  const SizedBox(height: 20),
+
+                  TextField(
+                    controller: _regEmailCtrl,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: _inputDecoration("Email", Icons.email),
+                  ),
+                  const SizedBox(height: 20),
+
+                  TextField(
+                    controller: _regPassCtrl,
+                    obscureText: true,
+                    decoration: _inputDecoration("Password", Icons.lock),
+                  ),
+                  const SizedBox(height: 20),
+
+                  if (_error.isNotEmpty)
+                    Text(_error, style: const TextStyle(color: Colors.red)),
+
+                  const SizedBox(height: 20),
+
+                  _loading
+                      ? const CircularProgressIndicator()
+                      : SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: _register,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: _primaryColor,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            ),
+                            child: const Text("Register", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+
+                  const SizedBox(height: 12),
+
+                  TextButton(
+                    onPressed: () =>
+                        setState(() => _currentScreen = ScreenType.login),
+                    child: const Text("Already have an account? Login", style: TextStyle(color: Colors.black54)),
+                  ),
+                ],
+              ),
             ),
-
-            const SizedBox(height: 20),
-
-            TextField(
-              controller: _regPassCtrl,
-              obscureText: true,
-              decoration: _inputDecoration("Password", Icons.lock),
-            ),
-
-            const SizedBox(height: 20),
-
-            if (_error.isNotEmpty)
-              Text(_error, style: TextStyle(color: Colors.red)),
-
-            const SizedBox(height: 20),
-
-            _loading
-                ? CircularProgressIndicator()
-                : ElevatedButton(
-              onPressed: _register,
-              child: Text("Register"),
-            ),
-
-            TextButton(
-              onPressed: () =>
-                  setState(() => _currentScreen = ScreenType.login),
-              child: Text("Back to Login"),
-            ),
-          ],
+          ),
         ),
       ),
     );

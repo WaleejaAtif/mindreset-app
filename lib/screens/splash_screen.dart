@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-// Define custom colors for the theme
-const Color primaryDark = Color(0xFF755F84); // #4d3536
-const Color primaryMedium = Color(0xFF755251); // #755251
-const Color primaryLight = Color(0xFF9e7473); // #9e7473
-const Color accentColor = Color(0xFF8d5e5e); // #8d5e5e
+import '../widgets/animated_background.dart';
+
+// Define custom colors for the new Zenify theme
+const Color primaryDark = Color(0xFF5E17EB); // Deep Purple
+const Color primaryMedium = Color(0xFF8C52FF); // Vibrant Purple
+const Color primaryLight = Color(0xFF38B6FF); // Light Blue
+const Color accentColor = Color(0xFF5CE1E6); // Mint/Cyan
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -20,15 +22,12 @@ class _SplashScreenState extends State<SplashScreen> {
   // The list of image paths and corresponding text lines
   final _splashData = [
     {
-      'image': 'assets/images/splash1.jpg',
       'text': 'Welcome — Calm mind, clear day',
     },
     {
-      'image': 'assets/images/splash2.jpg',
       'text': 'Built for ADHD-friendly focus',
     },
     {
-      'image': 'assets/images/splash3.jpg',
       'text': 'Personalize your experience',
     },
   ];
@@ -63,10 +62,9 @@ class _SplashScreenState extends State<SplashScreen> {
       height: 8.0,
       width: 8.0,
       decoration: BoxDecoration(
-        // Use accentColor for the active dot, and a lighter/opacity color for inactive dots
-        color: isActive ? accentColor : primaryLight.withOpacity(0.6),
+        // Use primaryDark for the active dot, and a lighter/opacity color for inactive dots
+        color: isActive ? primaryDark : primaryDark.withOpacity(0.3),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
-        border: Border.all(color: isActive ? Colors.white : Colors.transparent, width: 1.0),
       ),
     );
   }
@@ -75,35 +73,6 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget _buildSplashContent(Map<String, String> data) {
     return Stack(
       children: [
-        // 1. Full Screen Background Image
-        Positioned.fill(
-          child: Image.asset(
-            data['image']!,
-            fit: BoxFit.cover,
-            // Fallback for image loading errors
-            errorBuilder: (context, error, stackTrace) {
-              return Container(color: primaryDark);
-            },
-          ),
-        ),
-
-        // 2. Subtle Dark Gradient Overlay for text contrast
-        Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withOpacity(0.1),
-                  Colors.black.withOpacity(0.5),
-                ],
-              ),
-              color: primaryDark.withOpacity(0.2),
-            ),
-          ),
-        ),
-
         // 3. Centered Text Overlay
         Align(
           alignment: Alignment.bottomCenter, // Align to bottom
@@ -112,17 +81,10 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Text(
               data['text']!,
               style: const TextStyle(
-                color: Colors.white,
+                color: primaryDark, // Dark text for light background
                 fontSize: 25, // Reduced text size
                 fontFamily: 'Bilderberg', // Custom font
                 fontWeight: FontWeight.w900,
-                shadows: [
-                  Shadow(
-                    blurRadius: 4.0,
-                    color: Colors.black,
-                    offset: Offset(1.0, 1.0),
-                  ),
-                ],
               ),
               textAlign: TextAlign.center,
             ),
@@ -136,17 +98,20 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryDark,
-      body: Stack(
-        children: <Widget>[
-          // PageView for swiping between screens
-          PageView.builder(
-            controller: _pageController,
-            itemCount: _splashData.length,
-            itemBuilder: (context, index) {
-              return _buildSplashContent(_splashData[index]);
-            },
-          ),
+      backgroundColor: Colors.transparent,
+      body: AnimatedBackground(
+        hasBlur: false,
+        isLightMode: true,
+        child: Stack(
+          children: <Widget>[
+            // PageView for swiping between screens
+            PageView.builder(
+              controller: _pageController,
+              itemCount: _splashData.length,
+              itemBuilder: (context, index) {
+                return _buildSplashContent(_splashData[index]);
+              },
+            ),
 
           // Bottom Indicator Dots and Navigation Button
           Align(
@@ -172,7 +137,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         Navigator.pushReplacementNamed(context, '/login');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: accentColor,
+                        backgroundColor: primaryDark,
                         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -189,9 +154,10 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                 ],
               ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

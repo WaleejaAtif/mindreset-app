@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import '../../widgets/animated_background.dart';
 
-const Color _primaryColorW = Color(0xFF755F84);
+const Color _primaryColorW = Color(0xFF8C52FF); // Vibrant Purple
 
 class WeeklyViewScreen extends StatefulWidget {
   const WeeklyViewScreen({super.key});
@@ -25,31 +26,22 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
+    return AnimatedBackground(
+      isLightMode: true,
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'Week of ${DateFormat('dd MMM').format(_weekStart)}',
-          style: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold),
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconTheme: const IconThemeData(color: Color(0xFF2D3142)),
+          title: Text(
+            'Week of ${DateFormat('dd MMM').format(_weekStart)}',
+            style: const TextStyle(
+                color: Color(0xFF2D3142), fontWeight: FontWeight.bold),
+          ),
         ),
-      ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset('assets/images/bg17.jpg',
-                fit: BoxFit.cover),
-          ),
-          Positioned.fill(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-              child: Container(
-                  color: Colors.black.withOpacity(0.15)),
-            ),
-          ),
-          SafeArea(
+        body: SafeArea(
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('users')
@@ -91,14 +83,19 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        color: isToday
-                            ? _primaryColorW.withOpacity(0.3)
-                            : Colors.white.withOpacity(0.1),
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: isToday ? _primaryColorW.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.05),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                         border: Border.all(
                           color: isToday
-                              ? _primaryColorW.withOpacity(0.6)
-                              : Colors.white24,
+                              ? _primaryColorW.withValues(alpha: 0.6)
+                              : Colors.transparent,
                         ),
                       ),
                       child: Theme(
@@ -119,8 +116,8 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                                     DateFormat('EEEE').format(day),
                                     style: TextStyle(
                                       color: isToday
-                                          ? Colors.white
-                                          : Colors.white70,
+                                          ? const Color(0xFF2D3142)
+                                          : const Color(0xFF6B7280),
                                       fontWeight: isToday
                                           ? FontWeight.bold
                                           : FontWeight.normal,
@@ -130,7 +127,7 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                                   Text(
                                     DateFormat('dd MMM').format(day),
                                     style: const TextStyle(
-                                      color: Colors.white54,
+                                      color: const Color(0xFF9CA3AF),
                                       fontSize: 12,
                                     ),
                                   ),
@@ -156,8 +153,8 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                                     '$done/$total done',
                                     style: TextStyle(
                                       color: done == total
-                                          ? Colors.greenAccent
-                                          : Colors.white70,
+                                          ? Colors.green
+                                          : _primaryColorW,
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -166,7 +163,7 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                               else
                                 const Text('No tasks',
                                     style: TextStyle(
-                                        color: Colors.white38,
+                                        color: Color(0xFF9CA3AF),
                                         fontSize: 12)),
                             ],
                           ),
@@ -177,7 +174,7 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                               child: Text(
                                 'No tasks scheduled',
                                 style: TextStyle(
-                                    color: Colors.white38),
+                                    color: Color(0xFF9CA3AF)),
                               ),
                             )
                           ]
@@ -188,10 +185,10 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                                 data['done'] as bool? ?? false;
                             final p = data['priority'] ?? 'Low';
                             final color = p == 'High'
-                                ? const Color(0xFF976565)
+                                ? const Color(0xFF5E17EB)
                                 : p == 'Medium'
-                                ? const Color(0xFF7D509F)
-                                : const Color(0xFF957C2E);
+                                ? const Color(0xFF38B6FF)
+                                : const Color(0xFF5CE1E6);
 
                             return ListTile(
                               contentPadding:
@@ -210,15 +207,15 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                                 data['title'] ?? '',
                                 style: TextStyle(
                                   color: done
-                                      ? Colors.white38
-                                      : Colors.white,
+                                      ? const Color(0xFF9CA3AF)
+                                      : const Color(0xFF2D3142),
                                   fontSize: 14,
                                   decoration: done
                                       ? TextDecoration
                                       .lineThrough
                                       : null,
                                   decorationColor:
-                                  Colors.white38,
+                                  const Color(0xFF9CA3AF),
                                 ),
                               ),
                               trailing: Container(
@@ -251,8 +248,7 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
               },
             ),
           ),
-        ],
-      ),
+        ),
     );
   }
 }

@@ -23,64 +23,76 @@ class _CustomBottomNavState extends State<CustomBottomNav>
   Widget build(BuildContext context) {
     final double itemWidth = MediaQuery.of(context).size.width / 5;
 
-    // Gradient Hex Colors
-    const Color purpleTone = Color(0xFF755F84);
-    const Color blueTone = Color(0xFF608BA5);
+    final bool isMeditation = selectedIndex == 2;
+
+    final Color tone1   = isMeditation ? Colors.black87 : const Color(0xFFB18AFF);
+    final Color tone2   = isMeditation ? Colors.black   : const Color(0xFFA172FF);
+    final Color bgColor = isMeditation ? Colors.white   : const Color(0xFF8C52FF);
 
     return Container(
-      height: 65, // Standard height for a straight bottom bar
+      height: 65,
       width: double.infinity,
-      // Color set to black with a straight top edge
-      decoration: const BoxDecoration(
-        color: Colors.black,
+      decoration: BoxDecoration(
+        color: bgColor,
+        boxShadow: isMeditation
+            ? [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, -2),
+                )
+              ]
+            : null,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildNavItem(context, 0, Icons.home_rounded, '/home', itemWidth, purpleTone, blueTone),
-          _buildNavItem(context, 1, Icons.school_rounded, '/learn', itemWidth, purpleTone, blueTone),
-          _buildNavItem(context, 2, Icons.self_improvement_rounded, '/meditate', itemWidth, purpleTone, blueTone),
-          _buildNavItem(context, 3, Icons.event_note_rounded, '/planner', itemWidth, purpleTone, blueTone),
-          _buildNavItem(context, 4, Icons.edit_rounded, '/reflect', itemWidth, purpleTone, blueTone),
+          _buildNavItem(context, 0, Icons.home_rounded,             '/home',     itemWidth, tone1, tone2, isMeditation),
+          _buildNavItem(context, 1, Icons.school_rounded,           '/learn',    itemWidth, tone1, tone2, isMeditation),
+          _buildNavItem(context, 2, Icons.self_improvement_rounded, '/meditate', itemWidth, tone1, tone2, isMeditation),
+          _buildNavItem(context, 3, Icons.event_note_rounded,       '/planner',  itemWidth, tone1, tone2, isMeditation),
+          _buildNavItem(context, 4, Icons.edit_rounded,             '/reflect',  itemWidth, tone1, tone2, isMeditation),
         ],
       ),
     );
   }
 
   Widget _buildNavItem(
-      BuildContext context,
-      int index,
-      IconData icon,
-      String route,
-      double width,
-      Color color1,
-      Color color2,
-      ) {
-    bool isSelected = index == selectedIndex;
+    BuildContext context,
+    int index,
+    IconData icon,
+    String route,
+    double width,
+    Color color1,
+    Color color2,
+    bool isMeditationTheme,
+  ) {
+    final bool isSelected = index == selectedIndex;
 
     return GestureDetector(
       onTap: () {
         if (!isSelected) {
-          setState(() {
-            selectedIndex = index;
-          });
-          // Direct navigation to your separate dart files
-          Navigator.pushReplacementNamed(context, route);
+          setState(() => selectedIndex = index);
+          // rootNavigator: true → always uses the top-level MaterialApp
+          // navigator, so named routes are always found regardless of
+          // which Scaffold or widget tree this nav bar is nested inside.
+          Navigator.of(context, rootNavigator: true)
+              .pushReplacementNamed(route);
         }
       },
       child: Container(
         width: width,
         height: double.infinity,
-        color: Colors.transparent, // Ensures the entire section is clickable
+        color: Colors.transparent,
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // --- GRADIENT CIRCLE HIGHLIGHT ---
+            // Animated highlight circle
             AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               curve: Curves.easeOut,
               height: isSelected ? 42 : 0,
-              width: isSelected ? 42 : 0,
+              width:  isSelected ? 42 : 0,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
@@ -90,11 +102,12 @@ class _CustomBottomNavState extends State<CustomBottomNav>
                 ),
               ),
             ),
-
-            // --- ICON ---
+            // Icon
             Icon(
               icon,
-              color: isSelected ? Colors.white : Colors.white70,
+              color: isSelected
+                  ? Colors.white
+                  : (isMeditationTheme ? Colors.black45 : Colors.white70),
               size: 26,
             ),
           ],

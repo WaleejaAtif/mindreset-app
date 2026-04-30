@@ -8,6 +8,7 @@ import 'mood_graph_screen.dart';
 import 'daily_mood_screen.dart';
 import 'streak_progress_screen.dart';
 import 'achievements_screen.dart';
+import '../../widgets/sparkle_background.dart';
 
 class ReflectScreen extends StatefulWidget {
   const ReflectScreen({super.key});
@@ -57,32 +58,18 @@ class _ReflectScreenState extends State<ReflectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              "assets/images/bg17.jpg",
-              fit: BoxFit.cover,
-            ),
-          ),
-          Positioned.fill(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-              child: Container(
-                color: Colors.black.withOpacity(0.25),
-              ),
-            ),
-          ),
-          SafeArea(
+    return SparkleBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        extendBody: true,
+        bottomNavigationBar: const CustomBottomNav(currentIndex: 4), // Should be 4
+        body: SafeArea(
             child: _loading
                 ? const Center(
               child: CircularProgressIndicator(
                 valueColor:
-                AlwaysStoppedAnimation<Color>(Colors.white),
+                AlwaysStoppedAnimation<Color>(Color(0xFF884288)),
               ),
             )
                 : SingleChildScrollView(
@@ -106,6 +93,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
                           value: '$_streakDays Days',
                           icon: Icons.local_fire_department_rounded,
                           color: Colors.orangeAccent,
+                          gradientColors: const [Color(0xFF9a882a), Color(0xFFFFE0B2)], // Focus Games
                           onTap: () {
                             Navigator.push(
                               context,
@@ -124,6 +112,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
                           value: '8 Won',
                           icon: Icons.emoji_events_rounded,
                           color: Colors.amber,
+                          gradientColors: const [Color(0xFF4d7ea8), Color(0xFF9ad1d4)], // Learning Assistant
                           onTap: () {
                             Navigator.push(
                               context,
@@ -145,7 +134,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
                     child: Text(
                       "Analytics",
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Color(0xFF2D3142),
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -159,6 +148,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
                     subtitle: 'Weekly mood & sleep trends',
                     icon: Icons.show_chart_rounded,
                     color: Colors.lightBlueAccent,
+                    gradientColors: const [Color(0xFFc2a7c3), Color(0xFFE1BEE7)], // Study Hacks
                     onTap: () {
                       Navigator.push(
                         context,
@@ -174,6 +164,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
                     subtitle: 'History of your reflections',
                     icon: Icons.history_rounded,
                     color: Colors.purpleAccent,
+                    gradientColors: const [Color(0xFF6f7f61), Color(0xFFC8E6C9)], // Habit Tips
                     onTap: () {
                       Navigator.push(
                         context,
@@ -188,53 +179,68 @@ class _ReflectScreenState extends State<ReflectScreen> {
                 ],
               ),
             ),
-          ),
-        ],
+        ),
       ),
-      bottomNavigationBar: const CustomBottomNav(currentIndex: 4),
     );
   }
 
   // ✅ Shows real logged-in user name
   Widget _buildProfileHeader() {
-    return Column(
+    return Stack(
       children: [
-        Container(
-          padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border:
-            Border.all(color: const Color(0xFF6D774C), width: 2),
-          ),
-          child: CircleAvatar(
-            radius: 50,
-            backgroundColor: const Color(0xFF755F84),
-            child: Text(
-              _userName.isNotEmpty
-                  ? _userName[0].toUpperCase()
-                  : 'U',
+        Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border:
+                Border.all(color: const Color(0xFF6D774C), width: 2),
+              ),
+              child: CircleAvatar(
+                radius: 50,
+                backgroundColor: const Color(0xFF755F84),
+                child: Text(
+                  _userName.isNotEmpty
+                      ? _userName[0].toUpperCase()
+                      : 'U',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              _userName,
               style: const TextStyle(
-                color: Colors.white,
-                fontSize: 36,
+                color: Color(0xFF2D3142),
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-          ),
+            const Text(
+              "Focus Level: Advanced",
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 14,
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 12),
-        Text(
-          _userName,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const Text(
-          "Focus Level: Advanced",
-          style: TextStyle(
-            color: Colors.white70,
-            fontSize: 14,
+        Positioned(
+          top: 0,
+          right: 0,
+          child: IconButton(
+            icon: const Icon(Icons.logout, color: Color(0xFF2D3142)),
+            tooltip: 'Logout',
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              if (!mounted) return;
+              Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+            },
           ),
         ),
       ],
@@ -246,6 +252,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
     required String value,
     required IconData icon,
     required Color color,
+    required List<Color> gradientColors,
     required VoidCallback onTap,
   }) {
     return GestureDetector(
@@ -253,9 +260,20 @@ class _ReflectScreenState extends State<ReflectScreen> {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.08),
+          gradient: LinearGradient(
+            colors: gradientColors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.white.withOpacity(0.1)),
+          border: Border.all(color: Colors.white, width: 1.5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 15,
+              offset: const Offset(0, 8),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,15 +283,15 @@ class _ReflectScreenState extends State<ReflectScreen> {
             Text(
               value,
               style: const TextStyle(
-                color: Colors.white,
+                color: Color(0xFF2D3142),
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
               title,
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.5),
+              style: const TextStyle(
+                color: Colors.black54,
                 fontSize: 12,
               ),
             ),
@@ -288,35 +306,47 @@ class _ReflectScreenState extends State<ReflectScreen> {
     required String subtitle,
     required IconData icon,
     required Color color,
+    required List<Color> gradientColors,
     required VoidCallback onTap,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
+        gradient: LinearGradient(
+          colors: gradientColors,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white, width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: ListTile(
         onTap: onTap,
         leading: CircleAvatar(
-          backgroundColor: color.withOpacity(0.1),
+          backgroundColor: Colors.white.withValues(alpha: 0.5),
           child: Icon(icon, color: color),
         ),
         title: Text(
           title,
           style: const TextStyle(
-            color: Colors.white,
+            color: Color(0xFF2D3142),
             fontWeight: FontWeight.w600,
           ),
         ),
         subtitle: Text(
           subtitle,
-          style: const TextStyle(color: Colors.white54, fontSize: 12),
+          style: const TextStyle(color: Colors.black54, fontSize: 12),
         ),
         trailing: const Icon(
           Icons.arrow_forward_ios,
-          color: Colors.white24,
+          color: Colors.black26,
           size: 14,
         ),
       ),

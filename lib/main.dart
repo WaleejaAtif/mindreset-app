@@ -5,6 +5,7 @@ import 'firebase_options.dart';
 // Core screens
 import 'screens/logo_screen.dart';
 import 'screens/splash_screen.dart';
+import 'screens/welcome_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/profile_setup.dart';
 import 'screens/home.dart';
@@ -16,6 +17,7 @@ import 'screens/study_hacks.dart';
 import 'screens/habit_tips.dart';
 import 'screens/pomodoro_timer.dart';
 import 'screens/games.dart';
+import 'screens/learning_assistant.dart';
 
 // Meditate module
 import 'screens/meditate/meditate.dart';
@@ -36,14 +38,20 @@ import 'screens/reflect/streak_progress_screen.dart';
 import 'screens/reflect/mood_graph_screen.dart';
 import 'screens/reflect/daily_mood_screen.dart';
 import 'screens/reflect/achievements_screen.dart';
-import 'services/audio_service.dart';
 
+import 'services/audio_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // ── Firebase ──
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // ── Audio session — MUST be configured before any playback ──
+  await AudioService.configureSession();
+
   runApp(const MyApp());
 }
 
@@ -56,13 +64,14 @@ class MyApp extends StatelessWidget {
       title: 'MindReset',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.deepPurple,
         scaffoldBackgroundColor: Colors.white,
       ),
       initialRoute: '/logo',
       routes: {
         // 🚀 Startup
         '/logo': (context) => LogoScreen(),
+        '/welcome': (context) => WelcomeScreen(),
         '/splash': (context) => SplashScreen(),
         '/login': (context) => LoginScreen(),
         '/profileSetup': (context) => ProfileSetupScreen(),
@@ -80,6 +89,7 @@ class MyApp extends StatelessWidget {
         '/habitTips': (context) => const HabitTipsScreen(),
         '/pomodoro': (context) => const PomodoroTimerScreen(),
         '/games': (context) => const GamesScreen(),
+        '/learningAssistant': (context) => const LearningAssistantScreen(),
 
         // 🧘 Meditate
         '/breathing': (context) => const BreathingScreen(),

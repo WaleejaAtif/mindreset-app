@@ -11,27 +11,28 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # 🔥 Firebase
+  video_player: ^2.8.6
+  flutter_tts: ^4.0.2
+  flutter_riverpod: ^2.5.1
+  lottie: ^3.3.3
+
+  # ✅ FIXED: upgraded to match AudioService.configureSession() API
+  audio_session: ^0.1.25
+
   firebase_core: ^3.0.0
   firebase_auth: ^5.0.0
   cloud_firestore: ^5.0.0
 
-  # 📊 Charts
   fl_chart: ^0.68.0
-
-  # 🎨 Animation
   flutter_animate: ^4.5.0
 
-  # 🔊 Audio + 📳 Vibration (ADDED ✅)
   just_audio: ^0.9.46
-  audio_session: ^0.1.25
   vibration: ^2.0.0
 
-  # 📅 Utilities
   intl: ^0.19.0
   shared_preferences: ^2.5.5
+  http: ^1.6.0
 
-  # 🍏 Icons
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
@@ -41,36 +42,68 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
+ 
   assets:
-    - assets/images/logo.png
-    - assets/images/splash1.jpg
-    - assets/images/splash2.jpg
-    - assets/images/splash3.jpg
-    - assets/images/login2.jpg
-    - assets/images/login3.jpg
-    - assets/images/male.jpg
-    - assets/images/female.jpg
-    - assets/images/bg1.jpg
-    - assets/images/verylow.jpg
-    - assets/images/low.png
-    - assets/images/okay.jpg
-    - assets/images/good.png
-    - assets/images/great.jpg
-    - assets/images/bg6.jpg
-    - assets/images/gift-box.png
-    - assets/images/bg15.png
-    - assets/images/bg16.jpg
-    - assets/images/bg17.jpg
-    - assets/images/bg18.jpg
-    - assets/images/bg19.jpg
-    - assets/images/bg13.jpg
-    - assets/images/breathing.jpg
-    - assets/images/sound.jpg
-    - assets/images/grounding.jpg
+    # ── Sound Images ──────────────────────────────────
+    - assets/images/sounds/alpha.jpg
+    - assets/images/sounds/binaural.jpg
+    - assets/images/sounds/brown_noise.jpg
+    - assets/images/sounds/forest.jpg
+    - assets/images/sounds/lofi.jpg
+    - assets/images/sounds/lullaby.jpg
+    - assets/images/sounds/morning_birds.jpg
+    - assets/images/sounds/ocean.jpg
+    - assets/images/sounds/piano.jpg
+    - assets/images/sounds/rain.jpg
+    - assets/images/sounds/river.jpg
+    - assets/images/sounds/sleep_med.jpg
+    - assets/images/sounds/study.jpg
+    - assets/images/sounds/tropical_birds.jpg
+    - assets/images/sounds/white_noise.jpg
+ 
+    # ── Nature Sounds ─────────────────────────────────
+    - assets/sounds/nature/forest_birds.mp3
+    - assets/sounds/nature/morning_birds.mp3
+    - assets/sounds/nature/ocean_waves.mp3
+    - assets/sounds/nature/rain.mp3
+    - assets/sounds/nature/river_stream.mp3
+    - assets/sounds/nature/sparrow_chirping.mp3
+    - assets/sounds/nature/thunderstorm.mp3
+    - assets/sounds/nature/tropical_birds.mp3
+ 
+    # ── Sleep Sounds ──────────────────────────────────
+    - assets/sounds/sleep/brown_noise.mp3
+    - assets/sounds/sleep/deep_sleep_432hz.mp3
+    - assets/sounds/sleep/lullaby.mp3
+    - assets/sounds/sleep/sleep_meditation.mp3
+    - assets/sounds/sleep/white_noise.mp3
+ 
+    # ── Focus Sounds ──────────────────────────────────
+    - assets/sounds/focus/alpha_waves.mp3
+    - assets/sounds/focus/binaural_beats.mp3
+    - assets/sounds/focus/lo_fi.mp3
+    - assets/sounds/focus/piano_focus.mp3
+    - assets/sounds/focus/study_music.mp3
+    # ── App images (covers assets/images/ AND assets/images/sounds/) ──
+    - assets/images/
 
-    # 🔊 Audio folder (IMPORTANT)
-    - assets/audio/calm.mp3
+    # ── Videos ──
+    - assets/videos/talking.mp4
+    - assets/videos/inhale.mp4
+    - assets/videos/exhale.mp4
+    - assets/videos/hold.mp4
+    - assets/videos/idle.mp4
+    - assets/videos/encouraging.mp4
+
+    # ── Legacy audio ──
+    - assets/audio/
+
+    # ── Animations ──
+    - assets/animations/
+    - assets/animations/inhale_girl.json
+
+    # ── Sound Therapy MP3s (all lowercase folders to match kSounds paths) ──
+   
 
   fonts:
     - family: Bilderberg

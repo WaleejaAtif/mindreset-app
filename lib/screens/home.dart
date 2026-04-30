@@ -8,6 +8,7 @@ import '../widgets/today_task_card.dart';
 import '../widgets/streak_widget.dart';
 import '../widgets/point_widget.dart';
 import '../widgets/navigation.dart';
+import '../widgets/sparkle_background.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,53 +20,56 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int moodIndex = 2;
   int sleepIndex = 2;
+  int _points = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPoints();
+  }
+
+  Future<void> _loadPoints() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        setState(() {
+          _points = 120; // Dummy points for guest
+        });
+        return;
+      }
+      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        setState(() {
+          _points = doc.data()?['points'] ?? 0;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error loading points: $e");
+    }
+  }
 
   String get _todayKey {
     final now = DateTime.now();
     return "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
   }
 
-  String get _uid => FirebaseAuth.instance.currentUser?.uid ?? '';
-
-  Future<void> saveMood() async {
-    if (_uid.isEmpty) return;
-
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(_uid)
-        .collection('mood_data')
-        .doc(_todayKey)
-        .set({
-      "mood": moodIndex,
-      "sleep": sleepIndex,
-      "date": _todayKey,
-      "timestamp": FieldValue.serverTimestamp(),
-    }, SetOptions(merge: true));
-  }
+  // Removed saveMood() from here because MoodSwipeAnalyzer and SleepSwipeAnalyzer handle their own saving correctly to daily_logs on button press.
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      appBar: AppBar(
+    return SparkleBackground(
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text("Focus App"),
-      ),
-      bottomNavigationBar: const CustomBottomNav(currentIndex: 0),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset("assets/images/bg17.jpg", fit: BoxFit.cover),
-          ),
-          Positioned.fill(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-              child: Container(color: Colors.black.withOpacity(0.1)),
-            ),
-          ),
-          SafeArea(
+        extendBodyBehindAppBar: true, // Let background show behind app bar
+        extendBody: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: null, // No title
+          iconTheme: const IconThemeData(color: Colors.black87), // Dark icons for white bg
+        ),
+        bottomNavigationBar: const CustomBottomNav(currentIndex: 0),
+        body: SafeArea(
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
@@ -75,7 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   initialIndex: moodIndex,
                   onMoodChanged: (val) {
                     setState(() => moodIndex = val);
-                    saveMood();
                   },
                 ),
 
@@ -86,20 +89,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   initialIndex: sleepIndex,
                   onSleepChanged: (val) {
                     setState(() => sleepIndex = val);
-                    saveMood();
                   },
                 ),
 
                 const SizedBox(height: 20),
 
+                const SizedBox(height: 16),
                 const TodayTaskCard(),
+                const SizedBox(height: 16),
                 const StreakWidget(),
-                const PointWidget(points: 120),
+                const SizedBox(height: 16),
+                PointWidget(points: _points),
+                const SizedBox(height: 40), // Bottom padding for nav bar
               ],
             ),
           ),
-        ],
-      ),
+        ),
     );
   }
 }

@@ -67,13 +67,20 @@ class TodayTaskCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Today's Top Tasks",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF608BA5),
-                    fontFamily: 'LeagueSpartan',
+                ShaderMask(
+                  blendMode: BlendMode.srcIn,
+                  shaderCallback: (bounds) => const LinearGradient(
+                    colors: [Color(0xFF884288), Color(0xFF608BA5)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height)),
+                  child: const Text(
+                    "Today's Top Tasks",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                      fontFamily: 'LeagueSpartan',
+                    ),
                   ),
                 ),
                 if (docs.isNotEmpty)
@@ -81,15 +88,15 @@ class TodayTaskCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF755F84).withOpacity(0.15),
+                      color: const Color(0xFF1565C0).withValues(alpha: 0.15), // Blue accent
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       '${docs.length} task${docs.length > 1 ? 's' : ''}',
                       style: const TextStyle(
-                        color: Color(0xFF755F84),
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF1565C0), // Blue text
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ),
@@ -102,20 +109,31 @@ class TodayTaskCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.white24),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFE3F2FD), Color(0xFF90CAF9)], // Bluish gradient
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20), // Softer corners
+                  border: Border.all(color: Colors.white, width: 1.5), // White frosted border
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05), // Soft shadow
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
                 ),
                 child: const Row(
                   children: [
                     Icon(Icons.check_circle_outline,
-                        color: Colors.white60, size: 28),
+                        color: Color(0xFF1565C0), size: 28),
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         'No tasks for today!\nAdd tasks in your Planner.',
                         style:
-                        TextStyle(color: Colors.white70, height: 1.5),
+                        TextStyle(color: Color(0xFF2D3142), height: 1.5, fontWeight: FontWeight.w500),
                       ),
                     ),
                   ],
@@ -218,14 +236,18 @@ class _TimelineTaskRow extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.25),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: color.withOpacity(0.3)),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFE3F2FD), Color(0xFF90CAF9)], // Bluish gradient
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.white, width: 1.5),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
-                      offset: const Offset(3, 3),
-                      blurRadius: 0,
+                      color: color.withValues(alpha: 0.1),
+                      blurRadius: 12,
+                      offset: const Offset(0, 6),
                     ),
                   ],
                 ),
@@ -238,7 +260,7 @@ class _TimelineTaskRow extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(
-                            color: color.withOpacity(0.3),
+                            color: color.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -271,16 +293,16 @@ class _TimelineTaskRow extends StatelessWidget {
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        const Icon(Icons.circle,
-                            size: 7, color: Colors.white70),
+                        Icon(Icons.circle,
+                            size: 7, color: color),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             title,
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: Color(0xFF2D3142), // Dark text
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: 15,
                             ),
                           ),
                         ),

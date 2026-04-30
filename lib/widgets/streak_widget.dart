@@ -31,85 +31,98 @@ class _StreakWidgetState extends State<StreakWidget> {
     return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
   }
 
-  Future<void> _loadStreakData() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) return;
+ Future<void> _loadStreakData() async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
 
-      final uid = user.uid;
-      final monday = _getMonday();
+    if (user == null) {
+      if (!mounted) return;
+      setState(() => _loading = false);
+      return;
+    }
 
-      // Build this week's date keys
-      final weekKeys = List.generate(7, (i) {
-        final day = monday.add(Duration(days: i));
-        return _dateKey(day);
-      });
+    final uid = user.uid;
+    final monday = _getMonday();
 
-      final weekDateNumbers = List.generate(7, (i) {
-        final day = monday.add(Duration(days: i));
-        return day.day.toString();
-      });
+    final weekKeys = List.generate(7, (i) {
+      final day = monday.add(Duration(days: i));
+      return _dateKey(day);
+    });
 
-      // ✅ Check which days user logged mood OR sleep
-      final List<bool> completed = [];
-      for (final key in weekKeys) {
-        final doc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .collection('daily_logs')
-            .doc(key)
-            .get();
+    final weekDateNumbers = List.generate(7, (i) {
+      final day = monday.add(Duration(days: i));
+      return day.day.toString();
+    });
 
-        // Day is "completed" if mood or sleep was saved
-        final data = doc.data();
-        final hasLog = doc.exists &&
-            (data?.containsKey('mood') == true ||
-                data?.containsKey('sleep') == true);
-        completed.add(hasLog);
-      }
+    final List<bool> completed = [];
 
-      // ✅ Calculate streak from today backwards
-      final today = DateTime.now();
-      int streak = 0;
-      for (int i = 0; i >= -365; i--) {
-        final day = today.add(Duration(days: i));
-        final key = _dateKey(day);
-        final doc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .collection('daily_logs')
-            .doc(key)
-            .get();
-
-        final data = doc.data();
-        final hasLog = doc.exists &&
-            (data?.containsKey('mood') == true ||
-                data?.containsKey('sleep') == true);
-
-        if (hasLog) {
-          streak++;
-        } else {
-          break; // streak broken
-        }
-      }
-
-      // ✅ Save streak to Firestore
-      await FirebaseFirestore.instance
+    for (final key in weekKeys) {
+      final doc = await FirebaseFirestore.instance
           .collection('users')
           .doc(uid)
-          .set({'streakDays': streak}, SetOptions(merge: true));
+          .collection('daily_logs')
+          .doc(key)
+          .get();
 
-      setState(() {
-        _streakDays = streak;
-        _weekCompleted = completed;
-        _weekDates = weekDateNumbers;
-        _loading = false;
-      });
-    } catch (e) {
-      setState(() => _loading = false);
-      debugPrint('Streak error: $e');
+      if (!mounted) return; // 🔥 SAFE CHECK
+
+      final data = doc.data();
+      final hasLog = doc.exists &&
+          (data?.containsKey('mood') == true ||
+              data?.containsKey('sleep') == true);
+
+      completed.add(hasLog);
     }
+
+    final today = DateTime.now();
+    int streak = 0;
+
+    for (int i = 0; i >= -365; i--) {
+      final day = today.add(Duration(days: i));
+      final key = _dateKey(day);
+
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('daily_logs')
+          .doc(key)
+          .get();
+
+      if (!mounted) return; // 🔥 SAFE CHECK
+
+      final data = doc.data();
+      final hasLog = doc.exists &&
+          (data?.containsKey('mood') == true ||
+              data?.containsKey('sleep') == true);
+
+      if (hasLog) {
+        streak++;
+      } else {
+        break;
+      }
+    }
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .set({'streakDays': streak}, SetOptions(merge: true));
+
+    if (!mounted) return; // 🔥 FINAL SAFETY CHECK
+
+    setState(() {
+      _streakDays = streak;
+      _weekCompleted = completed;
+      _weekDates = weekDateNumbers;
+      _loading = false;
+    });
+
+  } catch (e) {
+    debugPrint('Streak error: $e');
+
+    if (!mounted) return;
+    setState(() => _loading = false);
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -150,10 +163,22 @@ class BigStreakCard extends StatelessWidget {
     final todayIndex = DateTime.now().weekday - 1;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF1A1A1D), Color(0xFF2D2D34)], // Blackish gradient
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white, width: 1.5), // Frosted white border
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05), // Soft elegant shadow
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -168,7 +193,7 @@ class BigStreakCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF884288).withOpacity(0.3),
+                      color: const Color(0xFFFF9800).withValues(alpha: 0.3), // Vibrant orange shadow
                       blurRadius: 40,
                       spreadRadius: 10,
                     ),
@@ -177,7 +202,7 @@ class BigStreakCard extends StatelessWidget {
               ),
               const Icon(
                 Icons.local_fire_department,
-                color: Color(0xFF910A91),
+                color: Color(0xFFFF9800), // Vibrant orange flame
                 size: 80,
               ),
             ],
@@ -191,18 +216,26 @@ class BigStreakCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 68,
               fontWeight: FontWeight.w900,
-              color: Color(0xFF884288),
+              color: Color(0xFFFF9800), // Vibrant orange number
               fontFamily: 'LeagueSpartan',
             ),
           ),
 
-          const Text(
-            "days streak",
-            style: TextStyle(
-              fontSize: 22,
-              color: Color(0xFF884288),
-              fontWeight: FontWeight.w600,
-              fontFamily: 'LeagueSpartan',
+          ShaderMask(
+            blendMode: BlendMode.srcIn,
+            shaderCallback: (bounds) => const LinearGradient(
+              colors: [Color(0xFFFFB74D), Color(0xFFFF9800)], // Flame orange
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height)),
+            child: const Text(
+              "days streak",
+              style: TextStyle(
+                fontSize: 22,
+                color: Colors.white, // Overridden by ShaderMask
+                fontWeight: FontWeight.w800,
+                fontFamily: 'LeagueSpartan',
+              ),
             ),
           ),
 
@@ -217,7 +250,7 @@ class BigStreakCard extends StatelessWidget {
                 ? "You're on fire! 🔥🔥"
                 : "Unstoppable! 🔥🔥🔥",
             style: const TextStyle(
-              color: Colors.white54,
+              color: Colors.white70, // Light text for dark background
               fontSize: 13,
             ),
           ),
@@ -228,7 +261,7 @@ class BigStreakCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF262626),
+              color: Colors.white.withValues(alpha: 0.1), // Dark mode calendar background
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -243,7 +276,7 @@ class BigStreakCard extends StatelessWidget {
                     Text(
                       week[i],
                       style: const TextStyle(
-                          color: Colors.grey, fontSize: 12),
+                          color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     Container(
@@ -252,28 +285,23 @@ class BigStreakCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: isToday
-                            ? const Color(0xFF953195)
+                            ? const Color(0xFFFF9800)
                             : Colors.transparent,
-                        border: (!isToday && isDone)
-                            ? Border.all(
-                            color: const Color(0xFF884288)
-                                .withOpacity(0.5),
-                            width: 1)
-                            : null,
                       ),
                       child: Center(
                         child: isDone
                             ? Icon(
                           Icons.check,
                           size: 18,
-                          color: isToday
-                              ? Colors.black
-                              : const Color(0xFFFF40FF),
+                          color: Colors.white,
                         )
                             : Text(
-                          dateNum,
-                          style: const TextStyle(
-                              color: Colors.grey, fontSize: 13),
+                                dateNum,
+                                style: TextStyle(
+                                  color: isToday ? Colors.white : Colors.white70,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
                         ),
                       ),
                     ),
