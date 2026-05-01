@@ -9,7 +9,12 @@ class PointWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const Color goldColor = Color(0xFFF5A623); // Vibrant modern gold
     const Color textDark = Color(0xFF2D3142);
-    const Color primaryPurple = Color(0xFF884288);
+    const int rewardGoal = 100;
+    final progress = ((points % rewardGoal) / rewardGoal).clamp(0.0, 1.0);
+    final pointsToNext = rewardGoal - (points % rewardGoal == 0 && points > 0
+        ? rewardGoal
+        : points % rewardGoal);
+    final progressText = '${(progress * 100).round()}%';
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
@@ -118,11 +123,11 @@ class PointWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                "65%",
-                style: TextStyle(
+                progressText,
+                style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF5A4D1A), // Dark brown
+                  color: Color(0xFF5A4D1A),
                 ),
               ),
             ],
@@ -140,7 +145,7 @@ class PointWidget extends StatelessWidget {
                 ),
               ),
               FractionallySizedBox(
-                widthFactor: 0.65,
+                widthFactor: progress,
                 child: Container(
                   height: 12,
                   decoration: BoxDecoration(
@@ -153,6 +158,50 @@ class PointWidget extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 8),
+          Text(
+            points >= rewardGoal && points % rewardGoal == 0
+                ? 'Reward unlocked. Keep earning for the next one.'
+                : '$pointsToNext more loot to unlock the next reward.',
+            style: const TextStyle(
+              color: Color(0xFF5A4D1A),
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+
+          const SizedBox(height: 18),
+
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.52),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.white, width: 1.3),
+            ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'How loot works',
+                  style: TextStyle(
+                    color: textDark,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                SizedBox(height: 8),
+                _LootRule(label: 'Complete Pomodoro', points: '+10'),
+                _LootRule(label: 'Breathing or grounding exercise', points: '+10'),
+                _LootRule(label: 'Try a focus strategy', points: '+10'),
+                _LootRule(label: 'Complete task', points: '+5'),
+                _LootRule(label: 'Complete high priority task', points: '+8'),
+                _LootRule(label: 'Play focus game or use tip', points: '+5'),
+                _LootRule(label: 'Create a task', points: '+2'),
+              ],
+            ),
+          ),
 
           const SizedBox(height: 24),
 
@@ -161,7 +210,7 @@ class PointWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () => Navigator.pushNamed(context, '/learn'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: const Color(0xFF5A4D1A),
@@ -182,7 +231,15 @@ class PointWidget extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Redeem unlocks at 100 loot. Keep completing focus activities.',
+                        ),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF5A4D1A),
                     foregroundColor: Colors.white,
@@ -201,6 +258,45 @@ class PointWidget extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LootRule extends StatelessWidget {
+  final String label;
+  final String points;
+
+  const _LootRule({
+    required this.label,
+    required this.points,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: Color(0xFF374151),
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          Text(
+            points,
+            style: const TextStyle(
+              color: Color(0xFF5A4D1A),
+              fontSize: 12,
+              fontWeight: FontWeight.w900,
+            ),
           ),
         ],
       ),

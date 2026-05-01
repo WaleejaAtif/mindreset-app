@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import '../../services/activity_service.dart';
 
 const Color _primaryColor = Color(0xFF755F84);
 
@@ -68,6 +69,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         'dueDate': selectedDate?.toIso8601String(),
         'createdAt': FieldValue.serverTimestamp(),
       });
+      await ActivityService.recordDaily(
+        values: {
+          'tasksCreated': FieldValue.increment(1),
+          'lastTaskCreated': _titleCtrl.text.trim(),
+        },
+        points: 2,
+      );
 
       if (mounted) {
         Navigator.pop(context, true); // true = task was added

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../services/activity_service.dart';
 
 class StudyHacksScreen extends StatefulWidget {
   const StudyHacksScreen({super.key});
@@ -247,9 +248,9 @@ class _StudyHacksScreenState extends State<StudyHacksScreen> {
                   backgroundColor: color,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 ),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => _tryHack(context, item),
                 child: const Text(
-                  "Got It",
+                  "Try This Now",
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -257,6 +258,26 @@ class _StudyHacksScreenState extends State<StudyHacksScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _tryHack(BuildContext context, Map<String, dynamic> item) async {
+    Navigator.pop(context);
+    await ActivityService.logActivity(
+      collection: 'study_hack_logs',
+      data: {
+        'title': item['title'] ?? '',
+        'description': item['desc'] ?? '',
+      },
+      dailyValues: {
+        'studyTipsTaken': FieldValue.increment(1),
+        'lastStudyTip': item['title'] ?? '',
+      },
+      points: 5,
+    );
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Study tip saved: ${item['title'] ?? 'Tip'}")),
     );
   }
 }

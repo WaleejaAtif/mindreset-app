@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'welcome_screen.dart';
 
 class LogoScreen extends StatefulWidget {
   @override
@@ -40,28 +39,12 @@ class _LogoScreenState extends State<LogoScreen> with SingleTickerProviderStateM
       ),
     );
 
-    // Navigate to welcome screen when animation completes
+    // Registered or returning users should go straight to sign in/sign up.
     _popController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(const Duration(milliseconds: 600), () {
           if (mounted) {
-            Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                transitionDuration: const Duration(milliseconds: 800),
-                pageBuilder: (context, animation, secondaryAnimation) => WelcomeScreen(),
-                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                  const begin = Offset(1.0, 0.0);
-                  const end = Offset.zero;
-                  const curve = Curves.easeOutCubic;
-                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                  return SlideTransition(
-                    position: animation.drive(tween),
-                    child: child,
-                  );
-                },
-              ),
-            );
+            Navigator.pushReplacementNamed(context, '/login');
           }
         });
       }

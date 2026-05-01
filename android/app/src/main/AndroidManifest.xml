@@ -2,8 +2,10 @@
 
     <!-- 📳 VIBRATION PERMISSION (ADD HERE ✅) -->
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:usesCleartextTraffic="true"
         android:label="mindreset"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../services/activity_service.dart';
 
 class GroundingScreen extends StatefulWidget {
   const GroundingScreen({super.key});
@@ -498,8 +499,16 @@ class _GroundingSessionScreenState extends State<GroundingSessionScreen> {
           .doc(user.uid)
           .set({
         'totalGroundingSessions': FieldValue.increment(1),
+        'points': FieldValue.increment(10),
       }, SetOptions(merge: true));
     }
+    await ActivityService.recordDaily(
+      values: {
+        'exerciseCompleted': completed,
+        'groundingExercisesTaken': FieldValue.increment(1),
+        'lastGroundingExercise': widget.category['title'],
+      },
+    );
   }
 
   // ✅ Motivational popup

@@ -20,33 +20,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int moodIndex = 2;
   int sleepIndex = 2;
-  int _points = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadPoints();
-  }
-
-  Future<void> _loadPoints() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        setState(() {
-          _points = 120; // Dummy points for guest
-        });
-        return;
-      }
-      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-      if (doc.exists) {
-        setState(() {
-          _points = doc.data()?['points'] ?? 0;
-        });
-      }
-    } catch (e) {
-      debugPrint("Error loading points: $e");
-    }
-  }
 
   String get _todayKey {
     final now = DateTime.now();
@@ -65,7 +38,12 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: null, // No title
+          titleSpacing: 12,
+          title: Image.asset(
+            'assets/images/logo.png',
+            height: 52,
+            fit: BoxFit.contain,
+          ),
           iconTheme: const IconThemeData(color: Colors.black87), // Dark icons for white bg
         ),
         bottomNavigationBar: const CustomBottomNav(currentIndex: 0),
@@ -99,12 +77,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 16),
                 const StreakWidget(),
                 const SizedBox(height: 16),
-                PointWidget(points: _points),
+                _buildLoot(),
                 const SizedBox(height: 40), // Bottom padding for nav bar
               ],
             ),
           ),
         ),
+    );
+  }
+
+  Widget _buildLoot() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return const PointWidget(points: 0);
+    }
+
+    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .snapshots(),
+      builder: (context, snapshot) {
+        final points = (snapshot.data?.data()?['points'] as num?)?.toInt() ?? 0;
+        return PointWidget(points: points);
+      },
     );
   }
 }

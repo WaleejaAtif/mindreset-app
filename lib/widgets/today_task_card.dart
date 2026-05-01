@@ -110,7 +110,7 @@ class TodayTaskCard extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFFE3F2FD), Color(0xFF90CAF9)], // Bluish gradient
+                    colors: [Color(0xFFFFFFFF), Color(0xFFEAF4FF)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -260,7 +260,7 @@ class _TimelineTaskRow extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(
-                            color: color.withValues(alpha: 0.15),
+                            color: color.withValues(alpha: 0.22),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -280,7 +280,7 @@ class _TimelineTaskRow extends StatelessWidget {
                             child: Text(
                               time,
                               style: TextStyle(
-                                color: color,
+                                color: const Color(0xFF1F2937),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12,
                               ),
@@ -300,9 +300,9 @@ class _TimelineTaskRow extends StatelessWidget {
                           child: Text(
                             title,
                             style: const TextStyle(
-                              color: Color(0xFF2D3142), // Dark text
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
+                              color: Color(0xFF111827),
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16,
                             ),
                           ),
                         ),

@@ -31,98 +31,92 @@ class _StreakWidgetState extends State<StreakWidget> {
     return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
   }
 
- Future<void> _loadStreakData() async {
-  try {
-    final user = FirebaseAuth.instance.currentUser;
-
-    if (user == null) {
-      if (!mounted) return;
-      setState(() => _loading = false);
-      return;
-    }
-
-    final uid = user.uid;
-    final monday = _getMonday();
-
-    final weekKeys = List.generate(7, (i) {
-      final day = monday.add(Duration(days: i));
-      return _dateKey(day);
-    });
-
-    final weekDateNumbers = List.generate(7, (i) {
-      final day = monday.add(Duration(days: i));
-      return day.day.toString();
-    });
-
-    final List<bool> completed = [];
-
-    for (final key in weekKeys) {
-      final doc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .collection('daily_logs')
-          .doc(key)
-          .get();
-
-      if (!mounted) return; // 🔥 SAFE CHECK
-
-      final data = doc.data();
-      final hasLog = doc.exists &&
-          (data?.containsKey('mood') == true ||
-              data?.containsKey('sleep') == true);
-
-      completed.add(hasLog);
-    }
-
-    final today = DateTime.now();
-    int streak = 0;
-
-    for (int i = 0; i >= -365; i--) {
-      final day = today.add(Duration(days: i));
-      final key = _dateKey(day);
-
-      final doc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .collection('daily_logs')
-          .doc(key)
-          .get();
-
-      if (!mounted) return; // 🔥 SAFE CHECK
-
-      final data = doc.data();
-      final hasLog = doc.exists &&
-          (data?.containsKey('mood') == true ||
-              data?.containsKey('sleep') == true);
-
-      if (hasLog) {
-        streak++;
-      } else {
-        break;
+  Future<void> _loadStreakData() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        if (mounted) {
+          setState(() {
+            _loading = false;
+          });
+        }
+        return;
       }
+
+      final uid = user.uid;
+      final monday = _getMonday();
+
+      // Build this week's date keys
+      final weekKeys = List.generate(7, (i) {
+        final day = monday.add(Duration(days: i));
+        return _dateKey(day);
+      });
+
+      final weekDateNumbers = List.generate(7, (i) {
+        final day = monday.add(Duration(days: i));
+        return day.day.toString();
+      });
+
+      // ✅ Check which days user logged mood OR sleep
+      final List<bool> completed = [];
+      for (final key in weekKeys) {
+        final doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .collection('daily_logs')
+            .doc(key)
+            .get();
+
+        // Day is "completed" if mood or sleep was saved
+        final data = doc.data();
+        final hasLog = doc.exists &&
+            (data?.containsKey('mood') == true ||
+                data?.containsKey('sleep') == true);
+        completed.add(hasLog);
+      }
+
+      // ✅ Calculate streak from today backwards
+      final today = DateTime.now();
+      int streak = 0;
+      for (int i = 0; i >= -365; i--) {
+        final day = today.add(Duration(days: i));
+        final key = _dateKey(day);
+        final doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .collection('daily_logs')
+            .doc(key)
+            .get();
+
+        final data = doc.data();
+        final hasLog = doc.exists &&
+            (data?.containsKey('mood') == true ||
+                data?.containsKey('sleep') == true);
+
+        if (hasLog) {
+          streak++;
+        } else {
+          break; // streak broken
+        }
+      }
+
+      // ✅ Save streak to Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .set({'streakDays': streak}, SetOptions(merge: true));
+
+      setState(() {
+        _streakDays = streak;
+        _weekCompleted = completed;
+        _weekDates = weekDateNumbers;
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() => _loading = false);
+      debugPrint('Streak error: $e');
     }
-
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .set({'streakDays': streak}, SetOptions(merge: true));
-
-    if (!mounted) return; // 🔥 FINAL SAFETY CHECK
-
-    setState(() {
-      _streakDays = streak;
-      _weekCompleted = completed;
-      _weekDates = weekDateNumbers;
-      _loading = false;
-    });
-
-  } catch (e) {
-    debugPrint('Streak error: $e');
-
-    if (!mounted) return;
-    setState(() => _loading = false);
   }
-}
 
   @override
   Widget build(BuildContext context) {

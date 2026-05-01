@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math' as math;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../services/activity_service.dart';
 
 class PomodoroTimerScreen extends StatefulWidget {
   const PomodoroTimerScreen({super.key});
@@ -24,16 +27,21 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
   Timer? _timer;
   bool _isRunning = false;
   String _activeTab = 'Pomodoro';
+  DateTime? _sessionStart;
+
+  String get _userId => FirebaseAuth.instance.currentUser?.uid ?? '';
 
   void _toggleTimer() {
     if (_isRunning) {
       _timer?.cancel();
     } else {
+      _sessionStart ??= DateTime.now();
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (_seconds > 0) {
           setState(() => _seconds--);
         } else {
           timer.cancel();
+          _saveSession(completed: true);
           setState(() => _isRunning = false);
         }
       });
@@ -46,6 +54,7 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
     setState(() {
       _seconds = _currentMaxSeconds;
       _isRunning = false;
+      _sessionStart = null;
     });
   }
 
@@ -56,7 +65,43 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
       _currentMaxSeconds = duration;
       _seconds = duration;
       _isRunning = false;
+      _sessionStart = null;
     });
+  }
+
+  Future<void> _stopAndSaveIncomplete() async {
+    if (_sessionStart == null && _seconds == _currentMaxSeconds) {
+      _resetTimer();
+      return;
+    }
+    _timer?.cancel();
+    await _saveSession(completed: false);
+    _resetTimer();
+  }
+
+  Future<void> _saveSession({required bool completed}) async {
+    final start = _sessionStart ?? DateTime.now();
+    final end = DateTime.now();
+    final durationMinutes =
+        ((_currentMaxSeconds - _seconds) / 60).clamp(0, _currentMaxSeconds / 60).round();
+    if (_userId.isEmpty) return;
+    await ActivityService.logActivity(
+      collection: 'pomodoro_sessions',
+      data: {
+        'mode': _activeTab,
+        'completed': completed,
+        'startTime': start.toIso8601String(),
+        'endTime': end.toIso8601String(),
+        'durationMinutes': durationMinutes,
+      },
+      dailyValues: {
+        'pomodoroSessions': FieldValue.increment(1),
+        if (completed) 'pomodoroCompletedToday': true,
+        'lastPomodoroStatus': completed ? 'completed' : 'incomplete',
+      },
+      points: completed ? 10 : 2,
+    );
+    _sessionStart = null;
   }
 
   @override
@@ -180,9 +225,11 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
                   ),
                 ),
                 const SizedBox(width: 16),
-                _buildCircleActionBtn(Icons.stop, () {}),
+                _buildCircleActionBtn(Icons.stop, _stopAndSaveIncomplete),
               ],
             ),
+            const SizedBox(height: 20),
+            _buildSessionHistory(),
             const SizedBox(height: 40),
           ],
         ),
@@ -223,6 +270,87 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
         onPressed: onPressed,
       ),
     );
+  }
+
+  Widget _buildSessionHistory() {
+    if (_userId.isEmpty) return const SizedBox.shrink();
+    return SizedBox(
+      height: 120,
+      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(_userId)
+            .collection('pomodoro_sessions')
+            .orderBy('timestamp', descending: true)
+            .limit(5)
+            .snapshots(),
+        builder: (context, snapshot) {
+          final docs = snapshot.data?.docs ?? [];
+          if (docs.isEmpty) {
+            return const Center(
+              child: Text('No Pomodoro records yet.',
+                  style: TextStyle(color: Colors.black54)),
+            );
+          }
+          return ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: docs.length,
+            separatorBuilder: (_, __) => const SizedBox(width: 10),
+            itemBuilder: (context, index) {
+              final data = docs[index].data();
+              final start =
+                  DateTime.tryParse(data['startTime']?.toString() ?? '') ??
+                      DateTime.now();
+              final end = DateTime.tryParse(data['endTime']?.toString() ?? '') ??
+                  start;
+              final completed = data['completed'] == true;
+              return Container(
+                width: 210,
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: _primaryColor.withValues(alpha: 0.2)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(_weekday(start),
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 6),
+                    Text(
+                      '${ActivityService.readableTime(start)} - ${ActivityService.readableTime(end)}',
+                      style: const TextStyle(color: Colors.black54),
+                    ),
+                    const Spacer(),
+                    Text(
+                      completed ? 'Session completed' : 'Session incomplete',
+                      style: TextStyle(
+                        color: completed ? Colors.green : Colors.orange,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  String _weekday(DateTime date) {
+    const days = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ];
+    return days[date.weekday - 1];
   }
 }
 

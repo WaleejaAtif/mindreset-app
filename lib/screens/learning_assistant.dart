@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../services/smart_chat_service.dart';
+import '../services/activity_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/animated_background.dart';
@@ -42,57 +43,172 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
       if (user == null) return;
       final uid = user.uid;
 
-      // 1. Get Name
-      final userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      final name = userDoc.data()?['displayName'] ?? user.displayName ?? user.email?.split('@')[0] ?? 'User';
+      final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
+
+      // 1. Get profile data
+      final userDoc = await userRef.get();
+      final profile = userDoc.data() ?? <String, dynamic>{};
+      final firstName = _stringValue(profile['firstName']);
+      final lastName = _stringValue(profile['lastName']);
+      final fullName = [firstName, lastName]
+          .where((part) => part.isNotEmpty)
+          .join(' ')
+          .trim();
+      final name = _stringValue(
+        profile['displayName'] ??
+            profile['name'] ??
+            (fullName.isNotEmpty ? fullName : null) ??
+            user.displayName ??
+            user.email?.split('@')[0],
+        fallback: 'User',
+      );
+      final email = _stringValue(profile['email'] ?? user.email);
+      final focusStyle = _stringValue(profile['focusStyle']);
+      final focusChallenge = _joinList(profile['struggles']);
+      final peakFocusTime = _stringValue(profile['timeOfDay']);
 
       // 2. Get Mood & Sleep for today
       final today = DateTime.now();
       final dateKey = "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
-      final logDoc = await FirebaseFirestore.instance.collection('users').doc(uid).collection('daily_logs').doc(dateKey).get();
+      final logDoc = await userRef.collection('daily_logs').doc(dateKey).get();
       
       int mood = 2; // Default Okay
       int sleep = 2; // Default Fair
       if (logDoc.exists) {
         final data = logDoc.data()!;
-        if (data.containsKey('moodIndex')) mood = data['moodIndex'] as int;
-        if (data.containsKey('sleepIndex')) sleep = data['sleepIndex'] as int;
+        mood = _intValue(data['moodIndex'], fallback: mood);
+        sleep = _intValue(data['sleepIndex'], fallback: sleep);
       } else {
         // Fallback to legacy mood_data if daily_logs missing
-        final legacyLog = await FirebaseFirestore.instance.collection('users').doc(uid).collection('mood_data').doc(dateKey).get();
+        final legacyLog = await userRef.collection('mood_data').doc(dateKey).get();
         if (legacyLog.exists) {
           final lData = legacyLog.data()!;
-          if (lData.containsKey('mood')) mood = lData['mood'] as int;
-          if (lData.containsKey('sleep')) sleep = lData['sleep'] as int;
+          mood = _intValue(lData['mood'], fallback: mood);
+          sleep = _intValue(lData['sleep'], fallback: sleep);
         }
       }
 
       // 3. Get Tasks
-      final tasksQuery = await FirebaseFirestore.instance.collection('users').doc(uid).collection('tasks').get();
+      final tasksQuery = await userRef.collection('tasks').get();
       int completed = 0;
       int pending = 0;
+      final pendingTaskNames = <String>[];
       for (var doc in tasksQuery.docs) {
-        if (doc.data()['done'] == true) {
+        final data = doc.data();
+        if (data['done'] == true) {
           completed++;
         } else {
           pending++;
+          if (pendingTaskNames.length < 5) {
+            final title = _stringValue(data['title']);
+            final priority = _stringValue(data['priority']);
+            final category = _stringValue(data['category']);
+            pendingTaskNames.add([
+              if (title.isNotEmpty) title,
+              if (priority.isNotEmpty) 'priority: $priority',
+              if (category.isNotEmpty) 'category: $category',
+            ].join(' (') + (priority.isNotEmpty || category.isNotEmpty ? ')' : ''));
+          }
         }
       }
+      final taskSummary = pendingTaskNames.isEmpty
+          ? 'No pending task details.'
+          : pendingTaskNames.join('; ');
+
+      // 4. Get recent app history for smarter responses.
+      final dailyLogs = await userRef
+          .collection('daily_logs')
+          .orderBy(FieldPath.documentId, descending: true)
+          .limit(7)
+          .get();
+      final moodHistory = _summarizeDailyLogs(dailyLogs.docs, 'mood');
+      final sleepHistory = _summarizeDailyLogs(dailyLogs.docs, 'sleep');
+
+      final meditationLogs = await userRef
+          .collection('meditation_logs')
+          .orderBy('timestamp', descending: true)
+          .limit(5)
+          .get();
+      final meditationHistory = _summarizeDocs(
+        meditationLogs.docs,
+        (data) => [
+          _stringValue(data['category']),
+          _stringValue(data['exercise'] ?? data['type']),
+          data['completed'] == true ? 'completed' : 'started',
+        ].where((part) => part.isNotEmpty).join(' - '),
+        fallback: 'No recent meditation sessions.',
+      );
+
+      final focusLogs = await userRef
+          .collection('focus_strategy_logs')
+          .orderBy('timestamp', descending: true)
+          .limit(5)
+          .get();
+      final focusStrategyHistory = _summarizeDocs(
+        focusLogs.docs,
+        (data) => _stringValue(data['strategyTitle'] ?? data['title']),
+        fallback: 'No recent focus strategies tried.',
+      );
+
+      final gameLogs = await userRef
+          .collection('game_sessions')
+          .orderBy('timestamp', descending: true)
+          .limit(5)
+          .get();
+      final gameHistory = _summarizeDocs(
+        gameLogs.docs,
+        (data) => [
+          _stringValue(data['game']),
+          _stringValue(data['result']),
+          data['score'] == null ? '' : 'score ${data['score']}',
+        ].where((part) => part.isNotEmpty).join(' - '),
+        fallback: 'No recent game sessions.',
+      );
+
+      final soundLogs = await userRef
+          .collection('sound_sessions')
+          .orderBy('timestamp', descending: true)
+          .limit(3)
+          .get();
+      final soundHistory = _summarizeDocs(
+        soundLogs.docs,
+        (data) => _stringValue(data['sound']),
+        fallback: 'No recent sound therapy sessions.',
+      );
 
       _userContext = UserContext(
         name: name,
+        email: email,
+        focusStyle: focusStyle.isEmpty ? 'Not set' : focusStyle,
+        focusChallenge: focusChallenge.isEmpty ? 'Not set' : focusChallenge,
+        peakFocusTime: peakFocusTime.isEmpty ? 'Not set' : peakFocusTime,
         mood: mood,
         sleep: sleep,
         pendingTasks: pending,
         completedTasks: completed,
+        taskSummary: taskSummary,
+        moodHistory: moodHistory,
+        sleepHistory: sleepHistory,
+        meditationHistory: meditationHistory,
+        focusStrategyHistory: focusStrategyHistory,
+        gameHistory: gameHistory,
+        soundHistory: soundHistory,
+        totalBreathingSessions:
+            _intValue(profile['totalBreathingSessions'], fallback: 0),
+        totalGroundingSessions:
+            _intValue(profile['totalGroundingSessions'], fallback: 0),
+        totalGameSessions: _intValue(profile['totalGameSessions'], fallback: 0),
       );
 
       // Generate greeting logic
-      String greeting = 'Hi ${_userContext!.name}, how are you doing? I am here to assist.';
+      String greeting =
+          'Hello ${_userContext!.name}, I am Zenify. How are you doing? I am here to assist.';
       if (_userContext!.mood <= 1 && _userContext!.pendingTasks == 0) {
-        greeting = "Hello ${_userContext!.name}, you are feeling low but you have completed all your tasks! Since you don't have any tasks in the list, let's get you relaxed at first. Try a breathing exercise from our meditation section.";
+        greeting =
+            "Hello ${_userContext!.name}, I am Zenify. I can see you are feeling low, but you have completed all your tasks. Since your task list is clear, let's help you relax first with a breathing exercise from the meditation section.";
       } else if (_userContext!.pendingTasks > 0) {
-        greeting = "Hello ${_userContext!.name}, I see you have ${_userContext!.pendingTasks} tasks pending. Don't worry, divide the tasks and take it step by step! I am here to assist.";
+        greeting =
+            "Hello ${_userContext!.name}, I am Zenify. I see you have ${_userContext!.pendingTasks} tasks pending. Don't worry, divide them into small steps and start with one.";
       }
 
       if (mounted) {
@@ -152,6 +268,12 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
     try {
       final reply = await _chatService.respond(text, history: history, context: _userContext);
       if (!mounted) return;
+      await ActivityService.recordDaily(
+        values: {
+          'aiChats': FieldValue.increment(1),
+          'chattedWithAi': true,
+        },
+      );
 
       setState(() {
         _messages = [
@@ -203,6 +325,56 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
         curve: Curves.easeOut,
       );
     });
+  }
+
+  String _stringValue(dynamic value, {String fallback = ''}) {
+    final text = value?.toString().trim() ?? '';
+    return text.isEmpty ? fallback : text;
+  }
+
+  int _intValue(dynamic value, {required int fallback}) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return int.tryParse(value?.toString() ?? '') ?? fallback;
+  }
+
+  String _joinList(dynamic value) {
+    if (value is Iterable) {
+      return value.map((item) => item.toString()).where((item) => item.isNotEmpty).join(', ');
+    }
+    return _stringValue(value);
+  }
+
+  String _summarizeDailyLogs(
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs,
+    String fieldPrefix,
+  ) {
+    final parts = <String>[];
+    for (final doc in docs) {
+      final data = doc.data();
+      final label = _stringValue(data[fieldPrefix]);
+      final index = data['${fieldPrefix}Index'];
+      if (label.isNotEmpty) {
+        parts.add('${doc.id}: $label');
+      } else if (index != null) {
+        parts.add('${doc.id}: $index/4');
+      }
+    }
+    if (parts.isEmpty) return 'No recent $fieldPrefix history.';
+    return parts.take(7).join('; ');
+  }
+
+  String _summarizeDocs(
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docs,
+    String Function(Map<String, dynamic> data) buildLine, {
+    required String fallback,
+  }) {
+    final parts = docs
+        .map((doc) => buildLine(doc.data()))
+        .where((line) => line.trim().isNotEmpty)
+        .take(5)
+        .toList();
+    return parts.isEmpty ? fallback : parts.join('; ');
   }
 
   @override

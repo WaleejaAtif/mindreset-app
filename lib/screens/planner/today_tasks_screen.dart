@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../services/activity_service.dart';
 import 'add_task_screen.dart';
 import '../../widgets/animated_background.dart';
 
@@ -22,12 +23,26 @@ class TodayTasksScreen extends StatelessWidget {
   }
 
   Future<void> _toggleDone(String id, bool current) async {
-    await FirebaseFirestore.instance
+    final taskRef = FirebaseFirestore.instance
         .collection('users')
         .doc(_userId)
         .collection('tasks')
-        .doc(id)
-        .update({'done': !current});
+        .doc(id);
+    final taskDoc = await taskRef.get();
+    final data = taskDoc.data() as Map<String, dynamic>? ?? {};
+    await taskRef.update({'done': !current});
+    if (!current) {
+      final title = data['title']?.toString() ?? 'Task';
+      final priority = data['priority']?.toString() ?? '';
+      await ActivityService.recordDaily(
+        values: {
+          'tasksCompleted': FieldValue.increment(1),
+          'lastCompletedTask': title,
+          if (priority == 'High') 'highPriorityTaskCompleted': title,
+        },
+        points: priority == 'High' ? 8 : 5,
+      );
+    }
   }
 
   Future<void> _delete(String id) async {

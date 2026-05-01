@@ -1,5 +1,4 @@
 pluginManagement {
-    // ✅ Load Flutter SDK path
     val flutterSdkPath = run {
         val properties = java.util.Properties()
         file("local.properties").inputStream().use { properties.load(it) }
@@ -14,8 +13,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-        // ✅ Flutter local engine + fallback repo
-        maven { url = uri("D:/src/flutter/bin/cache/artifacts/engine") }
+        maven { url = uri("$flutterSdkPath/bin/cache/artifacts/engine") }
         maven { url = uri("https://storage.googleapis.com/download.flutter.io") }
     }
 }
@@ -28,11 +26,19 @@ plugins {
 }
 
 dependencyResolutionManagement {
+    val flutterSdkPath = run {
+        val properties = java.util.Properties()
+        file("local.properties").inputStream().use { properties.load(it) }
+        val flutterSdk = properties.getProperty("flutter.sdk")
+        require(flutterSdk != null) { "flutter.sdk not set in local.properties" }
+        flutterSdk
+    }
+
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("D:/src/flutter/bin/cache/artifacts/engine") }
+        maven { url = uri("$flutterSdkPath/bin/cache/artifacts/engine") }
         maven { url = uri("https://storage.googleapis.com/download.flutter.io") }
     }
 }

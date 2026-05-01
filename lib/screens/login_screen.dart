@@ -113,6 +113,10 @@ class _LoginScreenState extends State<LoginScreen> {
     final firstName = _regFirstNameCtrl.text.trim();
     final lastName = _regLastNameCtrl.text.trim();
     final contact = _regContactCtrl.text.trim();
+    final displayName = [firstName, lastName]
+        .where((part) => part.isNotEmpty)
+        .join(' ')
+        .trim();
 
     try {
       UserCredential cred =
@@ -120,6 +124,9 @@ class _LoginScreenState extends State<LoginScreen> {
         email: email,
         password: password,
       );
+      if (displayName.isNotEmpty) {
+        await cred.user?.updateDisplayName(displayName);
+      }
 
       // create default profile state
       await FirebaseFirestore.instance
@@ -129,6 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
         'email': email,
         'firstName': firstName,
         'lastName': lastName,
+        'displayName': displayName,
         'contact': contact,
         'profileCompleted': false,
       });

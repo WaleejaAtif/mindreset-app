@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../services/activity_service.dart';
 
 class HabitTipsScreen extends StatefulWidget {
   const HabitTipsScreen({super.key});
@@ -247,7 +248,7 @@ class _HabitTipsScreenState extends State<HabitTipsScreen> {
                   backgroundColor: color,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 ),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => _tryTip(context, item),
                 child: const Text(
                   "Try This Now",
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -257,6 +258,26 @@ class _HabitTipsScreenState extends State<HabitTipsScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _tryTip(BuildContext context, Map<String, dynamic> item) async {
+    Navigator.pop(context);
+    await ActivityService.logActivity(
+      collection: 'habit_tip_logs',
+      data: {
+        'title': item['title'] ?? '',
+        'description': item['desc'] ?? '',
+      },
+      dailyValues: {
+        'habitTipsTaken': FieldValue.increment(1),
+        'lastHabitTip': item['title'] ?? '',
+      },
+      points: 5,
+    );
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Habit tip saved: ${item['title'] ?? 'Tip'}")),
     );
   }
 }

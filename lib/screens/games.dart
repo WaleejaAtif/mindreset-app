@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../widgets/navigation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../services/activity_service.dart';
 import '../widgets/animated_background.dart';
 
 // ─────────────────────────────────────────────
@@ -17,6 +19,12 @@ class GamesScreen extends StatelessWidget {
       subtitle: 'Moon & Star logic puzzle',
       emoji: '🌓',
       color: Color(0xFF6C3DD6),
+      rules: [
+        'Tap cells to cycle empty, moon, and star.',
+        'Match the hidden valid board.',
+        'Solve with fewer moves for a bonus.',
+      ],
+      scoring: ['Solve puzzle: +15 loot', 'Efficient solve bonus: up to +5 loot'],
       builder: _BalancePuzzleGame.new,
     ),
     _GameMeta(
@@ -24,6 +32,12 @@ class GamesScreen extends StatelessWidget {
       subtitle: 'Guess the 5-letter word',
       emoji: '🟩',
       color: Color(0xFF2E7D32),
+      rules: [
+        'Guess the 5-letter focus word.',
+        'Green means correct place, yellow means correct letter.',
+        'You have 6 attempts.',
+      ],
+      scoring: ['Win: +15 loot', 'Lose after trying: +3 loot'],
       builder: _WordleGame.new,
     ),
     _GameMeta(
@@ -31,6 +45,12 @@ class GamesScreen extends StatelessWidget {
       subtitle: 'Classic block stacking',
       emoji: '🟦',
       color: Color(0xFF0277BD),
+      rules: [
+        'Move and rotate blocks to complete rows.',
+        'Completed rows increase your score.',
+        'Game ends when new pieces cannot spawn.',
+      ],
+      scoring: ['Every 100 score: +3 loot', 'Maximum per session: +20 loot'],
       builder: _TetrisGame.new,
     ),
     _GameMeta(
@@ -38,6 +58,12 @@ class GamesScreen extends StatelessWidget {
       subtitle: 'Slide tiles to reach 2048',
       emoji: '🔢',
       color: Color(0xFFE65100),
+      rules: [
+        'Swipe to merge matching tiles.',
+        'Build larger numbers without filling the board.',
+        'Reach 2048 to win.',
+      ],
+      scoring: ['Reach 2048: +30 loot', 'Game over score bonus: up to +25 loot'],
       builder: _Game2048.new,
     ),
   ];
@@ -61,7 +87,6 @@ class GamesScreen extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: const CustomBottomNav(currentIndex: 2),
         body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -107,12 +132,16 @@ class _GameMeta {
   final String subtitle;
   final String emoji;
   final Color color;
+  final List<String> rules;
+  final List<String> scoring;
   final Widget Function() builder;
   const _GameMeta({
     required this.title,
     required this.subtitle,
     required this.emoji,
     required this.color,
+    required this.rules,
+    required this.scoring,
     required this.builder,
   });
 }
@@ -121,13 +150,44 @@ class _GameCard extends StatelessWidget {
   final _GameMeta meta;
   const _GameCard({required this.meta});
 
+  Future<void> _logGameStarted() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+      'totalGameSessions': FieldValue.increment(1),
+      'lastGamePlayed': meta.title,
+      'lastGamePlayedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('game_sessions')
+        .add({
+      'game': meta.title,
+      'result': 'started',
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+    await ActivityService.recordDaily(
+      values: {
+        'gamesPlayed': FieldValue.increment(1),
+        'lastGamePlayed': meta.title,
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => meta.builder()),
-      ),
+      onTap: () async {
+        await _logGameStarted();
+        if (!context.mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => _GameRulesScreen(meta: meta)),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -178,6 +238,164 @@ class _GameCard extends StatelessWidget {
   }
 }
 
+class _GameRulesScreen extends StatelessWidget {
+  final _GameMeta meta;
+
+  const _GameRulesScreen({required this.meta});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF121826),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text(meta.title, style: const TextStyle(color: Colors.white)),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(child: Text(meta.emoji, style: const TextStyle(fontSize: 64))),
+              const SizedBox(height: 18),
+              Text(
+                meta.subtitle,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 24),
+              _RulePanel(title: 'Rules', lines: meta.rules, color: meta.color),
+              const SizedBox(height: 14),
+              _RulePanel(title: 'Loot scoring', lines: meta.scoring, color: meta.color),
+              const Spacer(),
+              SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: meta.color,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => meta.builder()),
+                  ),
+                  icon: const Icon(Icons.play_arrow_rounded),
+                  label: const Text(
+                    'Start Game',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RulePanel extends StatelessWidget {
+  final String title;
+  final List<String> lines;
+  final Color color;
+
+  const _RulePanel({
+    required this.title,
+    required this.lines,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: color.withValues(alpha: 0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: color,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          ...lines.map(
+            (line) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.check_circle, color: color, size: 16),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      line,
+                      style: const TextStyle(color: Colors.white70, height: 1.3),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+Future<void> _awardGameLoot({
+  required String game,
+  required String result,
+  required int points,
+  int? score,
+}) async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) return;
+  final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+  await userRef.set({
+    'points': FieldValue.increment(points),
+    'lastGameResult': result,
+    'lastGameScore': score,
+    'lastGameReward': points,
+    'lastGameRewardAt': FieldValue.serverTimestamp(),
+  }, SetOptions(merge: true));
+  await userRef.collection('game_sessions').add({
+    'game': game,
+    'result': result,
+    'score': score,
+    'pointsAwarded': points,
+    'date': ActivityService.dateKey(),
+    'timestamp': FieldValue.serverTimestamp(),
+  });
+  await ActivityService.recordDaily(
+    values: {
+      'gameCompletedToday': true,
+      'lastGameCompleted': game,
+      'lastGameReward': points,
+      if (score != null) 'lastGameScore': score,
+      if (points >= 15) 'goodGameScore': true,
+    },
+  );
+}
+
 // ═══════════════════════════════════════════════════════════════════
 //  GAME 1 — BALANCE PUZZLE  (Moon & Star logic)
 //  Inspired by hsynadguzel/balance-puzzle
@@ -196,6 +414,7 @@ class _BalancePuzzleGameState extends State<_BalancePuzzleGame> {
   late List<List<int>> _board;
   late List<List<bool>> _locked;
   bool _solved = false;
+  bool _rewarded = false;
   int _moves = 0;
 
   // A valid 6x6 solution
@@ -218,6 +437,7 @@ class _BalancePuzzleGameState extends State<_BalancePuzzleGame> {
     _board = List.generate(_size, (r) => List.filled(_size, 0));
     _locked = List.generate(_size, (r) => List.filled(_size, false));
     _solved = false;
+    _rewarded = false;
     _moves = 0;
     final rng = Random();
     for (int r = 0; r < _size; r++) {
@@ -246,6 +466,16 @@ class _BalancePuzzleGameState extends State<_BalancePuzzleGame> {
       }
     }
     _solved = true;
+    if (!_rewarded) {
+      _rewarded = true;
+      final bonus = (5 - (_moves ~/ 8)).clamp(0, 5).toInt();
+      _awardGameLoot(
+        game: 'Balance Puzzle',
+        result: 'solved',
+        points: 15 + bonus,
+        score: _moves,
+      );
+    }
   }
 
   Color _cellColor(int r, int c) {
@@ -402,6 +632,7 @@ class _WordleGameState extends State<_WordleGame> {
   String _current = '';
   bool _won = false;
   bool _lost = false;
+  bool _rewarded = false;
   final Map<String, int> _letterState = {};
   static const int _maxGuesses = 6;
 
@@ -418,6 +649,7 @@ class _WordleGameState extends State<_WordleGame> {
     _current = '';
     _won = false;
     _lost = false;
+    _rewarded = false;
     _letterState.clear();
   }
 
@@ -438,11 +670,24 @@ class _WordleGameState extends State<_WordleGame> {
       _updateLetterStates(_current);
       if (_current == _target) {
         _won = true;
+        _rewardWordle(points: 15, result: 'won');
       } else if (_guesses.length >= _maxGuesses) {
         _lost = true;
+        _rewardWordle(points: 3, result: 'lost');
       }
       _current = '';
     });
+  }
+
+  void _rewardWordle({required int points, required String result}) {
+    if (_rewarded) return;
+    _rewarded = true;
+    _awardGameLoot(
+      game: 'Wordle',
+      result: result,
+      points: points,
+      score: _guesses.length,
+    );
   }
 
   void _updateLetterStates(String guess) {
@@ -684,6 +929,7 @@ class _TetrisGameState extends State<_TetrisGame> {
   Timer? _timer;
   int _score = 0;
   bool _gameOver = false, _started = false;
+  bool _rewarded = false;
 
   @override
   void dispose() {
@@ -695,6 +941,7 @@ class _TetrisGameState extends State<_TetrisGame> {
     _board = List.generate(_tRows, (_) => List.filled(_tCols, 0));
     _score = 0;
     _gameOver = false;
+    _rewarded = false;
     _started = true;
     _spawnPiece();
     _timer?.cancel();
@@ -712,7 +959,20 @@ class _TetrisGameState extends State<_TetrisGame> {
     if (!_canPlace(_piece, _px, _py)) {
       setState(() => _gameOver = true);
       _timer?.cancel();
+      _rewardTetris();
     }
+  }
+
+  void _rewardTetris() {
+    if (_rewarded) return;
+    _rewarded = true;
+    final points = (_score ~/ 100 * 3).clamp(3, 20).toInt();
+    _awardGameLoot(
+      game: 'Tetris',
+      result: 'game_over',
+      points: points,
+      score: _score,
+    );
   }
 
   bool _canPlace(List<List<int>> piece, int row, int col) {
@@ -947,6 +1207,7 @@ class _Game2048State extends State<_Game2048> {
   late List<List<int>> _board;
   int _score = 0;
   bool _won = false, _over = false;
+  bool _rewarded = false;
   Offset? _dragStart;
 
   @override
@@ -960,6 +1221,7 @@ class _Game2048State extends State<_Game2048> {
     _score = 0;
     _won = false;
     _over = false;
+    _rewarded = false;
     _addTile();
     _addTile();
   }
@@ -1016,7 +1278,24 @@ class _Game2048State extends State<_Game2048> {
     }
     if (changed) _addTile();
     _checkOver();
+    if (_won) {
+      _reward2048(result: 'won', points: 30);
+    } else if (_over) {
+      final points = (_score ~/ 512 * 5).clamp(3, 25).toInt();
+      _reward2048(result: 'game_over', points: points);
+    }
     setState(() {});
+  }
+
+  void _reward2048({required String result, required int points}) {
+    if (_rewarded) return;
+    _rewarded = true;
+    _awardGameLoot(
+      game: '2048',
+      result: result,
+      points: points,
+      score: _score,
+    );
   }
 
   void _checkOver() {

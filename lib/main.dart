@@ -38,20 +38,14 @@ import 'screens/reflect/streak_progress_screen.dart';
 import 'screens/reflect/mood_graph_screen.dart';
 import 'screens/reflect/daily_mood_screen.dart';
 import 'screens/reflect/achievements_screen.dart';
-
 import 'services/audio_service.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // ── Firebase ──
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  // ── Audio session — MUST be configured before any playback ──
-  await AudioService.configureSession();
-
   runApp(const MyApp());
 }
 

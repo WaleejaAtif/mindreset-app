@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../services/activity_service.dart';
 
 class FocusStrategiesScreen extends StatefulWidget {
   const FocusStrategiesScreen({super.key});
@@ -283,6 +284,21 @@ class _FocusStrategiesScreenState extends State<FocusStrategiesScreen> {
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'points': FieldValue.increment(10),
         }, SetOptions(merge: true));
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .collection('focus_strategy_logs')
+            .add({
+          'strategyTitle': item['title'] ?? '',
+          'description': item['desc'] ?? '',
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+        await ActivityService.recordDaily(
+          values: {
+            'focusStrategiesTaken': FieldValue.increment(1),
+            'lastFocusStrategy': item['title'] ?? '',
+          },
+        );
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

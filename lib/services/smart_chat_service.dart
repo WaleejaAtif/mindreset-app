@@ -6,17 +6,45 @@ import 'package:http/http.dart' as http;
 
 class UserContext {
   final String name;
+  final String email;
+  final String focusStyle;
+  final String focusChallenge;
+  final String peakFocusTime;
   final int mood; // 0 (Very Low) to 4 (Great)
   final int sleep; // 0 (Terrible) to 4 (Amazing)
   final int pendingTasks;
   final int completedTasks;
+  final String taskSummary;
+  final String moodHistory;
+  final String sleepHistory;
+  final String meditationHistory;
+  final String focusStrategyHistory;
+  final String gameHistory;
+  final String soundHistory;
+  final int totalBreathingSessions;
+  final int totalGroundingSessions;
+  final int totalGameSessions;
 
   const UserContext({
     required this.name,
+    required this.email,
+    required this.focusStyle,
+    required this.focusChallenge,
+    required this.peakFocusTime,
     required this.mood,
     required this.sleep,
     required this.pendingTasks,
     required this.completedTasks,
+    required this.taskSummary,
+    required this.moodHistory,
+    required this.sleepHistory,
+    required this.meditationHistory,
+    required this.focusStrategyHistory,
+    required this.gameHistory,
+    required this.soundHistory,
+    required this.totalBreathingSessions,
+    required this.totalGroundingSessions,
+    required this.totalGameSessions,
   });
 
   String get moodString {
@@ -103,26 +131,48 @@ class SmartChatService {
 
   final http.Client _client;
 
-  static final String _backendUrl = 'http://192.168.18.26:8000';
+  static const String _backendUrl = String.fromEnvironment(
+    'SMART_CHAT_BACKEND_URL',
+    defaultValue: 'http://192.168.18.26:8000',
+  );
 
   static bool get hasBackendConfigured => _backendUrl.isNotEmpty;
 
   String _buildAssistantInstructions(UserContext? ctx) {
-    String base = 'You are Zenify Assistant, a friendly mental wellness bot. '
-        'Keep your responses simple, short, and plain text. '
-        'If the user says "hy", "hi", or similar, reply exactly: "Hy, how are you doing? I am here to assist." '
-        'If the user is feeling low, tired, or overwhelmed, suggest a suitable simple exercise within the app like playing some games or breathing.';
+    String base = 'You are Zenify Assistant, a role-based mental health and focus support bot inside the MindReset app. '
+        'Your main job is mental wellness, stress, mood, sleep, focus, study burnout, tasks, meditation, breathing, grounding, focus strategies, and focus games. '
+        'For vague, casual, emotional, or app-related messages, answer helpfully and connect the reply to wellbeing or focus. '
+        'Only refuse clearly unrelated requests. If the user asks about coding, politics, general facts, entertainment, shopping, finance, sports, weather, or unrelated homework, reply: "I am a mental health support bot, so I can only help with wellbeing, focus, sleep, mood, stress, tasks, and app-based suggestions." '
+        'You are not a doctor or therapist. Do not diagnose. For crisis or self-harm, tell the user to contact local emergency services or a trusted person immediately. '
+        'Keep responses warm, practical, and plain text. Usually give 3 to 5 helpful sentences with one clear next step. '
+        'Always personalize using the user context when available. Mention their name naturally, not in every sentence. '
+        'If the user says "hy", "hi", or similar, greet them with their name if available and say you are Zenify. '
+        'Suggest app tools based on evidence: breathing/grounding for anxiety, focus strategies for task paralysis, games for short cognitive reset, task splitting for pending work, and sleep guidance when sleep is poor.';
     
     if (ctx == null) return base;
 
     return '$base\n\n'
            'IMPORTANT USER CONTEXT:\n'
            '- Name: ${ctx.name}\n'
+           '- Email: ${ctx.email}\n'
+           '- Focus Challenge: ${ctx.focusChallenge}\n'
+           '- Peak Focus Time: ${ctx.peakFocusTime}\n'
+           '- Focus Style: ${ctx.focusStyle}\n'
            '- Today\'s Mood: ${ctx.moodString}\n'
            '- Today\'s Sleep: ${ctx.sleepString}\n'
            '- Pending Tasks: ${ctx.pendingTasks}\n'
            '- Completed Tasks: ${ctx.completedTasks}\n'
-           'Use this context to personalize your responses. If they have tasks pending, encourage them to divide and conquer.';
+           '- Task Details: ${ctx.taskSummary}\n'
+           '- Recent Mood History: ${ctx.moodHistory}\n'
+           '- Recent Sleep History: ${ctx.sleepHistory}\n'
+           '- Meditation/Breathing/Grounding History: ${ctx.meditationHistory}\n'
+           '- Focus Strategy History: ${ctx.focusStrategyHistory}\n'
+           '- Focus Game History: ${ctx.gameHistory}\n'
+           '- Sound Therapy History: ${ctx.soundHistory}\n'
+           '- Total Breathing Sessions: ${ctx.totalBreathingSessions}\n'
+           '- Total Grounding Sessions: ${ctx.totalGroundingSessions}\n'
+           '- Total Game Sessions: ${ctx.totalGameSessions}\n\n'
+           'Use this context to personalize your response. If they have pending tasks, name the most useful next step from the task details. If they recently used a strategy, game, breathing, grounding, or sound therapy, acknowledge it and adapt the suggestion.';
   }
 
   List<SmartModelBadge> initialBadges() => const [];
@@ -139,6 +189,16 @@ class SmartChatService {
         statusLine: hasBackendConfigured
             ? 'Zenify Assistant is ready.'
             : 'Zenify Assistant is ready in local support mode.',
+        activeModels: const [],
+        recommendations: const [],
+      );
+    }
+
+    if (_isClearlyIrrelevant(message)) {
+      return SmartChatReply(
+        reply:
+            'I am a mental health support bot, so I can only help with wellbeing, focus, sleep, mood, stress, tasks, and app-based suggestions.',
+        statusLine: 'Zenify Assistant kept the chat focused on wellbeing.',
         activeModels: const [],
         recommendations: const [],
       );
@@ -234,7 +294,7 @@ class SmartChatService {
               )
               .toList(),
           'include_gemini': true,
-          'max_new_tokens': 128,
+          'max_new_tokens': 320,
         }),
       );
 
@@ -311,13 +371,13 @@ class SmartChatService {
     if (_hasAny(message, const ['hy', 'hello', 'hi', 'hey'])) {
       if (context != null) {
          if (context.mood <= 1 && context.pendingTasks == 0) {
-             return 'Hello ${context.name}, you are feeling low but you have completed all your tasks! Since you don\'t have any tasks in the list, let\'s get you relaxed at first. Try a breathing exercise from our meditation section.';
+             return 'Hello ${context.name}, I am Zenify. I can see you are feeling low, but you have completed all your tasks. Let\'s relax first with a breathing exercise from the meditation section.';
          } else if (context.pendingTasks > 0) {
-             return 'Hello ${context.name}, I see you have ${context.pendingTasks} tasks pending. Don\'t worry, divide the tasks and take it step by step! I am here to assist.';
+             return 'Hello ${context.name}, I am Zenify. I see you have ${context.pendingTasks} tasks pending. Don\'t worry, divide them into small steps and start with one.';
          }
-         return 'Hy ${context.name}, how are you doing? I am here to assist.';
+         return 'Hello ${context.name}, I am Zenify. How are you doing? I am here to assist.';
       }
-      return 'Hy, how are you doing? I am here to assist.';
+      return 'Hello, I am Zenify. How are you doing? I am here to assist.';
     }
 
     if (_hasAny(message, const [
@@ -328,6 +388,35 @@ class SmartChatService {
       'overthinking',
     ])) {
       return 'I hear that you are feeling stressed. Why don\'t we try a gentle breathing exercise to calm your mind?';
+    }
+
+    if (_hasAny(message, const ['my name', 'who am i', 'about me', 'profile'])) {
+      if (context != null) {
+        return 'You are ${context.name}. Today your mood is ${context.moodString}, your sleep is ${context.sleepString}, and you have ${context.pendingTasks} pending task(s).';
+      }
+      return 'I could not load your profile yet. Please try again after your profile finishes loading.';
+    }
+
+    if (_hasAny(message, const ['task', 'tasks', 'todo', 'to do', 'planner'])) {
+      if (context != null && context.pendingTasks > 0) {
+        return '${context.name}, you have ${context.pendingTasks} pending task(s). Pick the smallest one first, work for 10 minutes, then take a short reset. ${context.taskSummary}';
+      }
+      return 'Your task list looks clear right now. This is a good moment for a short breathing exercise or a focus game to maintain momentum.';
+    }
+
+    if (_hasAny(message, const ['game', 'games', 'played', 'focus game'])) {
+      if (context != null && context.gameHistory != 'No recent game sessions.') {
+        return 'I can see your recent focus game activity: ${context.gameHistory}. Use games as a short reset, then return to one small task.';
+      }
+      return 'Focus games can help as a quick reset. Play one short round, then come back to your next task.';
+    }
+
+    if (_hasAny(message, const ['strategy', 'strategies', 'focus strategy'])) {
+      if (context != null &&
+          context.focusStrategyHistory != 'No recent focus strategies tried.') {
+        return 'You recently tried: ${context.focusStrategyHistory}. Let\'s build on that with one small timed session.';
+      }
+      return 'Try one focus strategy now: clear your workspace, set a 10-minute timer, and start the smallest task.';
     }
 
     if (_hasAny(message, const [
@@ -364,10 +453,21 @@ class SmartChatService {
     required bool crisisDetected,
     UserContext? context,
   }) {
+    final geminiAdvice = drafts
+        .where(
+          (draft) =>
+              draft.name.toLowerCase().contains('gemini') &&
+              draft.state == SmartModelState.live &&
+              draft.advice != null,
+        )
+        .map((draft) => draft.advice!)
+        .toList();
     final liveAdvice = drafts
         .where(
           (draft) =>
-              draft.state == SmartModelState.live && draft.advice != null,
+              !draft.name.toLowerCase().contains('gemini') &&
+              draft.state == SmartModelState.live &&
+              draft.advice != null,
         )
         .map((draft) => draft.advice!)
         .toList();
@@ -378,7 +478,7 @@ class SmartChatService {
         )
         .map((draft) => draft.advice!)
         .toList();
-    final allAdvice = [...liveAdvice, ...fallbackAdvice];
+    final allAdvice = [...geminiAdvice, ...liveAdvice, ...fallbackAdvice];
     
     final best = allAdvice.isNotEmpty
         ? allAdvice.first
@@ -418,6 +518,91 @@ class SmartChatService {
       'self harm',
       'hurt myself',
       'want to die',
+    ]);
+  }
+
+  bool _isClearlyIrrelevant(String message) {
+    final lowered = message.toLowerCase();
+    if (_detectCrisis(lowered)) return false;
+    if (_hasAny(lowered, const [
+      'hy',
+      'hi',
+      'hey',
+      'hello',
+      'mood',
+      'feel',
+      'feeling',
+      'sad',
+      'happy',
+      'angry',
+      'low',
+      'stress',
+      'stressed',
+      'anxious',
+      'anxiety',
+      'panic',
+      'worry',
+      'overthinking',
+      'sleep',
+      'tired',
+      'exhausted',
+      'burnout',
+      'focus',
+      'adhd',
+      'procrast',
+      'lazy',
+      'stuck',
+      'motivation',
+      'task',
+      'todo',
+      'planner',
+      'study',
+      'exam',
+      'revision',
+      'meditat',
+      'breath',
+      'ground',
+      'calm',
+      'relax',
+      'game',
+      'strategy',
+      'strategies',
+      'exercise',
+      'sound',
+      'therapy',
+      'habit',
+      'routine',
+      'name',
+      'profile',
+      'history',
+      'my data',
+      'about me',
+      'who am i',
+    ])) {
+      return false;
+    }
+
+    return _hasAny(lowered, const [
+      'write code',
+      'programming',
+      'flutter code',
+      'python',
+      'javascript',
+      'politics',
+      'election',
+      'president',
+      'movie',
+      'song',
+      'recipe',
+      'shopping',
+      'stock price',
+      'crypto',
+      'football score',
+      'cricket score',
+      'solve math',
+      'history of',
+      'capital of',
+      'weather',
     ]);
   }
 
