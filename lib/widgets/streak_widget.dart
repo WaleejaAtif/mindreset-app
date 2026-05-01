@@ -73,6 +73,8 @@ class _StreakWidgetState extends State<StreakWidget> {
             (data?.containsKey('mood') == true ||
                 data?.containsKey('sleep') == true);
         completed.add(hasLog);
+
+        if (!mounted) return;
       }
 
       // ✅ Calculate streak from today backwards
@@ -98,6 +100,8 @@ class _StreakWidgetState extends State<StreakWidget> {
         } else {
           break; // streak broken
         }
+
+        if (!mounted) return;
       }
 
       // ✅ Save streak to Firestore
@@ -106,6 +110,8 @@ class _StreakWidgetState extends State<StreakWidget> {
           .doc(uid)
           .set({'streakDays': streak}, SetOptions(merge: true));
 
+      if (!mounted) return;
+
       setState(() {
         _streakDays = streak;
         _weekCompleted = completed;
@@ -113,6 +119,8 @@ class _StreakWidgetState extends State<StreakWidget> {
         _loading = false;
       });
     } catch (e) {
+      if (!mounted) return;
+
       setState(() => _loading = false);
       debugPrint('Streak error: $e');
     }

@@ -7,28 +7,29 @@ class PointWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color goldColor = Color(0xFFF5A623); // Vibrant modern gold
+    const Color goldColor = Color(0xFFF5A623);
     const Color textDark = Color(0xFF2D3142);
     const int rewardGoal = 100;
     final progress = ((points % rewardGoal) / rewardGoal).clamp(0.0, 1.0);
-    final pointsToNext = rewardGoal - (points % rewardGoal == 0 && points > 0
-        ? rewardGoal
-        : points % rewardGoal);
+    final pointsToNext = rewardGoal -
+        (points % rewardGoal == 0 && points > 0
+            ? rewardGoal
+            : points % rewardGoal);
     final progressText = '${(progress * 100).round()}%';
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF9a882a), Color(0xFFFFE0B2)], // Focus games gradient
+          colors: [Color(0xFF9a882a), Color(0xFFFFE0B2)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: Colors.white, width: 1.5), // Frosted white border
+        border: Border.all(color: Colors.white, width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05), // Soft elegant shadow
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -47,13 +48,13 @@ class PointWidget extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w900,
-                  color: Color(0xFF5A4D1A), // Dark brown
+                  color: Color(0xFF5A4D1A),
                   letterSpacing: 1.5,
                   fontFamily: 'LeagueSpartan',
                 ),
               ),
-              // Small gift icon in the corner
-              Icon(Icons.card_giftcard, color: const Color(0xFF5A4D1A).withValues(alpha: 0.5)),
+              Icon(Icons.card_giftcard,
+                  color: const Color(0xFF5A4D1A).withValues(alpha: 0.5)),
             ],
           ),
           const SizedBox(height: 20),
@@ -62,7 +63,7 @@ class PointWidget extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.6), // Frosted glass effect
+              color: Colors.white.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.white, width: 2),
             ),
@@ -113,8 +114,8 @@ class PointWidget extends StatelessWidget {
           // --- PROGRESS BAR ---
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
+            children: [
+              const Text(
                 "Reward Progress",
                 style: TextStyle(
                   fontSize: 13,
@@ -150,7 +151,7 @@ class PointWidget extends StatelessWidget {
                   height: 12,
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFF5A4D1A), Color(0xFF9A882A)], // Dark brown to olive gradient
+                      colors: [Color(0xFF5A4D1A), Color(0xFF9A882A)],
                     ),
                     borderRadius: BorderRadius.circular(6),
                   ),
@@ -193,11 +194,14 @@ class PointWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 _LootRule(label: 'Complete Pomodoro', points: '+10'),
-                _LootRule(label: 'Breathing or grounding exercise', points: '+10'),
+                _LootRule(
+                    label: 'Breathing or grounding exercise', points: '+10'),
                 _LootRule(label: 'Try a focus strategy', points: '+10'),
                 _LootRule(label: 'Complete task', points: '+5'),
-                _LootRule(label: 'Complete high priority task', points: '+8'),
-                _LootRule(label: 'Play focus game or use tip', points: '+5'),
+                _LootRule(
+                    label: 'Complete high priority task', points: '+8'),
+                _LootRule(
+                    label: 'Play focus game or use tip', points: '+5'),
                 _LootRule(label: 'Create a task', points: '+2'),
               ],
             ),
@@ -215,7 +219,8 @@ class PointWidget extends StatelessWidget {
                     backgroundColor: Colors.white,
                     foregroundColor: const Color(0xFF5A4D1A),
                     elevation: 0,
-                    side: const BorderSide(color: Color(0xFF5A4D1A), width: 1.5),
+                    side: const BorderSide(
+                        color: Color(0xFF5A4D1A), width: 1.5),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -224,7 +229,8 @@ class PointWidget extends StatelessWidget {
                   icon: const Icon(Icons.add_circle_outline, size: 20),
                   label: const Text(
                     "Earn",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   ),
                 ),
               ),
@@ -244,7 +250,8 @@ class PointWidget extends StatelessWidget {
                     backgroundColor: const Color(0xFF5A4D1A),
                     foregroundColor: Colors.white,
                     elevation: 4,
-                    shadowColor: const Color(0xFF5A4D1A).withValues(alpha: 0.4),
+                    shadowColor:
+                        const Color(0xFF5A4D1A).withValues(alpha: 0.4),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -253,7 +260,8 @@ class PointWidget extends StatelessWidget {
                   icon: const Icon(Icons.card_giftcard, size: 20),
                   label: const Text(
                     "Redeem",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   ),
                 ),
               ),
