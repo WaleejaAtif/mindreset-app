@@ -432,17 +432,17 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10), // Reduced padding
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFFCE4EC), Color(0xFFF8BBD0)], // Light pink
+          colors: [Color(0xFF2C1A4D), Color(0xFF1E1442)], // Dark purple glass
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Color(0xFF1A1333), width: 1.5), // Frosted white border
+        border: Border.all(color: const Color(0x33FFFFFF), width: 1.5), // Subtle bright border
         boxShadow: [
           BoxShadow(
-            color: Color(0xFFFFFFFF).withValues(alpha: 0.05), // Soft elegant shadow
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            color: Colors.black.withOpacity(0.3), // Darker shadow for depth
+            blurRadius: 15,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -454,7 +454,7 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w800,
-              color: Color(0xFF4A3554), // Dark deep purple
+              color: Colors.white, // White text
               fontFamily: 'LeagueSpartan',
             ),
           ),
@@ -478,7 +478,7 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
                       size: 26, // Smaller icon size
                       color: isSelected
                           ? activeColor
-                          : const Color(0xFF4A3554).withValues(alpha: 0.4), // Deep purple for visibility
+                          : Colors.white.withValues(alpha: 0.4), // Deep purple for visibility
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -487,7 +487,7 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: isSelected ? activeColor : const Color(0xFF4A3554).withValues(alpha: 0.6),
+                      color: isSelected ? activeColor : Colors.white.withValues(alpha: 0.6),
                     ),
                   ),
                   Text(
@@ -499,7 +499,7 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
                           : FontWeight.normal,
                       color: isSelected
                           ? activeColor.withValues(alpha: 0.9)
-                          : const Color(0xFF4A3554).withValues(alpha: 0.5),
+                          : Colors.white.withValues(alpha: 0.5),
                     ),
                   ),
                 ],
@@ -644,3 +644,4 @@ class _ImageCard extends StatelessWidget {
     );
   }
 }
+
