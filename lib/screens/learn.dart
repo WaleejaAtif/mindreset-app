@@ -66,7 +66,7 @@ class LearnScreen extends StatelessWidget {
                           child: const Text(
                             'Learning Today',
                             style: TextStyle(
-                              color: Color(0xFF1A1333), // Overridden by ShaderMask
+                              color: Colors.white, // Overridden by ShaderMask
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
@@ -288,7 +288,7 @@ class LearnScreen extends StatelessWidget {
               child: Icon(icon, size: 40, color: iconColor),
             ),
             const Spacer(),
-            Text(title, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16, color: Color(0xFF1A1333))),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16, color: Colors.white)),
             const SizedBox(height: 4),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -372,7 +372,7 @@ class LearnScreen extends StatelessWidget {
             child: const Text(
               'NEW SMART ASSISTANT',
               style: TextStyle(
-                color: Color(0xFF1A1333),
+                color: Colors.white,
                 fontWeight: FontWeight.w800,
                 fontSize: 11,
                 letterSpacing: 0.8,
@@ -383,7 +383,7 @@ class LearnScreen extends StatelessWidget {
           const Text(
             'Talk to a smart bot made for Learning Today.',
             style: TextStyle(
-              color: Color(0xFF1A1333),
+              color: Colors.white,
               fontSize: 24,
               fontWeight: FontWeight.w900,
             ),
@@ -392,7 +392,7 @@ class LearnScreen extends StatelessWidget {
           Text(
             'Ask about focus, procrastination, exams, or burnout. It chats back with calm support and picks the best next tool for you, like Pomodoro, Focus Games, or Explore Your Peace.',
             style: TextStyle(
-              color: Color(0xFF1A1333).withOpacity(0.82),
+              color: Colors.white.withOpacity(0.82),
               height: 1.45,
               fontSize: 14,
             ),
@@ -445,7 +445,7 @@ class _AssistantTag extends StatelessWidget {
       child: Text(
         label,
         style: const TextStyle(
-          color: Color(0xFF1A1333),
+          color: Colors.white,
           fontWeight: FontWeight.w600,
         ),
       ),

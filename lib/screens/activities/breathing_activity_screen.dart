@@ -114,7 +114,7 @@ class _BreathingActivityScreenState extends State<BreathingActivityScreen>
                           style: const TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF1A1333),
+                            color: Colors.white,
                           ),
                         ),
                       ],
@@ -136,7 +136,7 @@ class _BreathingActivityScreenState extends State<BreathingActivityScreen>
                   onPressed: () {
                     Navigator.pop(context, true);
                   },
-                  child: const Text("Finish Session", style: TextStyle(color: Color(0xFF1A1333), fontSize: 18)),
+                  child: const Text("Finish Session", style: TextStyle(color: Colors.white, fontSize: 18)),
                 ),
               ),
             ),

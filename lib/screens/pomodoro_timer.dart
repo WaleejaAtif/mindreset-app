@@ -212,7 +212,7 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _primaryColor,
-                        foregroundColor: Color(0xFF1A1333),
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         elevation: 0,
                       ),
@@ -250,7 +250,7 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
         child: Text(
           label,
           style: TextStyle(
-            color: isActive ? Color(0xFF1A1333) : _primaryColor,
+            color: isActive ? Colors.white : _primaryColor,
             fontWeight: FontWeight.bold,
             fontSize: 13,
           ),

@@ -83,7 +83,7 @@ class _HabitTipsScreenState extends State<HabitTipsScreen> {
             backgroundColor: Color(0xFFFFFFFF).withOpacity(0.8),
             surfaceTintColor: Colors.transparent,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1333)),
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () => Navigator.pop(context),
             ),
             flexibleSpace: const FlexibleSpaceBar(
@@ -91,7 +91,7 @@ class _HabitTipsScreenState extends State<HabitTipsScreen> {
               title: Text(
                 'Habit Tips',
                 style: TextStyle(
-                  color: Color(0xFF1A1333),
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -252,7 +252,7 @@ class _HabitTipsScreenState extends State<HabitTipsScreen> {
                 onPressed: () => _tryTip(context, item),
                 child: const Text(
                   "Try This Now",
-                  style: TextStyle(color: Color(0xFF1A1333), fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
             ),

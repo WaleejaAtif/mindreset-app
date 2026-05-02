@@ -134,10 +134,10 @@ class PlannerScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(builder: (_) => const AddTaskScreen()),
                       ),
-                      icon: const Icon(Icons.add, color: Color(0xFF1A1333)),
+                      icon: const Icon(Icons.add, color: Colors.white),
                       label: const Text(
                         'Add New Task',
-                        style: TextStyle(color: Color(0xFF1A1333), fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _primaryColor,

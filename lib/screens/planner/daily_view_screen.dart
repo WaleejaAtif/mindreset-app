@@ -158,7 +158,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                                 '${day.day}',
                                 style: TextStyle(
                                   color: isSelected
-                                      ? Color(0xFF1A1333)
+                                      ? Colors.white
                                       : const Color(0xFFFFFFFF),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
@@ -260,7 +260,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                                   right: 20),
                               child: const Icon(
                                   Icons.delete_outline,
-                                  color: Color(0xFF1A1333)),
+                                  color: Colors.white),
                             ),
                             onDismissed: (_) => _delete(doc.id),
                             child: Container(
@@ -304,7 +304,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                                       child: done
                                           ? const Icon(Icons.check,
                                           size: 14,
-                                          color: Color(0xFF1A1333))
+                                          color: Colors.white)
                                           : null,
                                     ),
                                   ),
@@ -364,7 +364,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
             MaterialPageRoute(builder: (_) => const AddTaskScreen()),
           ),
           backgroundColor: _primaryColor,
-          child: const Icon(Icons.add, color: Color(0xFF1A1333)),
+          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );

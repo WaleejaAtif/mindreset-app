@@ -81,7 +81,7 @@ class _HabitStackingScreenState extends State<HabitStackingScreen> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: color, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                   onPressed: _submit,
-                  child: const Text("Lock in my Stack!", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
+                  child: const Text("Lock in my Stack!", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
                 ),
               ),
             ],

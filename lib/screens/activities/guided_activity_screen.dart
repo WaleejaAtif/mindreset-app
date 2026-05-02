@@ -96,7 +96,7 @@ class GuidedActivityScreen extends StatelessWidget {
                   },
                   child: const Text(
                     "I did it!",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333)),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
               ),

@@ -123,7 +123,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           elevation: 0,
           leading: _currentPage > 0
               ? IconButton(
-                  icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF1A1333)),
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
                   onPressed: _prevPage,
                 )
               : null,
@@ -277,9 +277,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
+          Text(title, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white)),
           const SizedBox(height: 8),
-          Text(subtitle, style: TextStyle(fontSize: 16, color: Color(0xFF1A1333).withOpacity(0.8))),
+          Text(subtitle, style: TextStyle(fontSize: 16, color: Colors.white.withOpacity(0.8))),
           const SizedBox(height: 40),
           Expanded(
             child: ListView.separated(
@@ -309,10 +309,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                            color: Color(0xFF1A1333),
+                            color: Colors.white,
                           ),
                         ),
-                        if (isSelected) const Icon(Icons.check_circle, color: Color(0xFF1A1333)),
+                        if (isSelected) const Icon(Icons.check_circle, color: Colors.white),
                       ],
                     ),
                   ),
@@ -335,7 +335,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           disabledBackgroundColor: Color(0xFF1A1333).withOpacity(0.2),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                         ),
-                        child: const Text("Finish Setup", style: TextStyle(color: Color(0xFF1A1333), fontSize: 18, fontWeight: FontWeight.bold)),
+                        child: const Text("Finish Setup", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                       ),
               ),
             )
@@ -357,9 +357,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
+          Text(title, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white)),
           const SizedBox(height: 8),
-          Text(subtitle, style: TextStyle(fontSize: 16, color: Color(0xFF1A1333).withOpacity(0.8))),
+          Text(subtitle, style: TextStyle(fontSize: 16, color: Colors.white.withOpacity(0.8))),
           const SizedBox(height: 40),
           Expanded(
             child: ListView.separated(
@@ -389,10 +389,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                            color: Color(0xFF1A1333),
+                            color: Colors.white,
                           ),
                         ),
-                        if (isSelected) const Icon(Icons.check_box, color: Color(0xFF1A1333))
+                        if (isSelected) const Icon(Icons.check_box, color: Colors.white)
                         else const Icon(Icons.check_box_outline_blank, color: Color(0xB3FFFFFF)),
                       ],
                     ),
@@ -413,7 +413,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   disabledBackgroundColor: Color(0xFF1A1333).withOpacity(0.2),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 ),
-                child: const Text("Continue", style: TextStyle(color: Color(0xFF1A1333), fontSize: 18, fontWeight: FontWeight.bold)),
+                child: const Text("Continue", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ),
           )

@@ -208,7 +208,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
           child: Text(
             _userName.isNotEmpty ? _userName[0].toUpperCase() : 'U',
             style: const TextStyle(
-              color: Color(0xFF1A1333),
+              color: Colors.white,
               fontSize: 36,
               fontWeight: FontWeight.bold,
             ),

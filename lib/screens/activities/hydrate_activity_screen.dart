@@ -95,7 +95,7 @@ class _HydrateActivityScreenState extends State<HydrateActivityScreen> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: color, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                   onPressed: _claim,
-                  child: const Text("I Fueled Up!", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
+                  child: const Text("I Fueled Up!", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
                 ),
               ),
             ],

@@ -10,7 +10,7 @@ import '../widgets/animated_background.dart';
 // --- NEW ZENIFY COLORS ---
 const Color _primaryColor = Color(0xFF8C52FF); // Vibrant Purple
 const Color _darkBgColor = Color(0xFF5E17EB); // Deep Purple
-const Color _textColor = Color(0xFF1A1333);
+const Color _textColor = Colors.white;
 
 enum ScreenType { splash, login, register }
 
@@ -247,7 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       setState(() => _currentScreen = ScreenType.register),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF8C52FF), // App's vibrant purple
-                    foregroundColor: Color(0xFF1A1333),
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -294,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1333)),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => setState(() => _currentScreen = ScreenType.splash),
           ),
         ),
@@ -358,7 +358,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: _login,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: _primaryColor,
-                              foregroundColor: Color(0xFF1A1333),
+                              foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             ),
                             child: const Text("Login", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -391,7 +391,7 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1333)),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => setState(() => _currentScreen = ScreenType.splash),
           ),
         ),
@@ -468,7 +468,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: _register,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: _primaryColor,
-                              foregroundColor: Color(0xFF1A1333),
+                              foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             ),
                             child: const Text("Register", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),

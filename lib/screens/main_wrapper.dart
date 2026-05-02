@@ -13,11 +13,11 @@ class _MainWrapperState extends State<MainWrapper> {
 
   // Replace these with your actual screen widgets
   final List<Widget> _pages = [
-    const Center(child: Text("Home", style: TextStyle(color: Color(0xFF1A1333)))),
-    const Center(child: Text("Learn", style: TextStyle(color: Color(0xFF1A1333)))),
-    const Center(child: Text("Meditate", style: TextStyle(color: Color(0xFF1A1333)))),
-    const Center(child: Text("Planner", style: TextStyle(color: Color(0xFF1A1333)))),
-    const Center(child: Text("Reflect", style: TextStyle(color: Color(0xFF1A1333)))),
+    const Center(child: Text("Home", style: TextStyle(color: Colors.white))),
+    const Center(child: Text("Learn", style: TextStyle(color: Colors.white))),
+    const Center(child: Text("Meditate", style: TextStyle(color: Colors.white))),
+    const Center(child: Text("Planner", style: TextStyle(color: Colors.white))),
+    const Center(child: Text("Reflect", style: TextStyle(color: Colors.white))),
   ];
 
   @override

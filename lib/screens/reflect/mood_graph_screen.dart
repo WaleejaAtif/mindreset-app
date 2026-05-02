@@ -106,13 +106,13 @@ class _MoodGraphScreenState extends State<MoodGraphScreen>
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF1A1333)),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.maybePop(context),
         ),
         title: const Text(
           'Weekly Insights',
           style: TextStyle(
-              color: Color(0xFF1A1333), fontWeight: FontWeight.bold, fontSize: 20),
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
         ),
         centerTitle: true,
       ),
@@ -149,18 +149,18 @@ class _MoodGraphScreenState extends State<MoodGraphScreen>
               return Center(
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   Icon(Icons.bar_chart_rounded,
-                      size: 56, color: Color(0xFF1A1333).withOpacity(0.2)),
+                      size: 56, color: Colors.white.withOpacity(0.2)),
                   const SizedBox(height: 16),
                   Text('No mood data yet!',
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF1A1333).withOpacity(0.6))),
+                          color: Colors.white.withOpacity(0.6))),
                   const SizedBox(height: 6),
                   Text('Set your mood on the home screen.',
                       style: TextStyle(
                           fontSize: 13,
-                          color: Color(0xFF1A1333).withOpacity(0.35))),
+                          color: Colors.white.withOpacity(0.35))),
                 ]),
               );
             }
@@ -379,7 +379,7 @@ class _EmojiGraphCard extends StatelessWidget {
                             return Text(yLabels[i],
                                 style: TextStyle(
                                   fontSize: 9,
-                                  color: Color(0xFF1A1333).withOpacity(0.4),
+                                  color: Colors.white.withOpacity(0.4),
                                 ));
                           }
                           return const SizedBox();
@@ -403,7 +403,7 @@ class _EmojiGraphCard extends StatelessWidget {
                               child: Text(label,
                                   style: TextStyle(
                                     fontSize: 9,
-                                    color: Color(0xFF1A1333).withOpacity(0.4),
+                                    color: Colors.white.withOpacity(0.4),
                                   )),
                             );
                           }
@@ -449,7 +449,7 @@ class _EmojiGraphCard extends StatelessWidget {
                         return LineTooltipItem(
                           '$e  ${s.y.toStringAsFixed(1)}',
                           const TextStyle(
-                              color: Color(0xFF1A1333),
+                              color: Colors.white,
                               fontSize: 13,
                               fontWeight: FontWeight.bold),
                         );
@@ -582,7 +582,7 @@ class _SectionLabel extends StatelessWidget {
       const SizedBox(width: 8),
       Text(title,
           style: const TextStyle(
-              color: Color(0xFF1A1333), fontSize: 16, fontWeight: FontWeight.bold)),
+              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
       if (isBad) ...[
         const SizedBox(width: 8),
         const Icon(Icons.warning_amber_rounded,
@@ -689,7 +689,7 @@ class _SummaryChip extends StatelessWidget {
                 children: [
                   Text(label,
                       style: TextStyle(
-                          color: Color(0xFF1A1333).withOpacity(0.5),
+                          color: Colors.white.withOpacity(0.5),
                           fontSize: 11,
                           fontWeight: FontWeight.w500)),
                   const SizedBox(height: 2),

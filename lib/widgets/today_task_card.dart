@@ -209,7 +209,7 @@ class _TimelineTaskRow extends StatelessWidget {
                     child: Text(
                       category,
                       style: const TextStyle(
-                        color: Color(0xFF1A1333),
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 13,
                       ),

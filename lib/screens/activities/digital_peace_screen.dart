@@ -57,13 +57,13 @@ class _DigitalPeaceScreenState extends State<DigitalPeaceScreen> {
               const SizedBox(height: 30),
               Text(
                 _formattedTime,
-                style: const TextStyle(fontSize: 64, fontWeight: FontWeight.w200, color: Color(0xFF1A1333), fontFeatures: [FontFeature.tabularFigures()]),
+                style: const TextStyle(fontSize: 64, fontWeight: FontWeight.w200, color: Colors.white, fontFeatures: [FontFeature.tabularFigures()]),
               ),
               const SizedBox(height: 20),
               const Text("Zen Mode Active.\nFocus on your task.", textAlign: TextAlign.center, style: TextStyle(color: Color(0x8AFFFFFF), fontSize: 18)),
               const SizedBox(height: 60),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Color(0x3DFFFFFF), foregroundColor: Color(0xFF1A1333)),
+                style: ElevatedButton.styleFrom(backgroundColor: Color(0x3DFFFFFF), foregroundColor: Colors.white),
                 onPressed: _endZenMode,
                 child: const Text("End Zen Mode"),
               )
@@ -117,7 +117,7 @@ class _DigitalPeaceScreenState extends State<DigitalPeaceScreen> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   onPressed: _startZenMode,
-                  child: const Text("Enter Zen Mode", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
+                  child: const Text("Enter Zen Mode", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
                 ),
               ),
             ],

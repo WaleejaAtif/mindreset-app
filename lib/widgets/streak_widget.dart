@@ -234,7 +234,7 @@ class BigStreakCard extends StatelessWidget {
               "days streak",
               style: TextStyle(
                 fontSize: 22,
-                color: Color(0xFF1A1333), // Overridden by ShaderMask
+                color: Colors.white, // Overridden by ShaderMask
                 fontWeight: FontWeight.w800,
                 fontFamily: 'LeagueSpartan',
               ),
@@ -295,12 +295,12 @@ class BigStreakCard extends StatelessWidget {
                             ? Icon(
                           Icons.check,
                           size: 18,
-                          color: Color(0xFF1A1333),
+                          color: Colors.white,
                         )
                             : Text(
                                 dateNum,
                                 style: TextStyle(
-                                  color: isToday ? Color(0xFF1A1333) : Color(0xB3FFFFFF),
+                                  color: isToday ? Colors.white : Color(0xB3FFFFFF),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
                                 ),

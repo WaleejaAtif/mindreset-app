@@ -248,7 +248,7 @@ class PointWidget extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF5A4D1A),
-                    foregroundColor: Color(0xFF1A1333),
+                    foregroundColor: Colors.white,
                     elevation: 4,
                     shadowColor:
                         const Color(0xFF5A4D1A).withValues(alpha: 0.4),

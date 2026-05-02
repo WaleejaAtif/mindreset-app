@@ -113,7 +113,7 @@ class _TimeTableState extends State<TimeTable> {
         child: Text(
           month,
           style: TextStyle(
-            color: Color(0xFF1A1333),
+            color: Colors.white,
             fontSize: 14,
             fontWeight: selected ? FontWeight.bold : FontWeight.normal,
           ),
@@ -151,7 +151,7 @@ class _TimeTableState extends State<TimeTable> {
               fontSize: 10,
               letterSpacing: 1,
               fontWeight: FontWeight.w600,
-              color: selected ? Color(0xFF1A1333) : Color(0xB3FFFFFF),
+              color: selected ? Colors.white : Color(0xB3FFFFFF),
             ),
           ),
           const SizedBox(height: 4),
@@ -160,7 +160,7 @@ class _TimeTableState extends State<TimeTable> {
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF1A1333),
+              color: Colors.white,
             ),
           ),
           const SizedBox(height: 6),

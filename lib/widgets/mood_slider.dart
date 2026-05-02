@@ -173,7 +173,7 @@ class _MoodSwipeAnalyzerState extends State<MoodSwipeAnalyzer> {
               fontSize: 18,
               fontWeight: FontWeight.w800,
               fontFamily: 'LeagueSpartan',
-              color: Color(0xFF1A1333), // Overridden by ShaderMask
+              color: Colors.white, // Overridden by ShaderMask
             ),
           ),
         ),
@@ -254,7 +254,7 @@ class _MoodSwipeAnalyzerState extends State<MoodSwipeAnalyzer> {
               onPressed: () => _saveMoodToFirestore(currentIndex),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryColor,
-                foregroundColor: Color(0xFF1A1333),
+                foregroundColor: Colors.white,
                 elevation: 3,
                 shadowColor: _primaryColor.withOpacity(0.4),
                 shape: RoundedRectangleBorder(
@@ -554,7 +554,7 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
             onPressed: () => _saveSleepToFirestore(index),
             style: ElevatedButton.styleFrom(
               backgroundColor: sliderGreen,
-              foregroundColor: Color(0xFF1A1333),
+              foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               padding: const EdgeInsets.symmetric(

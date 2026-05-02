@@ -94,7 +94,7 @@ class _SwitchTaskScreenState extends State<SwitchTaskScreen> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(backgroundColor: color, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                         onPressed: _switchTasks,
-                        child: const Text("Switch Momentum", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
+                        child: const Text("Switch Momentum", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
                       ),
                     ),
                   ],

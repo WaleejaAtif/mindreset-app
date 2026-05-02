@@ -17,7 +17,7 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
     if (_controller.text.trim().isEmpty) return;
     if (_activeTask != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Finish your current task first! No multitasking allowed.", style: TextStyle(color: Color(0xFF1A1333))), backgroundColor: Colors.redAccent),
+        const SnackBar(content: Text("Finish your current task first! No multitasking allowed.", style: TextStyle(color: Colors.white)), backgroundColor: Colors.redAccent),
       );
       return;
     }
@@ -87,7 +87,7 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
                   decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: color.withOpacity(0.3), blurRadius: 15, offset: const Offset(0, 8))]),
                   child: Column(
                     children: [
-                      Text(_activeTask!, textAlign: TextAlign.center, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
+                      Text(_activeTask!, textAlign: TextAlign.center, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
                       const SizedBox(height: 30),
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF1A1333), foregroundColor: color, padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12)),

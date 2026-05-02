@@ -122,7 +122,7 @@ class _ActiveRecallScreenState extends State<ActiveRecallScreen> {
           ),
           const SizedBox(height: 30),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: color, foregroundColor: Color(0xFF1A1333), padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
+            style: ElevatedButton.styleFrom(backgroundColor: color, foregroundColor: Colors.white, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
             onPressed: _flip,
             child: const Text("Flip Card"),
           ),
@@ -153,7 +153,7 @@ class _ActiveRecallScreenState extends State<ActiveRecallScreen> {
           ),
           const SizedBox(height: 30),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: color, foregroundColor: Color(0xFF1A1333), padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
+            style: ElevatedButton.styleFrom(backgroundColor: color, foregroundColor: Colors.white, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
             onPressed: _submitAnswer,
             child: const Text("Check Answer"),
           ),
@@ -171,9 +171,9 @@ class _ActiveRecallScreenState extends State<ActiveRecallScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.check_circle_outline, size: 80, color: Color(0xFF1A1333)),
+          const Icon(Icons.check_circle_outline, size: 80, color: Colors.white),
           const SizedBox(height: 20),
-          const Text("Great Job!", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
+          const Text("Great Job!", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white)),
           const SizedBox(height: 10),
           const Text("Active recall strengthens your memory.", textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: Color(0xB3FFFFFF))),
           const SizedBox(height: 40),

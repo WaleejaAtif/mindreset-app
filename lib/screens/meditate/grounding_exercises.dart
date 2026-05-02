@@ -77,17 +77,17 @@ class _GroundingScreenState extends State<GroundingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
+      backgroundColor: Color(0xFF0F0C20),
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFF0F0C20),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF1A1333)),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text('Grounding Exercises',
             style: TextStyle(
-                color: Color(0xFF1A1333), fontWeight: FontWeight.bold)),
+                color: Colors.white, fontWeight: FontWeight.bold)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -149,7 +149,7 @@ class _GroundingScreenState extends State<GroundingScreen> {
             const Text(
               'All Exercises',
               style: TextStyle(
-                color: Color(0xFF1A1333),
+                color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -525,7 +525,7 @@ class _GroundingSessionScreenState extends State<GroundingSessionScreen> {
       context: context,
       barrierDismissible: false,
       builder: (_) => Dialog(
-        backgroundColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFF0F0C20),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24)),
         child: Padding(
@@ -571,7 +571,7 @@ class _GroundingSessionScreenState extends State<GroundingSessionScreen> {
                 ),
                 child: const Text('Continue',
                     style: TextStyle(
-                        color: Color(0xFF1A1333),
+                        color: Colors.white,
                         fontWeight: FontWeight.bold)),
               ),
             ],
@@ -585,28 +585,28 @@ class _GroundingSessionScreenState extends State<GroundingSessionScreen> {
   Widget build(BuildContext context) {
     if (_steps.isEmpty) {
       return Scaffold(
-        backgroundColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFF0F0C20),
         appBar: AppBar(
-          backgroundColor: Color(0xFFFFFFFF),
+          backgroundColor: Color(0xFF0F0C20),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF1A1333)),
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
             onPressed: () => Navigator.pop(context),
           ),
         ),
         body: const Center(
           child: Text('No steps available',
-              style: TextStyle(color: Color(0xFF1A1333))),
+              style: TextStyle(color: Colors.white)),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
+      backgroundColor: Color(0xFF0F0C20),
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFF0F0C20),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF1A1333)),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () async {
             _emergencyTimer?.cancel();
             await _saveCompletion(false);
@@ -618,14 +618,14 @@ class _GroundingSessionScreenState extends State<GroundingSessionScreen> {
         title: Text(
           widget.category['title'],
           style: const TextStyle(
-              color: Color(0xFF1A1333), fontWeight: FontWeight.bold),
+              color: Colors.white, fontWeight: FontWeight.bold),
         ),
         actions: [
           if (!_isCompleted)
             IconButton(
               icon: Icon(
                 _isPaused ? Icons.play_arrow : Icons.pause,
-                color: Color(0xFF1A1333),
+                color: Colors.white,
               ),
               onPressed: () =>
                   setState(() => _isPaused = !_isPaused),
@@ -765,7 +765,7 @@ class _GroundingSessionScreenState extends State<GroundingSessionScreen> {
                     step['instruction'] ?? '',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      color: Color(0xFF1A1333),
+                      color: Colors.white,
                       fontSize: 16,
                       height: 1.6,
                     ),
@@ -879,7 +879,7 @@ class _GroundingSessionScreenState extends State<GroundingSessionScreen> {
                   ? 'Next →'
                   : 'Complete ✓',
               style: const TextStyle(
-                  color: Color(0xFF1A1333),
+                  color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.bold),
             ),
@@ -904,7 +904,7 @@ class _GroundingSessionScreenState extends State<GroundingSessionScreen> {
             const Text(
               'You did it! 🌟',
               style: TextStyle(
-                color: Color(0xFF1A1333),
+                color: Colors.white,
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),
@@ -934,7 +934,7 @@ class _GroundingSessionScreenState extends State<GroundingSessionScreen> {
               ),
               child: const Text('Do It Again',
                   style: TextStyle(
-                      color: Color(0xFF1A1333),
+                      color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold)),
             ),
@@ -950,3 +950,5 @@ class _GroundingSessionScreenState extends State<GroundingSessionScreen> {
     );
   }
 }
+
+

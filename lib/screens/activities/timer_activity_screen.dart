@@ -170,7 +170,7 @@ class _TimerActivityScreenState extends State<TimerActivityScreen> {
                     heroTag: 'play_pause',
                     backgroundColor: color,
                     onPressed: _toggleTimer,
-                    child: Icon(_isRunning ? Icons.pause : Icons.play_arrow, color: Color(0xFF1A1333), size: 36),
+                    child: Icon(_isRunning ? Icons.pause : Icons.play_arrow, color: Colors.white, size: 36),
                   ),
                 ],
               ),

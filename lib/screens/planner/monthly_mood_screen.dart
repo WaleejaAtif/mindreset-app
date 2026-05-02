@@ -210,7 +210,7 @@ class _MonthlyMoodScreenState extends State<MonthlyMoodScreen> {
                                       style: TextStyle(
                                         color: mood != null &&
                                             mood.isNotEmpty
-                                            ? Color(0xFF1A1333)
+                                            ? Colors.white
                                             : const Color(0xFF9CA3AF),
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,

@@ -78,7 +78,7 @@ class _PostureActivityScreenState extends State<PostureActivityScreen> with Sing
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: color, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                   onPressed: () => Navigator.pop(context, true),
-                  child: const Text("I Feel Better", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
+                  child: const Text("I Feel Better", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
                 ),
               ),
             ),

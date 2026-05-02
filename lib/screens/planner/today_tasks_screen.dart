@@ -136,7 +136,7 @@ class TodayTasksScreen extends StatelessWidget {
                           label: const Text('Add Task'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _primaryColor,
-                            foregroundColor: Color(0xFF1A1333),
+                            foregroundColor: Colors.white,
                           ),
                         ),
                       ],
@@ -169,7 +169,7 @@ class TodayTasksScreen extends StatelessWidget {
             MaterialPageRoute(builder: (_) => const AddTaskScreen()),
           ),
           backgroundColor: _primaryColor,
-          child: const Icon(Icons.add, color: Color(0xFF1A1333)),
+          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );
@@ -201,7 +201,7 @@ class TodayTasksScreen extends StatelessWidget {
         ),
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
-        child: const Icon(Icons.delete_outline, color: Color(0xFF1A1333)),
+        child: const Icon(Icons.delete_outline, color: Colors.white),
       ),
       onDismissed: (_) => _delete(doc.id),
       child: Container(
@@ -236,7 +236,7 @@ class TodayTasksScreen extends StatelessWidget {
                 ),
                 child: done
                     ? const Icon(Icons.check,
-                    size: 14, color: Color(0xFF1A1333))
+                    size: 14, color: Colors.white)
                     : null,
               ),
             ),

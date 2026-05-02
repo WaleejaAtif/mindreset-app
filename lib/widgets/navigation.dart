@@ -95,7 +95,7 @@ class _CustomBottomNavState extends State<CustomBottomNav>
             // --- ICON ---
             Icon(
               icon,
-              color: isSelected ? Color(0xFF1A1333) : Color(0xB3FFFFFF),
+              color: isSelected ? Colors.white : Color(0xB3FFFFFF),
               size: 26,
             ),
           ],
