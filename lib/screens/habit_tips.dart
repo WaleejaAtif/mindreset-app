@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/activity_service.dart';
+import 'activities/activity_router.dart';
 
 class HabitTipsScreen extends StatefulWidget {
   const HabitTipsScreen({super.key});
@@ -261,8 +262,16 @@ class _HabitTipsScreenState extends State<HabitTipsScreen> {
     );
   }
 
-  Future<void> _tryTip(BuildContext context, Map<String, dynamic> item) async {
-    Navigator.pop(context);
+  Future<void> _tryTip(BuildContext sheetContext, Map<String, dynamic> item) async {
+    Navigator.pop(sheetContext);
+
+    final completed = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ActivityRouter.getRoute(item, 'habit')),
+    );
+
+    if (completed != true) return;
+
     await ActivityService.logActivity(
       collection: 'habit_tip_logs',
       data: {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/activity_service.dart';
+import 'activities/activity_router.dart';
 
 class FocusStrategiesScreen extends StatefulWidget {
   const FocusStrategiesScreen({super.key});
@@ -276,8 +277,16 @@ class _FocusStrategiesScreenState extends State<FocusStrategiesScreen> {
     );
   }
 
-  Future<void> _tryStrategy(BuildContext context, Map<String, dynamic> item) async {
-    Navigator.pop(context); // close sheet
+  Future<void> _tryStrategy(BuildContext sheetContext, Map<String, dynamic> item) async {
+    Navigator.pop(sheetContext); // close sheet
+
+    final completed = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ActivityRouter.getRoute(item, 'focus')),
+    );
+
+    if (completed != true) return;
+
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       try {

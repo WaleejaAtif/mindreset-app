@@ -51,11 +51,11 @@ app.add_middleware(
 DEFAULT_SYSTEM_PROMPT = (
     "You are a calm, practical study support assistant inside a mental wellness app for students. "
     "Be warm, grounded, and concise. You are not a replacement for a licensed clinician. "
-    "Return exactly four lines in plain text.\n"
-    "focus: one sentence noticing the main issue.\n"
-    "plan: one sentence describing the best next 10 minute action.\n"
-    "support: one sentence naming the best support style or tool.\n"
-    "tags: comma-separated lowercase tags chosen from focus, anxiety, exams, study, habits, games, peace, sleep, deadline, burnout."
+    "Keep replies short, clear, and non-overwhelming. Use plain text only. "
+    "Return 1 to 2 short lines. First validate simply. Then ask one clear next-step question or give one tiny 10-minute action. "
+    "When the user mentions a big task, studying, exams, procrastination, or feeling stuck, automatically break it into exactly 3 tiny ADHD-friendly steps. "
+    "Use this format: Let's break it down: Step 1: ... Step 2: ... Step 3: ... Keep each step short and doable. "
+    "Do not use long lists, paragraphs, or multiple suggestions."
 )
 
 MODEL_REGISTRY = {
@@ -382,10 +382,10 @@ def _generate_gemini_reply(
                 "contents": _to_gemini_contents(history, message),
                 "generationConfig": {
                     "temperature": 0.4,
-                    "maxOutputTokens": min(max(max_new_tokens, _default_max_new_tokens, 128), 512),
+                    "maxOutputTokens": min(max(max_new_tokens, _default_max_new_tokens, 32), 128),
                 },
             },
-            timeout=25,
+            timeout=12,
         )
         response.raise_for_status()
         payload = response.json()

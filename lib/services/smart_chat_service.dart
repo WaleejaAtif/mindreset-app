@@ -133,7 +133,7 @@ class SmartChatService {
 
   static const String _backendUrl = String.fromEnvironment(
     'SMART_CHAT_BACKEND_URL',
-    defaultValue: 'http://192.168.18.26:8000',
+    defaultValue: 'http://127.0.0.1:8000',
   );
 
   static bool get hasBackendConfigured => _backendUrl.isNotEmpty;
@@ -144,7 +144,11 @@ class SmartChatService {
         'For vague, casual, emotional, or app-related messages, answer helpfully and connect the reply to wellbeing or focus. '
         'Only refuse clearly unrelated requests. If the user asks about coding, politics, general facts, entertainment, shopping, finance, sports, weather, or unrelated homework, reply: "I am a mental health support bot, so I can only help with wellbeing, focus, sleep, mood, stress, tasks, and app-based suggestions." '
         'You are not a doctor or therapist. Do not diagnose. For crisis or self-harm, tell the user to contact local emergency services or a trusted person immediately. '
-        'Keep responses warm, practical, and plain text. Usually give 3 to 5 helpful sentences with one clear next step. '
+        'Keep responses short, clear, and non-overwhelming. Use plain text only. '
+        'Reply in 1 to 2 short lines: first validate simply, then ask one clear next-step question or give one tiny 10-minute action. '
+        'When the user mentions a big task, studying, exams, procrastination, or feeling stuck, automatically break it into 3 tiny ADHD-friendly steps. '
+        'Use this format: "Let\'s break it down:" then Step 1, Step 2, Step 3. Keep each step short and doable. '
+        'Do not give long lists, multiple options, headings, labels, or paragraphs. '
         'Always personalize using the user context when available. Mention their name naturally, not in every sentence. '
         'If the user says "hy", "hi", or similar, greet them with their name if available and say you are Zenify. '
         'Suggest app tools based on evidence: breathing/grounding for anxiety, focus strategies for task paralysis, games for short cognitive reset, task splitting for pending work, and sleep guidance when sleep is poor.';
@@ -185,7 +189,8 @@ class SmartChatService {
     final message = input.trim();
     if (message.isEmpty) {
       return SmartChatReply(
-        reply: 'Hi, I am Zenify Assistant. How can I help you today?',
+        reply:
+            'Hi, I am Zenify.\nWhat is the one thing you want help with right now?',
         statusLine: hasBackendConfigured
             ? 'Zenify Assistant is ready.'
             : 'Zenify Assistant is ready in local support mode.',
@@ -207,6 +212,21 @@ class SmartChatService {
     try {
       final recentHistory =
           history.length <= 6 ? history : history.sublist(history.length - 6);
+      if (_canAnswerLocally(message)) {
+        final localDraft = await _localBrain(message, recentHistory, context);
+        return SmartChatReply(
+          reply: _composeReply(
+            message,
+            [localDraft],
+            crisisDetected: _detectCrisis(message),
+            context: context,
+          ),
+          statusLine: 'Zenify Assistant answered instantly.',
+          activeModels: const [],
+          recommendations: const [],
+        );
+      }
+
       final ensemble = await _collectDrafts(message, recentHistory, context);
       final reply = _composeReply(
         message,
@@ -251,7 +271,7 @@ class SmartChatService {
         onTimeout: () => _localHeuristicDraft(message, context),
       ),
       backendFuture.timeout(
-        const Duration(seconds: 120),
+        const Duration(seconds: 18),
         onTimeout: _backendOfflineResult,
       ),
     ]);
@@ -294,7 +314,7 @@ class SmartChatService {
               )
               .toList(),
           'include_gemini': true,
-          'max_new_tokens': 320,
+          'max_new_tokens': 64,
         }),
       );
 
@@ -371,13 +391,13 @@ class SmartChatService {
     if (_hasAny(message, const ['hy', 'hello', 'hi', 'hey'])) {
       if (context != null) {
          if (context.mood <= 1 && context.pendingTasks == 0) {
-             return 'Hello ${context.name}, I am Zenify. I can see you are feeling low, but you have completed all your tasks. Let\'s relax first with a breathing exercise from the meditation section.';
+             return 'Hi ${context.name}, I am Zenify. Let\'s keep it simple.\nDo you want to try one calming breath now?';
          } else if (context.pendingTasks > 0) {
-             return 'Hello ${context.name}, I am Zenify. I see you have ${context.pendingTasks} tasks pending. Don\'t worry, divide them into small steps and start with one.';
+             return 'Okay ${context.name}, let\'s keep it simple.\nWhat is the ONE task you want to finish in the next 10 minutes?';
          }
-         return 'Hello ${context.name}, I am Zenify. How are you doing? I am here to assist.';
+         return 'Hi ${context.name}, I am Zenify.\nWhat do you want to focus on for the next 10 minutes?';
       }
-      return 'Hello, I am Zenify. How are you doing? I am here to assist.';
+      return 'Hi, I am Zenify.\nWhat is the ONE thing you want help with right now?';
     }
 
     if (_hasAny(message, const [
@@ -387,36 +407,46 @@ class SmartChatService {
       'nervous',
       'overthinking',
     ])) {
-      return 'I hear that you are feeling stressed. Why don\'t we try a gentle breathing exercise to calm your mind?';
+      return 'I hear you. Let\'s slow it down.\nCan you take one deep breath with me now?';
     }
 
     if (_hasAny(message, const ['my name', 'who am i', 'about me', 'profile'])) {
       if (context != null) {
-        return 'You are ${context.name}. Today your mood is ${context.moodString}, your sleep is ${context.sleepString}, and you have ${context.pendingTasks} pending task(s).';
+        return 'You are ${context.name}. Mood: ${context.moodString}. Sleep: ${context.sleepString}.\nWhat do you want to work on for 10 minutes?';
       }
-      return 'I could not load your profile yet. Please try again after your profile finishes loading.';
+      return 'I could not load your profile yet.\nWhat do you want help with right now?';
     }
 
     if (_hasAny(message, const ['task', 'tasks', 'todo', 'to do', 'planner'])) {
       if (context != null && context.pendingTasks > 0) {
-        return '${context.name}, you have ${context.pendingTasks} pending task(s). Pick the smallest one first, work for 10 minutes, then take a short reset. ${context.taskSummary}';
+        return _microStepReply(
+          intro: '${context.name}, let\'s break one task down:',
+          step1: 'Pick the easiest pending task.',
+          step2: 'Open what you need for it.',
+          step3: 'Start a 10-minute timer.',
+        );
       }
-      return 'Your task list looks clear right now. This is a good moment for a short breathing exercise or a focus game to maintain momentum.';
+      return _microStepReply(
+        intro: 'Let\'s break it down:',
+        step1: 'Write the task in one sentence.',
+        step2: 'Open the first thing you need.',
+        step3: 'Work for 10 minutes only.',
+      );
     }
 
     if (_hasAny(message, const ['game', 'games', 'played', 'focus game'])) {
       if (context != null && context.gameHistory != 'No recent game sessions.') {
-        return 'I can see your recent focus game activity: ${context.gameHistory}. Use games as a short reset, then return to one small task.';
+        return 'Nice, you already used a focus game.\nWhat small task will you return to now?';
       }
-      return 'Focus games can help as a quick reset. Play one short round, then come back to your next task.';
+      return 'A focus game can be a quick reset.\nDo you want to play one short round now?';
     }
 
     if (_hasAny(message, const ['strategy', 'strategies', 'focus strategy'])) {
       if (context != null &&
           context.focusStrategyHistory != 'No recent focus strategies tried.') {
-        return 'You recently tried: ${context.focusStrategyHistory}. Let\'s build on that with one small timed session.';
+        return 'Good, you have tried a focus strategy before.\nWhat is one task for a 10-minute timer?';
       }
-      return 'Try one focus strategy now: clear your workspace, set a 10-minute timer, and start the smallest task.';
+      return 'Let\'s make it easy.\nWhat is the smallest task you can start for 10 minutes?';
     }
 
     if (_hasAny(message, const [
@@ -426,11 +456,29 @@ class SmartChatService {
       'avoid',
       'start',
     ])) {
-      return 'It can be hard to start. Let\'s pick one tiny task for 10 minutes.';
+      return _microStepReply(
+        intro: 'Starting can feel heavy. Let\'s break it down:',
+        step1: 'Clear one small space.',
+        step2: 'Open the task or app.',
+        step3: 'Do only 10 minutes.',
+      );
     }
 
-    if (_hasAny(message, const ['exam', 'test', 'quiz', 'revision', 'memor'])) {
-      return 'Exams can be overwhelming. Let\'s do a quick revision quiz together to build confidence.';
+    if (_hasAny(message, const [
+      'exam',
+      'test',
+      'quiz',
+      'revision',
+      'memor',
+      'assignment',
+      'study',
+    ])) {
+      return _microStepReply(
+        intro: 'Let\'s make studying smaller:',
+        step1: 'Choose one topic.',
+        step2: 'Open the notes for that topic.',
+        step3: 'Revise for 10 minutes.',
+      );
     }
 
     if (_hasAny(message, const [
@@ -441,10 +489,22 @@ class SmartChatService {
       'exhausted',
       'low'
     ])) {
-      return 'It sounds like your energy is low. I suggest playing a relaxing game in the app to gently recharge.';
+      return 'Your energy sounds low.\nDo you want a 2-minute breathing reset first?';
     }
 
-    return 'I hear you. Take it step by step, and let me know if you want to try a calming exercise.';
+    return 'I hear you. Let\'s keep it simple.\nWhat is the ONE thing you want to handle next?';
+  }
+
+  String _microStepReply({
+    required String intro,
+    required String step1,
+    required String step2,
+    required String step3,
+  }) {
+    return '$intro\n'
+        'Step 1: $step1\n'
+        'Step 2: $step2\n'
+        'Step 3: $step3';
   }
 
   String _composeReply(
@@ -518,6 +578,21 @@ class SmartChatService {
       'self harm',
       'hurt myself',
       'want to die',
+    ]);
+  }
+
+  bool _canAnswerLocally(String message) {
+    final lowered = message.toLowerCase();
+    if (_detectCrisis(lowered)) return false;
+    return _hasAny(lowered, const [
+      'hy',
+      'hi',
+      'hey',
+      'hello',
+      'my name',
+      'who am i',
+      'about me',
+      'profile',
     ]);
   }
 

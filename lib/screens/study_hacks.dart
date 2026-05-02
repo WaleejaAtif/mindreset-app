@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/activity_service.dart';
+import 'activities/activity_router.dart';
 
 class StudyHacksScreen extends StatefulWidget {
   const StudyHacksScreen({super.key});
@@ -261,8 +262,16 @@ class _StudyHacksScreenState extends State<StudyHacksScreen> {
     );
   }
 
-  Future<void> _tryHack(BuildContext context, Map<String, dynamic> item) async {
-    Navigator.pop(context);
+  Future<void> _tryHack(BuildContext sheetContext, Map<String, dynamic> item) async {
+    Navigator.pop(sheetContext);
+
+    final completed = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ActivityRouter.getRoute(item, 'study')),
+    );
+
+    if (completed != true) return;
+
     await ActivityService.logActivity(
       collection: 'study_hack_logs',
       data: {
