@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LogoScreen extends StatefulWidget {
   @override
@@ -39,12 +41,23 @@ class _LogoScreenState extends State<LogoScreen> with SingleTickerProviderStateM
       ),
     );
 
-    // Registered or returning users should go straight to sign in/sign up.
+    // Auto-login check
     _popController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Future.delayed(const Duration(milliseconds: 600), () {
-          if (mounted) {
-            Navigator.pushReplacementNamed(context, '/login');
+        Future.delayed(const Duration(milliseconds: 600), () async {
+          if (!mounted) return;
+          final user = FirebaseAuth.instance.currentUser;
+          if (user != null) {
+            final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+            if (mounted) {
+              if (doc.exists && doc.data() != null && doc['profileCompleted'] == true) {
+                Navigator.pushReplacementNamed(context, '/home');
+              } else {
+                Navigator.pushReplacementNamed(context, '/profileSetup');
+              }
+            }
+          } else {
+            if (mounted) Navigator.pushReplacementNamed(context, '/login');
           }
         });
       }

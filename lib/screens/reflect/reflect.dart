@@ -174,51 +174,99 @@ class _ReflectScreenState extends State<ReflectScreen> {
   }
 
   Widget _buildProfileHeader() {
-    return Stack(
+    return Column(
       children: [
-        Column(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CircleAvatar(
-              radius: 52,
-              backgroundColor: const Color(0xFF755F84),
-              child: Text(
-                _userName.isNotEmpty ? _userName[0].toUpperCase() : 'U',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            TextButton.icon(
+              onPressed: _showEditProfileDialog,
+              icon: const Icon(Icons.settings, color: Color(0xFF2D3142)),
+              label: const Text('Settings', style: TextStyle(color: Color(0xFF2D3142))),
             ),
-            const SizedBox(height: 12),
-            Text(
-              _userName,
-              style: const TextStyle(
-                color: Color(0xFF2D3142),
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Text(
-              'Focus Level: Advanced',
-              style: TextStyle(color: Colors.black54, fontSize: 14),
+            TextButton.icon(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                if (!mounted) return;
+                Navigator.of(context).pushNamedAndRemoveUntil('/login', (_) => false);
+              },
+              icon: const Icon(Icons.logout, color: Color(0xFF2D3142)),
+              label: const Text('Logout', style: TextStyle(color: Color(0xFF2D3142))),
             ),
           ],
         ),
-        Positioned(
-          top: 0,
-          right: 0,
-          child: IconButton(
-            icon: const Icon(Icons.logout, color: Color(0xFF2D3142)),
-            tooltip: 'Logout',
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              if (!mounted) return;
-              Navigator.of(context).pushNamedAndRemoveUntil('/login', (_) => false);
-            },
+        const SizedBox(height: 4),
+        CircleAvatar(
+          radius: 52,
+          backgroundColor: const Color(0xFF755F84),
+          child: Text(
+            _userName.isNotEmpty ? _userName[0].toUpperCase() : 'U',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 36,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
+        const SizedBox(height: 12),
+        Text(
+          _userName,
+          style: const TextStyle(
+            color: Color(0xFF2D3142),
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const Text(
+          'Focus Level: Advanced',
+          style: TextStyle(color: Colors.black54, fontSize: 14),
+        ),
       ],
+    );
+  }
+
+  void _showEditProfileDialog() {
+    final _nameController = TextEditingController(text: _userName);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Edit Profile Name'),
+          content: TextField(
+            controller: _nameController,
+            decoration: const InputDecoration(hintText: "Enter your name"),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final newName = _nameController.text.trim();
+                if (newName.isNotEmpty) {
+                  setState(() {
+                    _userName = newName;
+                  });
+                  final user = FirebaseAuth.instance.currentUser;
+                  if (user != null) {
+                    await user.updateDisplayName(newName);
+                    await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+                      'displayName': newName,
+                    });
+                  }
+                }
+                if (mounted) Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF884288),
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
     );
   }
 
