@@ -8,6 +8,7 @@ import 'achievements_screen.dart';
 import 'daily_mood_screen.dart';
 import 'mood_graph_screen.dart';
 import 'streak_progress_screen.dart';
+import '../settings_screen.dart';
 
 class ReflectScreen extends StatefulWidget {
   const ReflectScreen({super.key});
@@ -180,7 +181,12 @@ class _ReflectScreenState extends State<ReflectScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton.icon(
-              onPressed: _showEditProfileDialog,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                ).then((_) => _loadUserData());
+              },
               icon: const Icon(Icons.settings, color: Color(0xFF2D3142)),
               label: const Text('Settings', style: TextStyle(color: Color(0xFF2D3142))),
             ),
@@ -222,51 +228,6 @@ class _ReflectScreenState extends State<ReflectScreen> {
           style: TextStyle(color: Colors.black54, fontSize: 14),
         ),
       ],
-    );
-  }
-
-  void _showEditProfileDialog() {
-    final _nameController = TextEditingController(text: _userName);
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Edit Profile Name'),
-          content: TextField(
-            controller: _nameController,
-            decoration: const InputDecoration(hintText: "Enter your name"),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final newName = _nameController.text.trim();
-                if (newName.isNotEmpty) {
-                  setState(() {
-                    _userName = newName;
-                  });
-                  final user = FirebaseAuth.instance.currentUser;
-                  if (user != null) {
-                    await user.updateDisplayName(newName);
-                    await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
-                      'displayName': newName,
-                    });
-                  }
-                }
-                if (mounted) Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF884288),
-                foregroundColor: Colors.white,
-              ),
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
     );
   }
 
