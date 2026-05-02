@@ -21,7 +21,7 @@ class PlannerScreen extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFFF3E5F5), Color(0xFFE3F2FD)], // Light purple to light blue gradient
+          colors: [Color(0xFF2C1A4D), Color(0xFF0D0B1A)], // Light purple to light blue gradient
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -181,7 +181,7 @@ class _PlannerCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xFFF3E5F5), Color(0xFFE3F2FD)], // Light purple to light blue gradient
+            colors: [Color(0xFF2C1A4D), Color(0xFF0D0B1A)], // Light purple to light blue gradient
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -223,4 +223,5 @@ class _PlannerCard extends StatelessWidget {
     );
   }
 }
+
 

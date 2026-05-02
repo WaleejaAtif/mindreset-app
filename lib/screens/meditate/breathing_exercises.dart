@@ -552,12 +552,12 @@ class _BreathingScreenState extends State<BreathingScreen>
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF1A1333)),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text('Breathing Exercise',
             style: TextStyle(
-                color: Color(0xFF1A1333), fontWeight: FontWeight.bold)),
+                color: Colors.white, fontWeight: FontWeight.bold)),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -577,13 +577,13 @@ class _BreathingScreenState extends State<BreathingScreen>
               const SizedBox(height: 32),
               const Text('Choose Your Guide',
                   style: TextStyle(
-                      color: Color(0xFF1A1333),
+                      color: Colors.white,
                       fontSize: 28,
                       fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               const Text(
                 'Pick a character to guide your breathing',
-                style: TextStyle(color: Color(0x8AFFFFFF), fontSize: 14),
+                style: TextStyle(color: Colors.white54, fontSize: 14),
                 textAlign: TextAlign.center,
               ),
               const Spacer(),
@@ -615,7 +615,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                   child: Text(
                     'Continue with ${_gender == 'girl' ? 'Female 🧘‍♀️' : 'Male 🧘‍♂️'}',
                     style: const TextStyle(
-                        color: Color(0xFF1A1333),
+                        color: Colors.white,
                         fontSize: 17,
                         fontWeight: FontWeight.bold),
                   ),
@@ -641,10 +641,10 @@ class _BreathingScreenState extends State<BreathingScreen>
         decoration: BoxDecoration(
           color: isSelected
               ? color.withOpacity(0.18)
-              : Color(0xFF1A1333).withOpacity(0.05),
+              : Colors.white.withOpacity(0.05),
           borderRadius: BorderRadius.circular(26),
           border: Border.all(
-              color: isSelected ? color : Color(0x3DFFFFFF),
+              color: isSelected ? color : Colors.white24,
               width: isSelected ? 2.5 : 1),
           boxShadow: isSelected
               ? [BoxShadow(
@@ -660,12 +660,12 @@ class _BreathingScreenState extends State<BreathingScreen>
             const SizedBox(height: 12),
             Text(label,
                 style: TextStyle(
-                    color: isSelected ? color : Color(0xB3FFFFFF),
+                    color: isSelected ? color : Colors.white70,
                     fontSize: 18,
                     fontWeight: FontWeight.bold)),
             Text(description,
                 style: const TextStyle(
-                    color: Color(0x61FFFFFF), fontSize: 11)),
+                    color: Colors.white38, fontSize: 11)),
             if (isSelected)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
@@ -692,7 +692,7 @@ class _BreathingScreenState extends State<BreathingScreen>
     final ctrl = _videoManager?.activeController;
 
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
 
@@ -721,9 +721,9 @@ class _BreathingScreenState extends State<BreathingScreen>
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Color(0xFFFFFFFF).withOpacity(0.55),
-                            Color(0xFFFFFFFF).withOpacity(0.35),
-                            Color(0xFFFFFFFF).withOpacity(0.65),
+                            Colors.black.withOpacity(0.55),
+                            Colors.black.withOpacity(0.35),
+                            Colors.black.withOpacity(0.65),
                           ],
                         ),
                       ),
@@ -764,7 +764,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                 const SizedBox(height: 4),
                 Text(exercise['description'],
                     style: const TextStyle(
-                        color: Color(0x99FFFFFF), fontSize: 11),
+                        color: Colors.white60, fontSize: 11),
                     textAlign: TextAlign.center),
 
                 if (_isRunning)
@@ -880,13 +880,13 @@ class _BreathingScreenState extends State<BreathingScreen>
                                     style: TextStyle(
                                       color: _isRunning
                                           ? _stepColor(stepName)
-                                          : Color(0xB3FFFFFF),
+                                          : Colors.white70,
                                       fontSize: 28,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 4,
                                       shadows: [
                                         Shadow(
-                                          color: Color(0xFFFFFFFF)
+                                          color: Colors.black
                                               .withOpacity(0.5),
                                           blurRadius: 8,
                                         )
@@ -902,12 +902,12 @@ class _BreathingScreenState extends State<BreathingScreen>
                                       '$_secondsLeft s',
                                       key: ValueKey(_secondsLeft),
                                       style: TextStyle(
-                                        color: Color(0xFF1A1333),
+                                        color: Colors.white,
                                         fontSize: 42,
                                         fontWeight: FontWeight.w900,
                                         shadows: [
                                           Shadow(
-                                            color: Color(0xFFFFFFFF)
+                                            color: Colors.black
                                                 .withOpacity(0.5),
                                             blurRadius: 8,
                                           )
@@ -952,7 +952,7 @@ class _BreathingScreenState extends State<BreathingScreen>
           // Back button with frosted glass effect
           _glassButton(
             child: const Icon(Icons.arrow_back_ios,
-                color: Color(0xFF1A1333), size: 18),
+                color: Colors.white, size: 18),
             onTap: () {
               _timer?.cancel();
               Navigator.pop(context);
@@ -963,11 +963,11 @@ class _BreathingScreenState extends State<BreathingScreen>
               'Breathing Exercise',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color(0xFF1A1333),
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 17,
                 shadows: [
-                  Shadow(color: Color(0xFFAFA8BA), blurRadius: 6),
+                  Shadow(color: Colors.black54, blurRadius: 6),
                 ],
               ),
             ),
@@ -996,9 +996,9 @@ class _BreathingScreenState extends State<BreathingScreen>
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Color(0xFF1A1333).withOpacity(0.12),
+          color: Colors.white.withOpacity(0.12),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Color(0xFF1A1333).withOpacity(0.2)),
+          border: Border.all(color: Colors.white.withOpacity(0.2)),
         ),
         child: child,
       ),
@@ -1031,18 +1031,18 @@ class _BreathingScreenState extends State<BreathingScreen>
               decoration: BoxDecoration(
                 color: selected
                     ? tabColor.withOpacity(0.8)
-                    : Color(0xFF1A1333).withOpacity(0.12),
+                    : Colors.white.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: selected
                       ? tabColor
-                      : Color(0xFF1A1333).withOpacity(0.2),
+                      : Colors.white.withOpacity(0.2),
                 ),
               ),
               child: Text(
                 kExercises[i]['name'],
                 style: TextStyle(
-                  color: selected ? Color(0xFF1A1333) : Color(0xB3FFFFFF),
+                  color: selected ? Colors.white : Colors.white70,
                   fontWeight: selected
                       ? FontWeight.bold
                       : FontWeight.normal,
@@ -1064,11 +1064,11 @@ class _BreathingScreenState extends State<BreathingScreen>
         height: 210,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Color(0xFF1A1333).withOpacity(0.08),
+          color: Colors.white.withOpacity(0.08),
         ),
         child: const Center(
           child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Color(0x8AFFFFFF)),
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white54),
             strokeWidth: 2,
           ),
         ),
@@ -1082,8 +1082,8 @@ class _BreathingScreenState extends State<BreathingScreen>
         height: 210,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Color(0xFF1A1333).withOpacity(0.08),
-          border: Border.all(color: Color(0x3DFFFFFF)),
+          color: Colors.white.withOpacity(0.08),
+          border: Border.all(color: Colors.white24),
         ),
         child: Center(
           child: Text(
@@ -1118,7 +1118,7 @@ class _BreathingScreenState extends State<BreathingScreen>
       padding:
           const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: Color(0xFFFFFFFF).withOpacity(0.7),
+        color: Colors.black.withOpacity(0.7),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: color.withOpacity(0.6), width: 1.5),
         boxShadow: [
@@ -1168,15 +1168,15 @@ class _BreathingScreenState extends State<BreathingScreen>
                   shape: BoxShape.circle,
                   color: isActive
                       ? sc.withOpacity(0.3)
-                      : Color(0xFF1A1333).withOpacity(0.1),
+                      : Colors.white.withOpacity(0.1),
                   border: Border.all(
-                      color: isActive ? sc : Color(0x61FFFFFF),
+                      color: isActive ? sc : Colors.white38,
                       width: 2),
                 ),
                 child: Center(
                   child: Text('${i + 1}',
                       style: TextStyle(
-                          color: isActive ? sc : Color(0x8AFFFFFF),
+                          color: isActive ? sc : Colors.white54,
                           fontWeight: FontWeight.bold,
                           fontSize: isActive ? 15 : 11)),
                 ),
@@ -1184,13 +1184,13 @@ class _BreathingScreenState extends State<BreathingScreen>
               const SizedBox(height: 4),
               Text(steps[i],
                   style: TextStyle(
-                      color: isActive ? sc : Color(0x8AFFFFFF),
+                      color: isActive ? sc : Colors.white54,
                       fontSize: 10,
                       fontWeight: isActive
                           ? FontWeight.bold
                           : FontWeight.normal,
                       shadows: const [
-                        Shadow(color: Color(0xFFAFA8BA), blurRadius: 4)
+                        Shadow(color: Colors.black54, blurRadius: 4)
                       ])),
             ],
           );
@@ -1218,7 +1218,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                   Expanded(
                     child: Text('Session saved! Great job! 🎉',
                         style: TextStyle(
-                            color: Color(0xFF1A1333),
+                            color: Colors.white,
                             fontWeight: FontWeight.bold)),
                   ),
                 ]),
@@ -1234,7 +1234,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                 ),
                 child: const Text('Try Again',
                     style: TextStyle(
-                        color: Color(0xFF1A1333),
+                        color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.bold)),
               ),
@@ -1265,7 +1265,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                                 ? Icons.play_arrow
                                 : Icons.pause)
                             : Icons.play_arrow,
-                        color: Color(0xFF1A1333),
+                        color: Colors.white,
                       ),
                       const SizedBox(width: 8),
                       Text(
@@ -1273,7 +1273,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                             ? (_isPaused ? 'Resume' : 'Pause')
                             : 'Start',
                         style: const TextStyle(
-                            color: Color(0xFF1A1333),
+                            color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold),
                       ),
@@ -1296,7 +1296,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                       elevation: 0,
                     ),
                     child:
-                        const Icon(Icons.stop, color: Color(0xFF1A1333)),
+                        const Icon(Icons.stop, color: Colors.white),
                   ),
                 ),
               ],
@@ -1335,7 +1335,7 @@ class _VideoDialog extends StatelessWidget {
     final ctrl = videoManager?.activeController;
 
     return Dialog(
-      backgroundColor: Color(0xFFFFFFFF).withOpacity(0.85),
+      backgroundColor: Colors.black.withOpacity(0.85),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(28)),
       child: Padding(
@@ -1374,7 +1374,7 @@ class _VideoDialog extends StatelessWidget {
                             ),
                           )
                         : Container(
-                            color: Color(0x1AFFFFFF),
+                            color: Colors.white10,
                             child: const Center(
                               child: Text('😊',
                                   style: TextStyle(fontSize: 60)),
@@ -1411,7 +1411,7 @@ class _VideoDialog extends StatelessWidget {
 
             Text(title,
                 style: TextStyle(
-                    color: Color(0xFF1A1333),
+                    color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold)),
 
@@ -1427,7 +1427,7 @@ class _VideoDialog extends StatelessWidget {
               ),
               child: Text(primaryLabel,
                   style: const TextStyle(
-                      color: Color(0xFF1A1333),
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 16)),
             ),
@@ -1437,14 +1437,14 @@ class _VideoDialog extends StatelessWidget {
               OutlinedButton(
                 onPressed: onSecondary,
                 style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: Color(0x3DFFFFFF)),
+                  side: BorderSide(color: Colors.white24),
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14)),
                 ),
                 child: Text(secondaryLabel!,
                     style: const TextStyle(
-                        color: Color(0x99FFFFFF), fontSize: 14)),
+                        color: Colors.white60, fontSize: 14)),
               ),
             ],
           ],
@@ -1453,4 +1453,3 @@ class _VideoDialog extends StatelessWidget {
     );
   }
 }
-

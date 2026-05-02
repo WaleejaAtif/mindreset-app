@@ -72,7 +72,7 @@ class _MeditateScreenState extends State<MeditateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           CustomScrollView(
@@ -91,12 +91,12 @@ class _MeditateScreenState extends State<MeditateScreen> {
                     backgroundColor: color,
                     surfaceTintColor: Colors.transparent,
                     leading: const Icon(Icons.wifi_tethering,
-                        color: Color(0xFF1A1333)),
+                        color: Colors.white),
                     actions: const [
                       Padding(
                         padding: EdgeInsets.only(right: 16),
                         child: Icon(Icons.notifications_none,
-                            color: Color(0xFF1A1333)),
+                            color: Colors.white),
                       ),
                     ],
                     flexibleSpace: FlexibleSpaceBar(
@@ -108,13 +108,13 @@ class _MeditateScreenState extends State<MeditateScreen> {
                           const SizedBox(height: 30),
                           CircleAvatar(
                             radius: 24,
-                            backgroundColor: Color(0x3DFFFFFF),
+                            backgroundColor: Colors.white24,
                             child: Text(
                               _userName.isNotEmpty
                                   ? _userName[0].toUpperCase()
                                   : 'U',
                               style: const TextStyle(
-                                color: Color(0xFF1A1333),
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
@@ -125,7 +125,7 @@ class _MeditateScreenState extends State<MeditateScreen> {
                       title: const Text(
                         'Meditation',
                         style: TextStyle(
-                          color: Color(0xFF1A1333),
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
@@ -241,7 +241,7 @@ class _InteractiveSectionState extends State<_InteractiveSection> {
               widget.imagePath,
               fit: BoxFit.cover,
               color: _isPressed
-                  ? Color(0xFFFFFFFF).withOpacity(0.3)
+                  ? Colors.black.withOpacity(0.3)
                   : null,
               colorBlendMode: BlendMode.darken,
             ),
@@ -251,9 +251,9 @@ class _InteractiveSectionState extends State<_InteractiveSection> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Color(0xFFFFFFFF).withOpacity(0.4),
+                    Colors.black.withOpacity(0.4),
                     Colors.transparent,
-                    Color(0xFFFFFFFF).withOpacity(0.6),
+                    Colors.black.withOpacity(0.6),
                   ],
                 ),
               ),
@@ -266,13 +266,13 @@ class _InteractiveSectionState extends State<_InteractiveSection> {
                     widget.title,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Color(0xFF1A1333),
+                      color: Colors.white,
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                       letterSpacing: -0.5,
                       shadows: [
                         Shadow(
-                          color: Color(0xFFFFFFFF).withOpacity(0.5),
+                          color: Colors.black.withOpacity(0.5),
                           offset: const Offset(0, 2),
                           blurRadius: 4,
                         ),
@@ -283,7 +283,7 @@ class _InteractiveSectionState extends State<_InteractiveSection> {
                   Text(
                     widget.subtitle,
                     style: const TextStyle(
-                      color: Color(0xB3FFFFFF),
+                      color: Colors.white70,
                       fontSize: 16,
                       fontWeight: FontWeight.w300,
                     ),

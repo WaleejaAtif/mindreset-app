@@ -416,14 +416,14 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color(0xFF1A1333).withOpacity(0.15),
-                Color(0xFF1A1333).withOpacity(0.08),
+                Colors.white.withOpacity(0.15),
+                Colors.white.withOpacity(0.08),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             borderRadius: BorderRadius.circular(28),
-            border: Border.all(color: Color(0xFF1A1333).withOpacity(0.14)),
+            border: Border.all(color: Colors.white.withOpacity(0.14)),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -440,7 +440,7 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
                     const Text(
                       'Zenify Assistant',
                       style: TextStyle(
-                        color: Color(0xFF1A1333),
+                        color: Colors.white,
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
                       ),
@@ -449,7 +449,7 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
                     Text(
                       'A simple AI chat assistant for calm support and thoughtful conversation.',
                       style: TextStyle(
-                        color: Color(0xFF1A1333).withOpacity(0.8),
+                        color: Colors.white.withOpacity(0.8),
                         height: 1.35,
                         fontSize: 13.5,
                       ),
@@ -475,12 +475,12 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFF1A1333).withOpacity(0.10),
+        color: Colors.white.withOpacity(0.10),
         borderRadius: BorderRadius.circular(18),
       ),
       child: IconButton(
         onPressed: onTap,
-        icon: Icon(icon, color: Color(0xFF1A1333)),
+        icon: Icon(icon, color: Colors.white),
       ),
     );
   }
@@ -492,9 +492,9 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           decoration: BoxDecoration(
-            color: Color(0xFF1A1333).withOpacity(0.10),
+            color: Colors.white.withOpacity(0.10),
             borderRadius: BorderRadius.circular(30),
-            border: Border.all(color: Color(0xFF1A1333).withOpacity(0.14)),
+            border: Border.all(color: Colors.white.withOpacity(0.14)),
           ),
           child: Column(
             children: [
@@ -538,17 +538,17 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: Color(0xFF1A1333).withOpacity(0.14),
+              color: Colors.white.withOpacity(0.14),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Icon(Icons.bolt_rounded, color: Color(0xFF1A1333)),
+            child: const Icon(Icons.bolt_rounded, color: Colors.white),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               _statusLine,
               style: const TextStyle(
-                color: Color(0xFF1A1333),
+                color: Colors.white,
                 height: 1.35,
                 fontWeight: FontWeight.w500,
               ),
@@ -578,7 +578,7 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
                 ),
                 child: const Text(
                   'Thinking through the best answer for you...',
-                  style: TextStyle(color: Color(0xFF1A1333)),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
@@ -617,7 +617,7 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Color(0xFFFFFFFF).withOpacity(0.16),
+                color: Colors.black.withOpacity(0.16),
                 blurRadius: 14,
                 offset: const Offset(0, 8),
               ),
@@ -626,7 +626,7 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
           child: Text(
             message.text,
             style: const TextStyle(
-              color: Color(0xFF1A1333),
+              color: Colors.white,
               height: 1.46,
             ),
           ),
@@ -639,7 +639,7 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
       decoration: BoxDecoration(
-        color: Color(0xFFFFFFFF).withOpacity(0.16),
+        color: Colors.black.withOpacity(0.16),
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(30)),
       ),
       child: Row(
@@ -650,14 +650,14 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
               controller: _controller,
               minLines: 1,
               maxLines: 4,
-              style: const TextStyle(color: Color(0xFF1A1333)),
+              style: const TextStyle(color: Colors.white),
               textInputAction: TextInputAction.send,
               onSubmitted: (_) => _sendMessage(),
               decoration: InputDecoration(
                 hintText: 'Chat with Zenify Assistant...',
-                hintStyle: TextStyle(color: Color(0xFF1A1333).withOpacity(0.56)),
+                hintStyle: TextStyle(color: Colors.white.withOpacity(0.56)),
                 filled: true,
-                fillColor: Color(0xFF1A1333).withOpacity(0.08),
+                fillColor: Colors.white.withOpacity(0.08),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
                   borderSide: BorderSide.none,
@@ -688,7 +688,7 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
               onPressed: _isThinking ? null : () => _sendMessage(),
               icon: Icon(
                 _isThinking ? Icons.hourglass_top_rounded : Icons.send_rounded,
-                color: Color(0xFF1A1333),
+                color: Colors.white,
               ),
             ),
           ),
@@ -707,4 +707,3 @@ class _ChatEntry {
     required this.isUser,
   });
 }
-

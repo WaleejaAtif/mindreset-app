@@ -737,7 +737,7 @@ class _SoundTherapyScreenState extends State<SoundTherapyScreen>
             child: _circleIcon(const Icon(
                 Icons.arrow_back_ios_new_rounded,
                 size: 14,
-                color: Color(0xB3FFFFFF))),
+                color: Colors.white70)),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -746,19 +746,19 @@ class _SoundTherapyScreenState extends State<SoundTherapyScreen>
               children: [
                 const Text('Sound Therapy',
                     style: TextStyle(
-                        color: Color(0xFF1A1333),
+                        color: Colors.white,
                         fontSize: 22,
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.5)),
                 Text('${kSounds.length} healing soundscapes',
                     style: TextStyle(
-                        color: Color(0xFF1A1333).withOpacity(0.38),
+                        color: Colors.white.withOpacity(0.38),
                         fontSize: 12)),
               ],
             ),
           ),
           _circleIcon(const Icon(Icons.search_rounded,
-              size: 18, color: Color(0xB3FFFFFF))),
+              size: 18, color: Colors.white70)),
         ],
       ),
     );
@@ -769,8 +769,8 @@ class _SoundTherapyScreenState extends State<SoundTherapyScreen>
         height: 38,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Color(0xFF1A1333).withOpacity(0.08),
-          border: Border.all(color: Color(0xFF1A1333).withOpacity(0.15)),
+          color: Colors.white.withOpacity(0.08),
+          border: Border.all(color: Colors.white.withOpacity(0.15)),
         ),
         child: Center(child: child),
       );
@@ -794,16 +794,16 @@ class _SoundTherapyScreenState extends State<SoundTherapyScreen>
               decoration: BoxDecoration(
                 color: sel
                     ? const Color(0xFF7C3AED)
-                    : Color(0xFF1A1333).withOpacity(0.07),
+                    : Colors.white.withOpacity(0.07),
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(
                     color: sel
                         ? const Color(0xFF7C3AED)
-                        : Color(0xFF1A1333).withOpacity(0.1)),
+                        : Colors.white.withOpacity(0.1)),
               ),
               child: Text(kFilterTabs[i],
                   style: TextStyle(
-                      color: sel ? Color(0xFF1A1333) : Color(0xFF1A1333).withOpacity(0.45),
+                      color: sel ? Colors.white : Colors.white.withOpacity(0.45),
                       fontWeight:
                           sel ? FontWeight.w700 : FontWeight.w400,
                       fontSize: 13)),
@@ -837,10 +837,10 @@ class _SoundTherapyScreenState extends State<SoundTherapyScreen>
                     borderRadius: BorderRadius.circular(20),
                     color: const Color(0xFF1E1635),
                     border: Border.all(
-                        color: Color(0xFF1A1333).withOpacity(0.12)),
+                        color: Colors.white.withOpacity(0.12)),
                     boxShadow: [
                       BoxShadow(
-                          color: Color(0xFFFFFFFF).withOpacity(0.5),
+                          color: Colors.black.withOpacity(0.5),
                           blurRadius: 20)
                     ],
                   ),
@@ -864,7 +864,7 @@ class _SoundTherapyScreenState extends State<SoundTherapyScreen>
                           children: [
                             Text(_selected!.name,
                                 style: const TextStyle(
-                                    color: Color(0xFF1A1333),
+                                    color: Colors.white,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 13),
                                 maxLines: 1,
@@ -1043,14 +1043,14 @@ class SoundCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Color(0xFFFFFFFF).withOpacity(0.45),
+                        color: Colors.black.withOpacity(0.45),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                            color: Color(0xFF1A1333).withOpacity(0.15)),
+                            color: Colors.white.withOpacity(0.15)),
                       ),
                       child: Text(sound.category,
                           style: const TextStyle(
-                              color: Color(0xB3FFFFFF),
+                              color: Colors.white70,
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
                               letterSpacing: 0.5)),
@@ -1058,14 +1058,14 @@ class SoundCard extends StatelessWidget {
                     const Spacer(),
                     Text(sound.name,
                         style: const TextStyle(
-                          color: Color(0xFF1A1333),
+                          color: Colors.white,
                           fontSize: 15,
                           fontWeight: FontWeight.w800,
                           height: 1.2,
                           letterSpacing: -0.3,
                           shadows: [
                             Shadow(
-                                color: Color(0xFFAFA8BA),
+                                color: Colors.black54,
                                 blurRadius: 8,
                                 offset: Offset(0, 2))
                           ],
@@ -1076,13 +1076,13 @@ class SoundCard extends StatelessWidget {
                         Expanded(
                           child: Text(sound.author,
                               style: TextStyle(
-                                  color: Color(0xFF1A1333).withOpacity(0.6),
+                                  color: Colors.white.withOpacity(0.6),
                                   fontSize: 11),
                               overflow: TextOverflow.ellipsis),
                         ),
                         Icon(Icons.play_circle_outline_rounded,
                             size: 11,
-                            color: Color(0xFF1A1333).withOpacity(0.6)),
+                            color: Colors.white.withOpacity(0.6)),
                         const SizedBox(width: 3),
                       ],
                     ),
@@ -1184,10 +1184,10 @@ class _ExpandedPlayer extends StatelessWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Color(0xFFFFFFFF).withOpacity(0.28),
-                      Color(0xFFFFFFFF).withOpacity(0.58),
-                      Color(0xFFFFFFFF).withOpacity(0.92),
-                      Color(0xFFFFFFFF).withOpacity(0.98),
+                      Colors.black.withOpacity(0.28),
+                      Colors.black.withOpacity(0.58),
+                      Colors.black.withOpacity(0.92),
+                      Colors.black.withOpacity(0.98),
                     ],
                     stops: const [0.0, 0.28, 0.58, 1.0],
                   ),
@@ -1228,11 +1228,11 @@ class _ExpandedPlayer extends StatelessWidget {
               height: 38,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFF1A1333).withOpacity(0.12),
-                border: Border.all(color: Color(0xFF1A1333).withOpacity(0.18)),
+                color: Colors.white.withOpacity(0.12),
+                border: Border.all(color: Colors.white.withOpacity(0.18)),
               ),
               child: const Icon(Icons.keyboard_arrow_down_rounded,
-                  size: 22, color: Color(0xFF1A1333)),
+                  size: 22, color: Colors.white),
             ),
           ),
           const Spacer(),
@@ -1248,11 +1248,11 @@ class _ExpandedPlayer extends StatelessWidget {
             height: 38,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Color(0xFF1A1333).withOpacity(0.12),
-              border: Border.all(color: Color(0xFF1A1333).withOpacity(0.18)),
+              color: Colors.white.withOpacity(0.12),
+              border: Border.all(color: Colors.white.withOpacity(0.18)),
             ),
             child: const Icon(Icons.more_horiz_rounded,
-                size: 20, color: Color(0xFF1A1333)),
+                size: 20, color: Colors.white),
           ),
         ],
       ),
@@ -1277,7 +1277,7 @@ class _ExpandedPlayer extends StatelessWidget {
                   spreadRadius: 2,
                 ),
                 BoxShadow(
-                  color: Color(0xFFFFFFFF).withOpacity(0.5),
+                  color: Colors.black.withOpacity(0.5),
                   blurRadius: 20,
                   offset: const Offset(0, 10),
                 ),
@@ -1306,7 +1306,7 @@ class _ExpandedPlayer extends StatelessWidget {
               children: [
                 Text(sound.name,
                     style: const TextStyle(
-                        color: Color(0xFF1A1333),
+                        color: Colors.white,
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.5,
@@ -1332,17 +1332,17 @@ class _ExpandedPlayer extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: isFavorite
                     ? Colors.pinkAccent.withOpacity(0.2)
-                    : Color(0xFF1A1333).withOpacity(0.08),
+                    : Colors.white.withOpacity(0.08),
                 border: Border.all(
                     color: isFavorite
                         ? Colors.pinkAccent.withOpacity(0.6)
-                        : Color(0xFF1A1333).withOpacity(0.15)),
+                        : Colors.white.withOpacity(0.15)),
               ),
               child: Icon(
                 isFavorite
                     ? Icons.favorite_rounded
                     : Icons.favorite_border_rounded,
-                color: isFavorite ? Colors.pinkAccent : Color(0x8AFFFFFF),
+                color: isFavorite ? Colors.pinkAccent : Colors.white54,
                 size: 20,
               ),
             ),
@@ -1386,8 +1386,8 @@ class _ExpandedPlayer extends StatelessWidget {
               overlayShape:
                   const RoundSliderOverlayShape(overlayRadius: 16),
               activeTrackColor: sound.accentColor,
-              inactiveTrackColor: Color(0xFF1A1333).withOpacity(0.15),
-              thumbColor: Color(0xFF1A1333),
+              inactiveTrackColor: Colors.white.withOpacity(0.15),
+              thumbColor: Colors.white,
               overlayColor: sound.accentColor.withOpacity(0.2),
             ),
             child: Slider(
@@ -1401,12 +1401,12 @@ class _ExpandedPlayer extends StatelessWidget {
               children: [
                 Text(positionStr,
                     style: TextStyle(
-                        color: Color(0xFF1A1333).withOpacity(0.5),
+                        color: Colors.white.withOpacity(0.5),
                         fontSize: 11,
                         fontWeight: FontWeight.w600)),
                 Text(durationStr,
                     style: TextStyle(
-                        color: Color(0xFF1A1333).withOpacity(0.5),
+                        color: Colors.white.withOpacity(0.5),
                         fontSize: 11)),
               ],
             ),
@@ -1429,12 +1429,12 @@ class _ExpandedPlayer extends StatelessWidget {
               height: 52,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFF1A1333).withOpacity(0.08),
+                color: Colors.white.withOpacity(0.08),
                 border:
-                    Border.all(color: Color(0xFF1A1333).withOpacity(0.15)),
+                    Border.all(color: Colors.white.withOpacity(0.15)),
               ),
               child: const Icon(Icons.skip_previous_rounded,
-                  color: Color(0xFF1A1333), size: 26),
+                  color: Colors.white, size: 26),
             ),
           ),
           GestureDetector(
@@ -1464,12 +1464,12 @@ class _ExpandedPlayer extends StatelessWidget {
                         width: 28,
                         height: 28,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2.5, color: Color(0xFF1A1333)))
+                            strokeWidth: 2.5, color: Colors.white))
                     : Icon(
                         isPlaying
                             ? Icons.pause_rounded
                             : Icons.play_arrow_rounded,
-                        color: Color(0xFF1A1333),
+                        color: Colors.white,
                         size: 34),
               ),
             ),
@@ -1481,12 +1481,12 @@ class _ExpandedPlayer extends StatelessWidget {
               height: 52,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFF1A1333).withOpacity(0.08),
+                color: Colors.white.withOpacity(0.08),
                 border:
-                    Border.all(color: Color(0xFF1A1333).withOpacity(0.15)),
+                    Border.all(color: Colors.white.withOpacity(0.15)),
               ),
               child: const Icon(Icons.skip_next_rounded,
-                  color: Color(0xFF1A1333), size: 26),
+                  color: Colors.white, size: 26),
             ),
           ),
         ],
@@ -1500,7 +1500,7 @@ class _ExpandedPlayer extends StatelessWidget {
       child: Row(
         children: [
           const Icon(Icons.volume_off_rounded,
-              color: Color(0x61FFFFFF), size: 18),
+              color: Colors.white38, size: 18),
           Expanded(
             child: SliderTheme(
               data: SliderThemeData(
@@ -1509,16 +1509,16 @@ class _ExpandedPlayer extends StatelessWidget {
                     const RoundSliderThumbShape(enabledThumbRadius: 6),
                 overlayShape:
                     const RoundSliderOverlayShape(overlayRadius: 14),
-                activeTrackColor: Color(0x99FFFFFF),
-                inactiveTrackColor: Color(0xFF1A1333).withOpacity(0.12),
-                thumbColor: Color(0xFF1A1333),
-                overlayColor: Color(0xFF1A1333).withOpacity(0.1),
+                activeTrackColor: Colors.white60,
+                inactiveTrackColor: Colors.white.withOpacity(0.12),
+                thumbColor: Colors.white,
+                overlayColor: Colors.white.withOpacity(0.1),
               ),
               child: Slider(value: volume, onChanged: onVolumeChanged),
             ),
           ),
           const Icon(Icons.volume_up_rounded,
-              color: Color(0x99FFFFFF), size: 18),
+              color: Colors.white60, size: 18),
         ],
       ),
     );
@@ -1537,12 +1537,12 @@ class _ExpandedPlayer extends StatelessWidget {
             decoration: BoxDecoration(
               color: timerMenuOpen
                   ? sound.accentColor.withOpacity(0.18)
-                  : Color(0xFF1A1333).withOpacity(0.07),
+                  : Colors.white.withOpacity(0.07),
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
                   color: timerMenuOpen
                       ? sound.accentColor.withOpacity(0.55)
-                      : Color(0xFF1A1333).withOpacity(0.12)),
+                      : Colors.white.withOpacity(0.12)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -1551,13 +1551,13 @@ class _ExpandedPlayer extends StatelessWidget {
                     size: 16,
                     color: timerMenuOpen
                         ? sound.accentColor
-                        : Color(0x8AFFFFFF)),
+                        : Colors.white54),
                 const SizedBox(width: 8),
                 Text('Sleep Timer',
                     style: TextStyle(
                         color: timerMenuOpen
                             ? sound.accentColor
-                            : Color(0x8AFFFFFF),
+                            : Colors.white54,
                         fontSize: 13,
                         fontWeight: FontWeight.w600)),
               ],
@@ -1588,10 +1588,10 @@ class _ExpandedPlayer extends StatelessWidget {
             child: Container(
               width: 180,
               decoration: BoxDecoration(
-                color: Color(0xFF1A1333).withOpacity(0.13),
+                color: Colors.white.withOpacity(0.13),
                 borderRadius: BorderRadius.circular(16),
                 border:
-                    Border.all(color: Color(0xFF1A1333).withOpacity(0.2)),
+                    Border.all(color: Colors.white.withOpacity(0.2)),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -1605,7 +1605,7 @@ class _ExpandedPlayer extends StatelessWidget {
                               border: Border(
                                   bottom: BorderSide(
                                       color:
-                                          Color(0xFF1A1333).withOpacity(0.07))),
+                                          Colors.white.withOpacity(0.07))),
                             ),
                             child: Row(children: [
                               Icon(Icons.timer_outlined,
@@ -1615,7 +1615,7 @@ class _ExpandedPlayer extends StatelessWidget {
                               const SizedBox(width: 12),
                               Text(e.value,
                                   style: const TextStyle(
-                                      color: Color(0xFF1A1333),
+                                      color: Colors.white,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600)),
                             ]),
@@ -1660,11 +1660,9 @@ class _SoundImg extends StatelessWidget {
         ),
         child: const Center(
           child: Icon(Icons.music_note_rounded,
-              color: Color(0x3DFFFFFF), size: 40),
+              color: Colors.white24, size: 40),
         ),
       ),
     );
   }
 }
-
-
