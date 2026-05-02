@@ -148,7 +148,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Color(0xFF1A1333),
                         ),
                       ),
                     ),

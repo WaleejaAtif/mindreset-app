@@ -25,12 +25,12 @@ class _JournalActivityScreenState extends State<JournalActivityScreen> {
     final color = Color(widget.item['colorHex'] ?? 0xFF9a882a);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8FD),
+      backgroundColor: const Color(0xFF0F0C20),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
-        title: Text(widget.item['title'] ?? 'Journal', style: const TextStyle(color: Colors.black87)),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+        title: Text(widget.item['title'] ?? 'Journal', style: const TextStyle(color: Color(0xFFFFFFFF))),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -41,11 +41,11 @@ class _JournalActivityScreenState extends State<JournalActivityScreen> {
             children: [
               Text(
                 widget.item['desc'] ?? 'Write down your thoughts below.',
-                style: const TextStyle(fontSize: 18, color: Colors.black87, fontWeight: FontWeight.w500),
+                style: const TextStyle(fontSize: 18, color: Color(0xFFFFFFFF), fontWeight: FontWeight.w500),
               ),
               if (widget.suggestions != null && widget.suggestions!.isNotEmpty) ...[
                 const SizedBox(height: 16),
-                const Text("Ideas to get started:", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54)),
+                const Text("Ideas to get started:", style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFAFA8BA))),
                 const SizedBox(height: 8),
                 Wrap(
                   spacing: 8,
@@ -67,10 +67,10 @@ class _JournalActivityScreenState extends State<JournalActivityScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Color(0xFF1A1333),
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
-                      BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4)),
+                      BoxShadow(color: Color(0xFFFFFFFF).withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4)),
                     ],
                   ),
                   child: TextField(
@@ -103,7 +103,7 @@ class _JournalActivityScreenState extends State<JournalActivityScreen> {
                   },
                   child: const Text(
                     "Finish & Claim Points",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333)),
                   ),
                 ),
               ),
@@ -114,3 +114,4 @@ class _JournalActivityScreenState extends State<JournalActivityScreen> {
     );
   }
 }
+

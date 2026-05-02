@@ -123,14 +123,14 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           elevation: 0,
           leading: _currentPage > 0
               ? IconButton(
-                  icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                  icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF1A1333)),
                   onPressed: _prevPage,
                 )
               : null,
           actions: [
             TextButton(
               onPressed: _logout,
-              child: const Text("Logout", style: TextStyle(color: Colors.white70)),
+              child: const Text("Logout", style: TextStyle(color: Color(0xB3FFFFFF))),
             ),
           ],
         ),
@@ -147,7 +147,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 2.0),
                         height: 6.0,
                         decoration: BoxDecoration(
-                          color: index <= _currentPage ? _primaryColor : Colors.white.withOpacity(0.3),
+                          color: index <= _currentPage ? _primaryColor : Color(0xFF1A1333).withOpacity(0.3),
                           borderRadius: BorderRadius.circular(3.0),
                         ),
                       ),
@@ -277,9 +277,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white)),
+          Text(title, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
           const SizedBox(height: 8),
-          Text(subtitle, style: TextStyle(fontSize: 16, color: Colors.white.withOpacity(0.8))),
+          Text(subtitle, style: TextStyle(fontSize: 16, color: Color(0xFF1A1333).withOpacity(0.8))),
           const SizedBox(height: 40),
           Expanded(
             child: ListView.separated(
@@ -294,10 +294,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     duration: const Duration(milliseconds: 200),
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: isSelected ? _primaryColor : Colors.white.withOpacity(0.1),
+                      color: isSelected ? _primaryColor : Color(0xFF1A1333).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: isSelected ? Colors.white : Colors.white.withOpacity(0.2),
+                        color: isSelected ? Color(0xFF1A1333) : Color(0xFF1A1333).withOpacity(0.2),
                         width: 1.5,
                       ),
                     ),
@@ -309,10 +309,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                            color: Colors.white,
+                            color: Color(0xFF1A1333),
                           ),
                         ),
-                        if (isSelected) const Icon(Icons.check_circle, color: Colors.white),
+                        if (isSelected) const Icon(Icons.check_circle, color: Color(0xFF1A1333)),
                       ],
                     ),
                   ),
@@ -327,15 +327,15 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 width: double.infinity,
                 height: 55,
                 child: _saving
-                    ? const Center(child: CircularProgressIndicator(color: Colors.white))
+                    ? const Center(child: CircularProgressIndicator(color: Color(0xFF1A1333)))
                     : ElevatedButton(
                         onPressed: currentValue != null ? _saveProfile : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: _primaryColor,
-                          disabledBackgroundColor: Colors.white.withOpacity(0.2),
+                          disabledBackgroundColor: Color(0xFF1A1333).withOpacity(0.2),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                         ),
-                        child: const Text("Finish Setup", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                        child: const Text("Finish Setup", style: TextStyle(color: Color(0xFF1A1333), fontSize: 18, fontWeight: FontWeight.bold)),
                       ),
               ),
             )
@@ -357,9 +357,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white)),
+          Text(title, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
           const SizedBox(height: 8),
-          Text(subtitle, style: TextStyle(fontSize: 16, color: Colors.white.withOpacity(0.8))),
+          Text(subtitle, style: TextStyle(fontSize: 16, color: Color(0xFF1A1333).withOpacity(0.8))),
           const SizedBox(height: 40),
           Expanded(
             child: ListView.separated(
@@ -374,10 +374,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     duration: const Duration(milliseconds: 200),
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: isSelected ? _primaryColor : Colors.white.withOpacity(0.1),
+                      color: isSelected ? _primaryColor : Color(0xFF1A1333).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: isSelected ? Colors.white : Colors.white.withOpacity(0.2),
+                        color: isSelected ? Color(0xFF1A1333) : Color(0xFF1A1333).withOpacity(0.2),
                         width: 1.5,
                       ),
                     ),
@@ -389,11 +389,11 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                            color: Colors.white,
+                            color: Color(0xFF1A1333),
                           ),
                         ),
-                        if (isSelected) const Icon(Icons.check_box, color: Colors.white)
-                        else const Icon(Icons.check_box_outline_blank, color: Colors.white70),
+                        if (isSelected) const Icon(Icons.check_box, color: Color(0xFF1A1333))
+                        else const Icon(Icons.check_box_outline_blank, color: Color(0xB3FFFFFF)),
                       ],
                     ),
                   ),
@@ -410,10 +410,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 onPressed: selectedValues.isNotEmpty ? onContinue : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _primaryColor,
-                  disabledBackgroundColor: Colors.white.withOpacity(0.2),
+                  disabledBackgroundColor: Color(0xFF1A1333).withOpacity(0.2),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 ),
-                child: const Text("Continue", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                child: const Text("Continue", style: TextStyle(color: Color(0xFF1A1333), fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ),
           )

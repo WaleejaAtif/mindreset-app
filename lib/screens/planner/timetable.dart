@@ -103,17 +103,17 @@ class _TimeTableState extends State<TimeTable> {
       margin: const EdgeInsets.only(right: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       decoration: BoxDecoration(
-        color: selected ? brandColor : Colors.white.withOpacity(0.1),
+        color: selected ? brandColor : Color(0xFF1A1333).withOpacity(0.1),
         borderRadius: BorderRadius.circular(25),
         border: Border.all(
-          color: selected ? brandColor : Colors.white.withOpacity(0.2),
+          color: selected ? brandColor : Color(0xFF1A1333).withOpacity(0.2),
         ),
       ),
       child: Center(
         child: Text(
           month,
           style: TextStyle(
-            color: Colors.white,
+            color: Color(0xFF1A1333),
             fontSize: 14,
             fontWeight: selected ? FontWeight.bold : FontWeight.normal,
           ),
@@ -128,10 +128,10 @@ class _TimeTableState extends State<TimeTable> {
       width: 70,
       margin: const EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
-        color: selected ? brandColor : Colors.white.withOpacity(0.1),
+        color: selected ? brandColor : Color(0xFF1A1333).withOpacity(0.1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: selected ? Colors.white.withOpacity(0.5) : Colors.white.withOpacity(0.1),
+          color: selected ? Color(0xFF1A1333).withOpacity(0.5) : Color(0xFF1A1333).withOpacity(0.1),
           width: 1.5,
         ),
         boxShadow: selected ? [
@@ -151,7 +151,7 @@ class _TimeTableState extends State<TimeTable> {
               fontSize: 10,
               letterSpacing: 1,
               fontWeight: FontWeight.w600,
-              color: selected ? Colors.white : Colors.white70,
+              color: selected ? Color(0xFF1A1333) : Color(0xB3FFFFFF),
             ),
           ),
           const SizedBox(height: 4),
@@ -160,7 +160,7 @@ class _TimeTableState extends State<TimeTable> {
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Color(0xFF1A1333),
             ),
           ),
           const SizedBox(height: 6),

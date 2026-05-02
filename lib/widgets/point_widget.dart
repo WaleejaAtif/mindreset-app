@@ -8,7 +8,7 @@ class PointWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const Color goldColor = Color(0xFFF5A623);
-    const Color textDark = Color(0xFF2D3142);
+    const Color textDark = Color(0xFFFFFFFF);
     const int rewardGoal = 100;
     final progress = ((points % rewardGoal) / rewardGoal).clamp(0.0, 1.0);
     final pointsToNext = rewardGoal -
@@ -26,10 +26,10 @@ class PointWidget extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: Colors.white, width: 1.5),
+        border: Border.all(color: Color(0xFF1A1333), width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -63,9 +63,9 @@ class PointWidget extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.6),
+              color: Color(0xFF1A1333).withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white, width: 2),
+              border: Border.all(color: Color(0xFF1A1333), width: 2),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,7 +78,7 @@ class PointWidget extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black54,
+                        color: Color(0xFFAFA8BA),
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -141,7 +141,7 @@ class PointWidget extends StatelessWidget {
                 height: 12,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.6),
+                  color: Color(0xFF1A1333).withValues(alpha: 0.6),
                   borderRadius: BorderRadius.circular(6),
                 ),
               ),
@@ -177,9 +177,9 @@ class PointWidget extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.52),
+              color: Color(0xFF1A1333).withValues(alpha: 0.52),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white, width: 1.3),
+              border: Border.all(color: Color(0xFF1A1333), width: 1.3),
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,7 +216,7 @@ class PointWidget extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () => Navigator.pushNamed(context, '/learn'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Color(0xFF1A1333),
                     foregroundColor: const Color(0xFF5A4D1A),
                     elevation: 0,
                     side: const BorderSide(
@@ -248,7 +248,7 @@ class PointWidget extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF5A4D1A),
-                    foregroundColor: Colors.white,
+                    foregroundColor: Color(0xFF1A1333),
                     elevation: 4,
                     shadowColor:
                         const Color(0xFF5A4D1A).withValues(alpha: 0.4),
@@ -311,3 +311,4 @@ class _LootRule extends StatelessWidget {
     );
   }
 }
+

@@ -173,7 +173,7 @@ class _MoodSwipeAnalyzerState extends State<MoodSwipeAnalyzer> {
               fontSize: 18,
               fontWeight: FontWeight.w800,
               fontFamily: 'LeagueSpartan',
-              color: Colors.white, // Overridden by ShaderMask
+              color: Color(0xFF1A1333), // Overridden by ShaderMask
             ),
           ),
         ),
@@ -254,7 +254,7 @@ class _MoodSwipeAnalyzerState extends State<MoodSwipeAnalyzer> {
               onPressed: () => _saveMoodToFirestore(currentIndex),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryColor,
-                foregroundColor: Colors.white,
+                foregroundColor: Color(0xFF1A1333),
                 elevation: 3,
                 shadowColor: _primaryColor.withOpacity(0.4),
                 shape: RoundedRectangleBorder(
@@ -437,10 +437,10 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white, width: 1.5), // Frosted white border
+        border: Border.all(color: Color(0xFF1A1333), width: 1.5), // Frosted white border
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05), // Soft elegant shadow
+            color: Color(0xFFFFFFFF).withValues(alpha: 0.05), // Soft elegant shadow
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -554,7 +554,7 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
             onPressed: () => _saveSleepToFirestore(index),
             style: ElevatedButton.styleFrom(
               backgroundColor: sliderGreen,
-              foregroundColor: Colors.white,
+              foregroundColor: Color(0xFF1A1333),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               padding: const EdgeInsets.symmetric(
@@ -611,13 +611,13 @@ class _ImageCard extends StatelessWidget {
       height: 100,
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFF1A1333),
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
             color: isGlowActive
                 ? _primaryColor.withOpacity(0.7)
-                : Colors.black.withOpacity(0.08),
+                : Color(0xFFFFFFFF).withOpacity(0.08),
             blurRadius: isGlowActive ? 25 : 6,
             spreadRadius: isGlowActive ? 6 : 0,
             offset:

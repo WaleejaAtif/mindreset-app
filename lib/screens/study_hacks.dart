@@ -11,7 +11,7 @@ class StudyHacksScreen extends StatefulWidget {
 }
 
 class _StudyHacksScreenState extends State<StudyHacksScreen> {
-  static const Color _bgColor = Color(0xFFF9F8FD);
+  static const Color _bgColor = Color(0xFF0F0C20);
 
   // Default hacks to seed if DB is empty
   final List<Map<String, dynamic>> _defaultHacks = [
@@ -80,10 +80,10 @@ class _StudyHacksScreenState extends State<StudyHacksScreen> {
             pinned: true,
             centerTitle: true,
             elevation: 0,
-            backgroundColor: Colors.black.withOpacity(0.8),
+            backgroundColor: Color(0xFFFFFFFF).withOpacity(0.8),
             surfaceTintColor: Colors.transparent,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1333)),
               onPressed: () => Navigator.pop(context),
             ),
             flexibleSpace: const FlexibleSpaceBar(
@@ -91,7 +91,7 @@ class _StudyHacksScreenState extends State<StudyHacksScreen> {
               title: Text(
                 'Study Hacks',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Color(0xFF1A1333),
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -173,11 +173,11 @@ class _StudyHacksScreenState extends State<StudyHacksScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color(0xFF1A1333),
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Color(0xFFFFFFFF).withOpacity(0.04),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -200,7 +200,7 @@ class _StudyHacksScreenState extends State<StudyHacksScreen> {
               style: const TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 15,
-                color: Colors.black87,
+                color: Color(0xFFFFFFFF),
               ),
             ),
             const SizedBox(height: 4),
@@ -219,7 +219,7 @@ class _StudyHacksScreenState extends State<StudyHacksScreen> {
   void _showDetailSheet(Map<String, dynamic> item, IconData icon, Color color) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF1A1333),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
@@ -238,7 +238,7 @@ class _StudyHacksScreenState extends State<StudyHacksScreen> {
             Text(
               item['desc'] ?? '',
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16, color: Colors.black54),
+              style: const TextStyle(fontSize: 16, color: Color(0xFFAFA8BA)),
             ),
             const SizedBox(height: 30),
             SizedBox(
@@ -252,7 +252,7 @@ class _StudyHacksScreenState extends State<StudyHacksScreen> {
                 onPressed: () => _tryHack(context, item),
                 child: const Text(
                   "Try This Now",
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Color(0xFF1A1333), fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -290,3 +290,4 @@ class _StudyHacksScreenState extends State<StudyHacksScreen> {
     );
   }
 }
+

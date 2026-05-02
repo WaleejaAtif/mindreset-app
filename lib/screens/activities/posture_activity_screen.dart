@@ -31,12 +31,12 @@ class _PostureActivityScreenState extends State<PostureActivityScreen> with Sing
     final color = Color(widget.item['colorHex'] ?? 0xFFc2a7c3);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8FD),
+      backgroundColor: const Color(0xFF0F0C20),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
-        title: Text(widget.item['title'] ?? 'Posture', style: const TextStyle(color: Colors.black87)),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+        title: Text(widget.item['title'] ?? 'Posture', style: const TextStyle(color: Color(0xFFFFFFFF))),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -47,7 +47,7 @@ class _PostureActivityScreenState extends State<PostureActivityScreen> with Sing
               child: Text(
                 widget.item['desc'] ?? 'Stand up and stretch.',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 18, color: Colors.black54),
+                style: const TextStyle(fontSize: 18, color: Color(0xFFAFA8BA)),
               ),
             ),
             Expanded(
@@ -78,7 +78,7 @@ class _PostureActivityScreenState extends State<PostureActivityScreen> with Sing
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: color, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                   onPressed: () => Navigator.pop(context, true),
-                  child: const Text("I Feel Better", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                  child: const Text("I Feel Better", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
                 ),
               ),
             ),
@@ -88,3 +88,4 @@ class _PostureActivityScreenState extends State<PostureActivityScreen> with Sing
     );
   }
 }
+

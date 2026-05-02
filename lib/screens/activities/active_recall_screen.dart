@@ -48,12 +48,12 @@ class _ActiveRecallScreenState extends State<ActiveRecallScreen> {
     final color = Color(widget.item['colorHex'] ?? 0xFFb3957c);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8FD),
+      backgroundColor: const Color(0xFF0F0C20),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
-        title: Text(widget.item['title'] ?? 'Active Recall', style: const TextStyle(color: Colors.black87)),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+        title: Text(widget.item['title'] ?? 'Active Recall', style: const TextStyle(color: Color(0xFFFFFFFF))),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -64,7 +64,7 @@ class _ActiveRecallScreenState extends State<ActiveRecallScreen> {
               Text(
                 widget.item['desc'] ?? '',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16, color: Colors.black54),
+                style: const TextStyle(fontSize: 16, color: Color(0xFFAFA8BA)),
               ),
               const SizedBox(height: 30),
               Expanded(
@@ -107,7 +107,7 @@ class _ActiveRecallScreenState extends State<ActiveRecallScreen> {
       key: const ValueKey(false),
       width: double.infinity,
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))]),
+      decoration: BoxDecoration(color: Color(0xFF1A1333), borderRadius: BorderRadius.circular(20), boxShadow: [BoxShadow(color: Color(0xFFFFFFFF).withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))]),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -122,7 +122,7 @@ class _ActiveRecallScreenState extends State<ActiveRecallScreen> {
           ),
           const SizedBox(height: 30),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: color, foregroundColor: Colors.white, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
+            style: ElevatedButton.styleFrom(backgroundColor: color, foregroundColor: Color(0xFF1A1333), padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
             onPressed: _flip,
             child: const Text("Flip Card"),
           ),
@@ -153,7 +153,7 @@ class _ActiveRecallScreenState extends State<ActiveRecallScreen> {
           ),
           const SizedBox(height: 30),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: color, foregroundColor: Colors.white, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
+            style: ElevatedButton.styleFrom(backgroundColor: color, foregroundColor: Color(0xFF1A1333), padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
             onPressed: _submitAnswer,
             child: const Text("Check Answer"),
           ),
@@ -171,14 +171,14 @@ class _ActiveRecallScreenState extends State<ActiveRecallScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.check_circle_outline, size: 80, color: Colors.white),
+          const Icon(Icons.check_circle_outline, size: 80, color: Color(0xFF1A1333)),
           const SizedBox(height: 20),
-          const Text("Great Job!", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white)),
+          const Text("Great Job!", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
           const SizedBox(height: 10),
-          const Text("Active recall strengthens your memory.", textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: Colors.white70)),
+          const Text("Active recall strengthens your memory.", textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: Color(0xB3FFFFFF))),
           const SizedBox(height: 40),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: color, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
+            style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF1A1333), foregroundColor: color, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
             onPressed: () => Navigator.pop(context, true),
             child: const Text("Claim Points"),
           ),
@@ -187,3 +187,4 @@ class _ActiveRecallScreenState extends State<ActiveRecallScreen> {
     );
   }
 }
+

@@ -26,7 +26,7 @@ class _MonthlyMoodScreenState extends State<MonthlyMoodScreen> {
       case 'Okay': return Colors.amber;
       case 'Low': return Colors.orange;
       case 'Very Low': return Colors.red;
-      default: return Colors.black.withValues(alpha: 0.05);
+      default: return Color(0xFFFFFFFF).withValues(alpha: 0.05);
     }
   }
 
@@ -64,11 +64,11 @@ class _MonthlyMoodScreenState extends State<MonthlyMoodScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: Color(0xFF2D3142)),
+          iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
           title: const Text(
             'Monthly Mood',
             style: TextStyle(
-                color: Color(0xFF2D3142), fontWeight: FontWeight.bold),
+                color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold),
           ),
         ),
         body: SafeArea(
@@ -103,13 +103,13 @@ class _MonthlyMoodScreenState extends State<MonthlyMoodScreen> {
                           IconButton(
                             icon: const Icon(
                                 Icons.chevron_left,
-                                color: Color(0xFF2D3142)),
+                                color: Color(0xFFFFFFFF)),
                             onPressed: _prevMonth,
                           ),
                           Text(
                             DateFormat('MMMM yyyy').format(_month),
                             style: const TextStyle(
-                              color: Color(0xFF2D3142),
+                              color: Color(0xFFFFFFFF),
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -117,7 +117,7 @@ class _MonthlyMoodScreenState extends State<MonthlyMoodScreen> {
                           IconButton(
                             icon: const Icon(
                                 Icons.chevron_right,
-                                color: Color(0xFF2D3142)),
+                                color: Color(0xFFFFFFFF)),
                             onPressed: _nextMonth,
                           ),
                         ],
@@ -196,7 +196,7 @@ class _MonthlyMoodScreenState extends State<MonthlyMoodScreen> {
                                     color: isSelected
                                         ? const Color(0xFF8C52FF)
                                         : isToday
-                                            ? const Color(0xFF2D3142)
+                                            ? const Color(0xFFFFFFFF)
                                             : Colors.transparent,
                                     width: isSelected ? 3 : 2,
                                   ),
@@ -210,7 +210,7 @@ class _MonthlyMoodScreenState extends State<MonthlyMoodScreen> {
                                       style: TextStyle(
                                         color: mood != null &&
                                             mood.isNotEmpty
-                                            ? Colors.white
+                                            ? Color(0xFF1A1333)
                                             : const Color(0xFF9CA3AF),
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,
@@ -282,7 +282,7 @@ class _MonthlyMoodScreenState extends State<MonthlyMoodScreen> {
       margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.88),
+        color: Color(0xFF1A1333).withValues(alpha: 0.88),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: const Color(0xFFE5E7EB)),
       ),
@@ -292,7 +292,7 @@ class _MonthlyMoodScreenState extends State<MonthlyMoodScreen> {
           Text(
             DateFormat('EEE, dd MMM yyyy').format(DateTime.parse(_selectedDateKey)),
             style: const TextStyle(
-              color: Color(0xFF2D3142),
+              color: Color(0xFFFFFFFF),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -311,3 +311,4 @@ class _MonthlyMoodScreenState extends State<MonthlyMoodScreen> {
     );
   }
 }
+

@@ -98,19 +98,12 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
                   gradient: LinearGradient(
                     begin: _topAlignmentAnimation.value,
                     end: _bottomAlignmentAnimation.value,
-                    colors: widget.isLightMode
-                        ? const [
-                            Colors.white,
-                            Color(0xFFFCFCFC), // extremely light white-grey
-                            Colors.white,
-                            Color(0xFFF7F7F7), // very light white-grey
-                          ]
-                        : const [
-                            Color(0xFF5E17EB), // Deep Purple
-                            Color(0xFF8C52FF), // Vibrant Purple
-                            Color(0xFF38B6FF), // Light Blue
-                            Color(0xFF5CE1E6), // Mint/Cyan
-                          ],
+                    colors: const [
+                      Color(0xFF2C1A4D), // Soft glowing purple
+                      Color(0xFF150E28), // Deep purple
+                      Color(0xFF0D0B1A), // Near black
+                      Color(0xFF1A0F33), // Deep purple-blue
+                    ],
                     stops: const [0.0, 0.4, 0.7, 1.0],
                   ),
                 ),
@@ -125,7 +118,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
               child: Container(
-                color: Colors.black.withOpacity(0.15),
+                color: Color(0xFFFFFFFF).withOpacity(0.15),
               ),
             ),
           ),
@@ -138,3 +131,4 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
     );
   }
 }
+

@@ -91,12 +91,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings', style: TextStyle(color: Colors.black87)),
-        backgroundColor: Colors.white,
+        title: const Text('Settings', style: TextStyle(color: Color(0xFFFFFFFF))),
+        backgroundColor: Color(0xFF1A1333),
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
       ),
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Color(0xFF0F0C20),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -104,7 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Account Information', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87)),
+                  const Text('Account Information', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFFFFFFFF))),
                   const SizedBox(height: 16),
                   
                   TextField(
@@ -112,7 +112,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     decoration: InputDecoration(
                       labelText: 'Display Name',
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Color(0xFF1A1333),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                     ),
                   ),
@@ -123,7 +123,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     decoration: InputDecoration(
                       labelText: 'Contact Number',
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Color(0xFF1A1333),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                     ),
                   ),
@@ -135,7 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     decoration: InputDecoration(
                       labelText: 'Email Address',
                       filled: true,
-                      fillColor: Colors.grey[200],
+                      fillColor: Color(0xFF1A1333),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                     ),
                   ),
@@ -155,7 +155,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   
                   const SizedBox(height: 40),
-                  const Text('Security', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87)),
+                  const Text('Security', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFFFFFFFF))),
                   const SizedBox(height: 16),
                   
                   SizedBox(
@@ -177,3 +177,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 }
+
+

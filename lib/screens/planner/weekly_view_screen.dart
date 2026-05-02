@@ -34,11 +34,11 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: Color(0xFF2D3142)),
+          iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
           title: Text(
             'Week of ${DateFormat('dd MMM').format(_weekStart)}',
             style: const TextStyle(
-                color: Color(0xFF2D3142), fontWeight: FontWeight.bold),
+                color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold),
           ),
         ),
         body: SafeArea(
@@ -83,11 +83,11 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color(0xFF1A1333),
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: isToday ? _primaryColorW.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.05),
+                            color: isToday ? _primaryColorW.withValues(alpha: 0.15) : Color(0xFFFFFFFF).withValues(alpha: 0.05),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
                           ),
@@ -116,7 +116,7 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                                     DateFormat('EEEE').format(day),
                                     style: TextStyle(
                                       color: isToday
-                                          ? const Color(0xFF2D3142)
+                                          ? const Color(0xFFFFFFFF)
                                           : const Color(0xFF6B7280),
                                       fontWeight: isToday
                                           ? FontWeight.bold
@@ -208,7 +208,7 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                                 style: TextStyle(
                                   color: done
                                       ? const Color(0xFF9CA3AF)
-                                      : const Color(0xFF2D3142),
+                                      : const Color(0xFFFFFFFF),
                                   fontSize: 14,
                                   decoration: done
                                       ? TextDecoration

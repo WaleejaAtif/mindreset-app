@@ -82,7 +82,7 @@ class GamesScreen extends StatelessWidget {
             style: TextStyle(
               fontFamily: 'LeagueSpartan',
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Color(0xFF1A1333),
               fontSize: 22,
             ),
           ),
@@ -96,7 +96,7 @@ class GamesScreen extends StatelessWidget {
                   const Text(
                     'Train your mind 🧠',
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: Color(0xB3FFFFFF),
                       fontSize: 14,
                       letterSpacing: 0.5,
                     ),
@@ -199,7 +199,7 @@ class _GameCard extends StatelessWidget {
             ],
           ),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white24, width: 1),
+          border: Border.all(color: Color(0x3DFFFFFF), width: 1),
           boxShadow: [
             BoxShadow(
               color: meta.color.withOpacity(0.4),
@@ -216,7 +216,7 @@ class _GameCard extends StatelessWidget {
             Text(
               meta.title,
               style: const TextStyle(
-                color: Colors.white,
+                color: Color(0xFF1A1333),
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
                 fontFamily: 'LeagueSpartan',
@@ -228,7 +228,7 @@ class _GameCard extends StatelessWidget {
               child: Text(
                 meta.subtitle,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white70, fontSize: 11),
+                style: const TextStyle(color: Color(0xB3FFFFFF), fontSize: 11),
               ),
             ),
           ],
@@ -250,8 +250,8 @@ class _GameRulesScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: Text(meta.title, style: const TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Color(0xFF1A1333)),
+        title: Text(meta.title, style: const TextStyle(color: Color(0xFF1A1333))),
       ),
       body: SafeArea(
         child: Padding(
@@ -264,7 +264,7 @@ class _GameRulesScreen extends StatelessWidget {
               Text(
                 meta.subtitle,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: Color(0xFF1A1333),
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -280,7 +280,7 @@ class _GameRulesScreen extends StatelessWidget {
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: meta.color,
-                    foregroundColor: Colors.white,
+                    foregroundColor: Color(0xFF1A1333),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -321,7 +321,7 @@ class _RulePanel extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.08),
+        color: Color(0xFF1A1333).withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: color.withValues(alpha: 0.5)),
       ),
@@ -348,7 +348,7 @@ class _RulePanel extends StatelessWidget {
                   Expanded(
                     child: Text(
                       line,
-                      style: const TextStyle(color: Colors.white70, height: 1.3),
+                      style: const TextStyle(color: Color(0xB3FFFFFF), height: 1.3),
                     ),
                   ),
                 ],
@@ -481,7 +481,7 @@ class _BalancePuzzleGameState extends State<_BalancePuzzleGame> {
   Color _cellColor(int r, int c) {
     if (_locked[r][c]) return const Color(0xFF4A3580);
     final v = _board[r][c];
-    if (v == 0) return Colors.white10;
+    if (v == 0) return Color(0x1AFFFFFF);
     if (v == 1) return const Color(0xFF7B52E8).withOpacity(0.7);
     return const Color(0xFFFFD600).withOpacity(0.7);
   }
@@ -493,11 +493,11 @@ class _BalancePuzzleGameState extends State<_BalancePuzzleGame> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF2A1A55),
         title: const Text('Balance Puzzle',
-            style: TextStyle(color: Colors.white)),
-        iconTheme: const IconThemeData(color: Colors.white),
+            style: TextStyle(color: Color(0xFF1A1333))),
+        iconTheme: const IconThemeData(color: Color(0xFF1A1333)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh, color: Colors.white),
+            icon: const Icon(Icons.refresh, color: Color(0xFF1A1333)),
             onPressed: () => setState(_initBoard),
           )
         ],
@@ -508,7 +508,7 @@ class _BalancePuzzleGameState extends State<_BalancePuzzleGame> {
             padding: EdgeInsets.all(12),
             child: Text(
               'Tap to cycle: empty → 🌙 → ⭐\nEach row & column needs 3 moons + 3 stars',
-              style: TextStyle(color: Colors.white60, fontSize: 12),
+              style: TextStyle(color: Color(0x99FFFFFF), fontSize: 12),
               textAlign: TextAlign.center,
             ),
           ),
@@ -545,7 +545,7 @@ class _BalancePuzzleGameState extends State<_BalancePuzzleGame> {
                             border: Border.all(
                               color: _locked[r][c]
                                   ? Colors.purpleAccent.withOpacity(0.7)
-                                  : Colors.white12,
+                                  : Color(0x1FFFFFFF),
                             ),
                           ),
                           child: Center(
@@ -578,7 +578,7 @@ class _BalancePuzzleGameState extends State<_BalancePuzzleGame> {
                         backgroundColor: const Color(0xFF6C3DD6)),
                     onPressed: () => setState(_initBoard),
                     child: const Text('New Puzzle',
-                        style: TextStyle(color: Colors.white)),
+                        style: TextStyle(color: Color(0xFF1A1333))),
                   ),
                 ],
               ),
@@ -591,16 +591,16 @@ class _BalancePuzzleGameState extends State<_BalancePuzzleGame> {
   Widget _statBadge(String label, String value) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.white12,
+          color: Color(0x1FFFFFFF),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           children: [
             Text(label,
-                style: const TextStyle(color: Colors.white54, fontSize: 11)),
+                style: const TextStyle(color: Color(0x8AFFFFFF), fontSize: 11)),
             Text(value,
                 style: const TextStyle(
-                    color: Colors.white,
+                    color: Color(0xFF1A1333),
                     fontSize: 16,
                     fontWeight: FontWeight.bold)),
           ],
@@ -747,11 +747,11 @@ class _WordleGameState extends State<_WordleGame> {
       backgroundColor: const Color(0xFF121213),
       appBar: AppBar(
         backgroundColor: const Color(0xFF1A1A1B),
-        title: const Text('Wordle', style: TextStyle(color: Colors.white)),
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Wordle', style: TextStyle(color: Color(0xFF1A1333))),
+        iconTheme: const IconThemeData(color: Color(0xFF1A1333)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh, color: Colors.white),
+            icon: const Icon(Icons.refresh, color: Color(0xFF1A1333)),
             onPressed: () => setState(_newGame),
           )
         ],
@@ -828,7 +828,7 @@ class _WordleGameState extends State<_WordleGame> {
             child: Center(
               child: Text(ch,
                   style: const TextStyle(
-                      color: Colors.white,
+                      color: Color(0xFF1A1333),
                       fontSize: 22,
                       fontWeight: FontWeight.bold)),
             ),
@@ -869,7 +869,7 @@ class _WordleGameState extends State<_WordleGame> {
                   child: Center(
                     child: Text(ch,
                         style: const TextStyle(
-                            color: Colors.white,
+                            color: Color(0xFF1A1333),
                             fontSize: 11,
                             fontWeight: FontWeight.bold)),
                   ),
@@ -1053,15 +1053,15 @@ class _TetrisGameState extends State<_TetrisGame> {
       backgroundColor: const Color(0xFF0D1117),
       appBar: AppBar(
         backgroundColor: const Color(0xFF161B22),
-        title: const Text('Tetris', style: TextStyle(color: Colors.white)),
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Tetris', style: TextStyle(color: Color(0xFF1A1333))),
+        iconTheme: const IconThemeData(color: Color(0xFF1A1333)),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 14),
             child: Center(
               child: Text('Score: $_score',
                   style: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold)),
+                      color: Color(0xFF1A1333), fontWeight: FontWeight.bold)),
             ),
           ),
         ],
@@ -1075,7 +1075,7 @@ class _TetrisGameState extends State<_TetrisGame> {
                         horizontal: 36, vertical: 16)),
                 onPressed: () => setState(_start),
                 child: const Text('Start Game',
-                    style: TextStyle(color: Colors.white, fontSize: 18)),
+                    style: TextStyle(color: Color(0xFF1A1333), fontSize: 18)),
               ),
             )
           : Column(
@@ -1112,7 +1112,7 @@ class _TetrisGameState extends State<_TetrisGame> {
                             ),
                             if (_gameOver)
                               Container(
-                                color: Colors.black54,
+                                color: Color(0xFFAFA8BA),
                                 child: Center(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -1124,7 +1124,7 @@ class _TetrisGameState extends State<_TetrisGame> {
                                               fontWeight: FontWeight.bold)),
                                       Text('Score: $_score',
                                           style: const TextStyle(
-                                              color: Colors.white, fontSize: 20)),
+                                              color: Color(0xFF1A1333), fontSize: 20)),
                                       const SizedBox(height: 10),
                                       ElevatedButton(
                                         onPressed: () => setState(_start),
@@ -1165,9 +1165,9 @@ class _TetrisGameState extends State<_TetrisGame> {
           decoration: BoxDecoration(
             color: const Color(0xFF21262D),
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.white24),
+            border: Border.all(color: Color(0x3DFFFFFF)),
           ),
-          child: Icon(icon, color: Colors.white, size: 26),
+          child: Icon(icon, color: Color(0xFF1A1333), size: 26),
         ),
       );
 }
@@ -1179,7 +1179,7 @@ class _GridPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.white10..strokeWidth = 0.5;
+    final paint = Paint()..color = Color(0x1AFFFFFF)..strokeWidth = 0.5;
     for (int r = 0; r <= rows; r++) {
       canvas.drawLine(Offset(0, r * cellH), Offset(size.width, r * cellH), paint);
     }
@@ -1323,7 +1323,7 @@ class _Game2048State extends State<_Game2048> {
     return map[v] ?? const Color(0xFF3C3A32);
   }
 
-  Color _textColor(int v) => v <= 4 ? const Color(0xFF776E65) : Colors.white;
+  Color _textColor(int v) => v <= 4 ? const Color(0xFF776E65) : Color(0xFF1A1333);
 
   @override
   Widget build(BuildContext context) {
@@ -1333,8 +1333,8 @@ class _Game2048State extends State<_Game2048> {
         backgroundColor: const Color(0xFFBBADA0),
         title: const Text('2048',
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22)),
-        iconTheme: const IconThemeData(color: Colors.white),
+                color: Color(0xFF1A1333), fontWeight: FontWeight.bold, fontSize: 22)),
+        iconTheme: const IconThemeData(color: Color(0xFF1A1333)),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
@@ -1350,12 +1350,12 @@ class _Game2048State extends State<_Game2048> {
                   children: [
                     const Text('SCORE',
                         style: TextStyle(
-                            color: Colors.white70,
+                            color: Color(0xB3FFFFFF),
                             fontSize: 10,
                             fontWeight: FontWeight.bold)),
                     Text('$_score',
                         style: const TextStyle(
-                            color: Colors.white,
+                            color: Color(0xFF1A1333),
                             fontSize: 16,
                             fontWeight: FontWeight.bold)),
                   ],
@@ -1364,7 +1364,7 @@ class _Game2048State extends State<_Game2048> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.refresh, color: Colors.white),
+            icon: const Icon(Icons.refresh, color: Color(0xFF1A1333)),
             onPressed: () => setState(_newGame),
           ),
         ],
@@ -1434,7 +1434,7 @@ class _Game2048State extends State<_Game2048> {
           ),
           if (_won || _over)
             Container(
-              color: Colors.black45,
+              color: Color(0x73FFFFFF),
               child: Center(
                 child: Container(
                   padding: const EdgeInsets.all(32),
@@ -1466,7 +1466,7 @@ class _Game2048State extends State<_Game2048> {
                             backgroundColor: const Color(0xFF8F7A66)),
                         onPressed: () => setState(_newGame),
                         child: const Text('New Game',
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(color: Color(0xFF1A1333))),
                       ),
                     ],
                   ),
@@ -1478,3 +1478,5 @@ class _Game2048State extends State<_Game2048> {
     );
   }
 }
+
+

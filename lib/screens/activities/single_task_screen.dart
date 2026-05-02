@@ -17,7 +17,7 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
     if (_controller.text.trim().isEmpty) return;
     if (_activeTask != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Finish your current task first! No multitasking allowed.", style: TextStyle(color: Colors.white)), backgroundColor: Colors.redAccent),
+        const SnackBar(content: Text("Finish your current task first! No multitasking allowed.", style: TextStyle(color: Color(0xFF1A1333))), backgroundColor: Colors.redAccent),
       );
       return;
     }
@@ -43,12 +43,12 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
     final color = Color(widget.item['colorHex'] ?? 0xFFc2a7c3);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8FD),
+      backgroundColor: const Color(0xFF0F0C20),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
-        title: Text(widget.item['title'] ?? 'One Thing', style: const TextStyle(color: Colors.black87)),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+        title: Text(widget.item['title'] ?? 'One Thing', style: const TextStyle(color: Color(0xFFFFFFFF))),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -59,14 +59,14 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
             children: [
               Text(
                 widget.item['desc'] ?? 'Focus on one task only.',
-                style: const TextStyle(fontSize: 16, color: Colors.black54),
+                style: const TextStyle(fontSize: 16, color: Color(0xFFAFA8BA)),
               ),
               const SizedBox(height: 30),
               if (_activeTask == null) ...[
                 const Text("What is the ONE thing you need to do right now?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 16),
                 Container(
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))]),
+                  decoration: BoxDecoration(color: Color(0xFF1A1333), borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: Color(0xFFFFFFFF).withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))]),
                   child: TextField(
                     controller: _controller,
                     decoration: InputDecoration(
@@ -87,10 +87,10 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
                   decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: color.withOpacity(0.3), blurRadius: 15, offset: const Offset(0, 8))]),
                   child: Column(
                     children: [
-                      Text(_activeTask!, textAlign: TextAlign.center, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
+                      Text(_activeTask!, textAlign: TextAlign.center, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
                       const SizedBox(height: 30),
                       ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: color, padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12)),
+                        style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF1A1333), foregroundColor: color, padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12)),
                         onPressed: _completeTask,
                         icon: const Icon(Icons.check_circle),
                         label: const Text("I Finished It!"),
@@ -115,3 +115,4 @@ class _SingleTaskScreenState extends State<SingleTaskScreen> {
     );
   }
 }
+

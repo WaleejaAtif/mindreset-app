@@ -10,21 +10,22 @@ class ThemeBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/theme_bg.png'),
-          fit: BoxFit.cover,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFF2C1A4D), // Soft glowing purple at top
+            Color(0xFF150E28), // Deep purple middle
+            Color(0xFF0D0B1A), // Near black at bottom
+          ],
+          stops: [0.0, 0.4, 1.0],
         ),
       ),
       child: Stack(
         children: [
-          // Purple tinted overlay
+          // Optional subtle glow effect
           Container(
-            color: const Color(0xFF8C52FF).withValues(alpha: 0.15),
-          ),
-          // Blur effect
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-            child: Container(color: Colors.transparent),
+            color: const Color(0xFF8C52FF).withValues(alpha: 0.05),
           ),
           child,
         ],
@@ -32,3 +33,4 @@ class ThemeBackground extends StatelessWidget {
     );
   }
 }
+

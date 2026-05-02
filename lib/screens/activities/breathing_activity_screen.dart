@@ -58,12 +58,12 @@ class _BreathingActivityScreenState extends State<BreathingActivityScreen>
     final color = Color(widget.item['colorHex'] ?? 0xFFb3957c);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8FD),
+      backgroundColor: const Color(0xFF0F0C20),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
-        title: Text(widget.item['title'] ?? 'Breathe', style: const TextStyle(color: Colors.black87)),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+        title: Text(widget.item['title'] ?? 'Breathe', style: const TextStyle(color: Color(0xFFFFFFFF))),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -74,7 +74,7 @@ class _BreathingActivityScreenState extends State<BreathingActivityScreen>
               child: Text(
                 widget.item['desc'] ?? '',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16, color: Colors.black54),
+                style: const TextStyle(fontSize: 16, color: Color(0xFFAFA8BA)),
               ),
             ),
             Expanded(
@@ -114,7 +114,7 @@ class _BreathingActivityScreenState extends State<BreathingActivityScreen>
                           style: const TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: Color(0xFF1A1333),
                           ),
                         ),
                       ],
@@ -130,13 +130,13 @@ class _BreathingActivityScreenState extends State<BreathingActivityScreen>
                 height: 60,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black87,
+                    backgroundColor: Color(0xFFFFFFFF),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   onPressed: () {
                     Navigator.pop(context, true);
                   },
-                  child: const Text("Finish Session", style: TextStyle(color: Colors.white, fontSize: 18)),
+                  child: const Text("Finish Session", style: TextStyle(color: Color(0xFF1A1333), fontSize: 18)),
                 ),
               ),
             ),
@@ -146,3 +146,4 @@ class _BreathingActivityScreenState extends State<BreathingActivityScreen>
     );
   }
 }
+

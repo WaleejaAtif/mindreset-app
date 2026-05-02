@@ -33,12 +33,12 @@ class _HabitStackingScreenState extends State<HabitStackingScreen> {
     final color = Color(widget.item['colorHex'] ?? 0xFFc2a7c3);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8FD),
+      backgroundColor: const Color(0xFF0F0C20),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
-        title: Text(widget.item['title'] ?? 'Habit Stacking', style: const TextStyle(color: Colors.black87)),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+        title: Text(widget.item['title'] ?? 'Habit Stacking', style: const TextStyle(color: Color(0xFFFFFFFF))),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -49,23 +49,23 @@ class _HabitStackingScreenState extends State<HabitStackingScreen> {
             children: [
               Text(
                 widget.item['desc'] ?? '',
-                style: const TextStyle(fontSize: 16, color: Colors.black54),
+                style: const TextStyle(fontSize: 16, color: Color(0xFFAFA8BA)),
               ),
               const SizedBox(height: 40),
               Container(
                 padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))]),
+                decoration: BoxDecoration(color: Color(0xFF1A1333), borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: Color(0xFFFFFFFF).withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))]),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("After I...", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87)),
+                    const Text("After I...", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFFFFFFFF))),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _existingHabitController,
                       decoration: const InputDecoration(hintText: "e.g. Brush my teeth", border: UnderlineInputBorder()),
                     ),
                     const SizedBox(height: 30),
-                    const Text("I will...", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87)),
+                    const Text("I will...", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFFFFFFFF))),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _newHabitController,
@@ -81,7 +81,7 @@ class _HabitStackingScreenState extends State<HabitStackingScreen> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: color, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                   onPressed: _submit,
-                  child: const Text("Lock in my Stack!", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                  child: const Text("Lock in my Stack!", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
                 ),
               ),
             ],
@@ -91,3 +91,4 @@ class _HabitStackingScreenState extends State<HabitStackingScreen> {
     );
   }
 }
+

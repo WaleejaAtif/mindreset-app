@@ -57,16 +57,16 @@ class _SparkleBackgroundState extends State<SparkleBackground> with SingleTicker
   @override
   Widget build(BuildContext context) {
     return Container(
-      // Lighter purple blended background
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
           colors: [
-            Color(0xFFFFFFFF), // Pure white
-            Color(0xFFF8F9FA), // Off-white
-            Color(0xFFF0F2F5), // Very light greyish-white
+            Color(0xFF2C1A4D), // Soft glowing purple at top
+            Color(0xFF150E28), // Deep purple middle
+            Color(0xFF0D0B1A), // Near black at bottom
           ],
+          stops: [0.0, 0.4, 1.0],
         ),
       ),
       child: Stack(
@@ -145,3 +145,4 @@ class _SparklePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _SparklePainter oldDelegate) => true;
 }
+

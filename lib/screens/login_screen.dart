@@ -10,7 +10,7 @@ import '../widgets/animated_background.dart';
 // --- NEW ZENIFY COLORS ---
 const Color _primaryColor = Color(0xFF8C52FF); // Vibrant Purple
 const Color _darkBgColor = Color(0xFF5E17EB); // Deep Purple
-const Color _textColor = Colors.white;
+const Color _textColor = Color(0xFF1A1333);
 
 enum ScreenType { splash, login, register }
 
@@ -201,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // SPLASH
   Widget _buildSplashUI() {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF1A1333),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -221,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
-                  color: Colors.black,
+                  color: Color(0xFFFFFFFF),
                   letterSpacing: -0.5,
                 ),
                 textAlign: TextAlign.center,
@@ -231,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 "Your AI companion for a balanced mind.",
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.black54,
+                  color: Color(0xFFAFA8BA),
                   height: 1.5,
                 ),
                 textAlign: TextAlign.center,
@@ -247,7 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       setState(() => _currentScreen = ScreenType.register),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF8C52FF), // App's vibrant purple
-                    foregroundColor: Colors.white,
+                    foregroundColor: Color(0xFF1A1333),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -294,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1333)),
             onPressed: () => setState(() => _currentScreen = ScreenType.splash),
           ),
         ),
@@ -304,11 +304,11 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color(0xFF1A1333),
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Color(0xFFFFFFFF).withOpacity(0.1),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   )
@@ -321,7 +321,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Text("Welcome Back",
                       style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: _primaryColor)),
                   const SizedBox(height: 8),
-                  const Text("Log in to continue", style: TextStyle(color: Colors.black54)),
+                  const Text("Log in to continue", style: TextStyle(color: Color(0xFFAFA8BA))),
                   const SizedBox(height: 30),
 
                   TextField(
@@ -358,7 +358,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: _login,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: _primaryColor,
-                              foregroundColor: Colors.white,
+                              foregroundColor: Color(0xFF1A1333),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             ),
                             child: const Text("Login", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -369,7 +369,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   TextButton(
                     onPressed: _guest,
-                    child: const Text("Continue as Guest", style: TextStyle(color: Colors.black54)),
+                    child: const Text("Continue as Guest", style: TextStyle(color: Color(0xFFAFA8BA))),
                   ),
                 ],
               ),
@@ -391,7 +391,7 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1333)),
             onPressed: () => setState(() => _currentScreen = ScreenType.splash),
           ),
         ),
@@ -401,11 +401,11 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color(0xFF1A1333),
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Color(0xFFFFFFFF).withOpacity(0.1),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   )
@@ -418,7 +418,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Text("Create Account",
                       style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: _primaryColor)),
                   const SizedBox(height: 8),
-                  const Text("Start your journey", style: TextStyle(color: Colors.black54)),
+                  const Text("Start your journey", style: TextStyle(color: Color(0xFFAFA8BA))),
                   const SizedBox(height: 30),
 
                   TextField(
@@ -468,7 +468,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: _register,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: _primaryColor,
-                              foregroundColor: Colors.white,
+                              foregroundColor: Color(0xFF1A1333),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             ),
                             child: const Text("Register", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -480,7 +480,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextButton(
                     onPressed: () =>
                         setState(() => _currentScreen = ScreenType.login),
-                    child: const Text("Already have an account? Login", style: TextStyle(color: Colors.black54)),
+                    child: const Text("Already have an account? Login", style: TextStyle(color: Color(0xFFAFA8BA))),
                   ),
                 ],
               ),
@@ -503,3 +503,4 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+

@@ -96,7 +96,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF1A1333),
       appBar: AppBar(
         title: const Text(
           'Add New Task',
@@ -106,7 +106,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFF1A1333),
         elevation: 0,
         iconTheme: const IconThemeData(color: Color(0xff3a2355)),
       ),
@@ -160,7 +160,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       c,
                       style: TextStyle(
                         color:
-                        selected ? Colors.white : Colors.black87,
+                        selected ? Color(0xFF1A1333) : Color(0xFFFFFFFF),
                         fontWeight: selected
                             ? FontWeight.bold
                             : FontWeight.normal,
@@ -251,7 +251,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 child: const Text(
                   'Save Task',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Color(0xFF1A1333),
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -322,7 +322,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             child: Text(
               label,
               style: TextStyle(
-                color: selected ? Colors.white : color,
+                color: selected ? Color(0xFF1A1333) : color,
                 fontWeight: FontWeight.bold,
                 fontSize: 13,
               ),
@@ -333,3 +333,4 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 }
+

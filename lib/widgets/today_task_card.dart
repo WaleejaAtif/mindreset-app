@@ -49,7 +49,7 @@ class TodayTaskCard extends StatelessWidget {
           return Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.1),
+              color: Color(0xFF1A1333).withOpacity(0.1),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Text(
@@ -115,10 +115,10 @@ class TodayTaskCard extends StatelessWidget {
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(20), // Softer corners
-                  border: Border.all(color: Colors.white, width: 1.5), // White frosted border
+                  border: Border.all(color: Color(0xFF1A1333), width: 1.5), // White frosted border
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05), // Soft shadow
+                      color: Color(0xFFFFFFFF).withValues(alpha: 0.05), // Soft shadow
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -133,7 +133,7 @@ class TodayTaskCard extends StatelessWidget {
                       child: Text(
                         'No tasks for today!\nAdd tasks in your Planner.',
                         style:
-                        TextStyle(color: Color(0xFF2D3142), height: 1.5, fontWeight: FontWeight.w500),
+                        TextStyle(color: Color(0xFFFFFFFF), height: 1.5, fontWeight: FontWeight.w500),
                       ),
                     ),
                   ],
@@ -209,7 +209,7 @@ class _TimelineTaskRow extends StatelessWidget {
                     child: Text(
                       category,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: Color(0xFF1A1333),
                         fontWeight: FontWeight.bold,
                         fontSize: 13,
                       ),
@@ -242,7 +242,7 @@ class _TimelineTaskRow extends StatelessWidget {
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.white, width: 1.5),
+                  border: Border.all(color: Color(0xFF1A1333), width: 1.5),
                   boxShadow: [
                     BoxShadow(
                       color: color.withValues(alpha: 0.1),
@@ -339,3 +339,4 @@ class _DashedLinePainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
+

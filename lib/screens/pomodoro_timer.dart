@@ -15,7 +15,7 @@ class PomodoroTimerScreen extends StatefulWidget {
 class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
   // Theme Color from reference image
   static const Color _primaryColor = Color(0xFF755F84);
-  static const Color _backgroundColor = Color(0xFFF9F8FD);
+  static const Color _backgroundColor = Color(0xFF0F0C20);
 
   // Timer Durations in seconds
   static const int _pomodoroSeconds = 25 * 60;
@@ -116,17 +116,17 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 20),
+          icon: const Icon(Icons.arrow_back_ios_new, color: Color(0xFFFFFFFF), size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Pomodoro Timer',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
+          style: TextStyle(color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold, fontSize: 18),
         ),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.more_vert, color: Colors.black),
+            icon: const Icon(Icons.more_vert, color: Color(0xFFFFFFFF)),
             onPressed: () {},
           ),
         ],
@@ -140,7 +140,7 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
             const Text('Planner/Task', style: TextStyle(color: Colors.grey, fontSize: 12)),
             const Text(
               'Prepare the brief',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFFFFFFFF)),
             ),
             const SizedBox(height: 30),
 
@@ -195,7 +195,7 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
             const Center(
               child: Text(
                 '1 of 4 intervals',
-                style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w500),
+                style: TextStyle(color: Color(0xFFAFA8BA), fontWeight: FontWeight.w500),
               ),
             ),
 
@@ -212,7 +212,7 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _primaryColor,
-                        foregroundColor: Colors.white,
+                        foregroundColor: Color(0xFF1A1333),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         elevation: 0,
                       ),
@@ -250,7 +250,7 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
         child: Text(
           label,
           style: TextStyle(
-            color: isActive ? Colors.white : _primaryColor,
+            color: isActive ? Color(0xFF1A1333) : _primaryColor,
             fontWeight: FontWeight.bold,
             fontSize: 13,
           ),
@@ -289,7 +289,7 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
           if (docs.isEmpty) {
             return const Center(
               child: Text('No Pomodoro records yet.',
-                  style: TextStyle(color: Colors.black54)),
+                  style: TextStyle(color: Color(0xFFAFA8BA))),
             );
           }
           return ListView.separated(
@@ -308,7 +308,7 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
                 width: 210,
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color(0xFF1A1333),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: _primaryColor.withValues(alpha: 0.2)),
                 ),
@@ -320,7 +320,7 @@ class _PomodoroTimerScreenState extends State<PomodoroTimerScreen> {
                     const SizedBox(height: 6),
                     Text(
                       '${ActivityService.readableTime(start)} - ${ActivityService.readableTime(end)}',
-                      style: const TextStyle(color: Colors.black54),
+                      style: const TextStyle(color: Color(0xFFAFA8BA)),
                     ),
                     const Spacer(),
                     Text(
@@ -391,3 +391,4 @@ class TimerPainter extends CustomPainter {
   @override
   bool shouldRepaint(TimerPainter oldDelegate) => oldDelegate.progress != progress;
 }
+

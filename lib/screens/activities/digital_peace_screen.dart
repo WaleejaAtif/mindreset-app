@@ -48,22 +48,22 @@ class _DigitalPeaceScreenState extends State<DigitalPeaceScreen> {
   Widget build(BuildContext context) {
     if (_inZenMode) {
       return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFFFFFFFF),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.do_not_disturb_on, color: Colors.white24, size: 100),
+              const Icon(Icons.do_not_disturb_on, color: Color(0x3DFFFFFF), size: 100),
               const SizedBox(height: 30),
               Text(
                 _formattedTime,
-                style: const TextStyle(fontSize: 64, fontWeight: FontWeight.w200, color: Colors.white, fontFeatures: [FontFeature.tabularFigures()]),
+                style: const TextStyle(fontSize: 64, fontWeight: FontWeight.w200, color: Color(0xFF1A1333), fontFeatures: [FontFeature.tabularFigures()]),
               ),
               const SizedBox(height: 20),
-              const Text("Zen Mode Active.\nFocus on your task.", textAlign: TextAlign.center, style: TextStyle(color: Colors.white54, fontSize: 18)),
+              const Text("Zen Mode Active.\nFocus on your task.", textAlign: TextAlign.center, style: TextStyle(color: Color(0x8AFFFFFF), fontSize: 18)),
               const SizedBox(height: 60),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.white24, foregroundColor: Colors.white),
+                style: ElevatedButton.styleFrom(backgroundColor: Color(0x3DFFFFFF), foregroundColor: Color(0xFF1A1333)),
                 onPressed: _endZenMode,
                 child: const Text("End Zen Mode"),
               )
@@ -76,12 +76,12 @@ class _DigitalPeaceScreenState extends State<DigitalPeaceScreen> {
     final color = Color(widget.item['colorHex'] ?? 0xFF6f7f61);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8FD),
+      backgroundColor: const Color(0xFF0F0C20),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
-        title: Text(widget.item['title'] ?? 'Digital Peace', style: const TextStyle(color: Colors.black87)),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+        title: Text(widget.item['title'] ?? 'Digital Peace', style: const TextStyle(color: Color(0xFFFFFFFF))),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -99,13 +99,13 @@ class _DigitalPeaceScreenState extends State<DigitalPeaceScreen> {
               const Text(
                 "Step 1: Mute Your Phone",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFFFFFFF)),
               ),
               const SizedBox(height: 20),
               const Text(
                 "Please manually flip your phone's physical mute switch or turn on Do Not Disturb.",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: Colors.black54, height: 1.5),
+                style: TextStyle(fontSize: 16, color: Color(0xFFAFA8BA), height: 1.5),
               ),
               const SizedBox(height: 60),
               SizedBox(
@@ -117,7 +117,7 @@ class _DigitalPeaceScreenState extends State<DigitalPeaceScreen> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   onPressed: _startZenMode,
-                  child: const Text("Enter Zen Mode", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                  child: const Text("Enter Zen Mode", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
                 ),
               ),
             ],
@@ -127,3 +127,4 @@ class _DigitalPeaceScreenState extends State<DigitalPeaceScreen> {
     );
   }
 }
+

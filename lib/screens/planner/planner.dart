@@ -37,7 +37,7 @@ class PlannerScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF2D3142)),
+            icon: const Icon(Icons.arrow_back_ios, color: Color(0xFFFFFFFF)),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
@@ -47,7 +47,7 @@ class PlannerScreen extends StatelessWidget {
           ),
           title: const Text(
             'My Planner',
-            style: TextStyle(color: Color(0xFF2D3142), fontWeight: FontWeight.bold),
+            style: TextStyle(color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold),
           ),
         ),
 
@@ -60,7 +60,7 @@ class PlannerScreen extends StatelessWidget {
                   const Text(
                     'Plan your day',
                     style: TextStyle(
-                      color: Color(0xFF2D3142),
+                      color: Color(0xFFFFFFFF),
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
                     ),
@@ -134,10 +134,10 @@ class PlannerScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(builder: (_) => const AddTaskScreen()),
                       ),
-                      icon: const Icon(Icons.add, color: Colors.white),
+                      icon: const Icon(Icons.add, color: Color(0xFF1A1333)),
                       label: const Text(
                         'Add New Task',
-                        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(color: Color(0xFF1A1333), fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _primaryColor,
@@ -186,10 +186,10 @@ class _PlannerCard extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: Colors.white, width: 1.5), // Frosted border
+          border: Border.all(color: Color(0xFF1A1333), width: 1.5), // Frosted border
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
+              color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
               blurRadius: 15,
               offset: const Offset(0, 8),
             ),
@@ -212,7 +212,7 @@ class _PlannerCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(label,
-                    style: const TextStyle(color: Color(0xFF2D3142), fontWeight: FontWeight.bold, fontSize: 14)),
+                    style: const TextStyle(color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold, fontSize: 14)),
                 Text(subtitle,
                     style: const TextStyle(color: Color(0xFF6B7280), fontSize: 11)),
               ],
@@ -223,3 +223,4 @@ class _PlannerCard extends StatelessWidget {
     );
   }
 }
+

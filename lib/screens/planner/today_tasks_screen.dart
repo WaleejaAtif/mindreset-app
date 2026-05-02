@@ -65,15 +65,15 @@ class TodayTasksScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: const Text('Today\'s Tasks',
-              style: TextStyle(color: Color(0xFF2D3142), fontWeight: FontWeight.bold)),
+              style: TextStyle(color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold)),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF2D3142)),
+            icon: const Icon(Icons.arrow_back_ios, color: Color(0xFFFFFFFF)),
             onPressed: () => Navigator.pop(context),
           ),
           actions: [
             IconButton(
               icon: const Icon(Icons.add_circle_outline,
-                  color: Color(0xFF2D3142)),
+                  color: Color(0xFFFFFFFF)),
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -95,7 +95,7 @@ class TodayTasksScreen extends StatelessWidget {
                   return const Center(
                     child: CircularProgressIndicator(
                       valueColor:
-                      AlwaysStoppedAnimation(Colors.white),
+                      AlwaysStoppedAnimation(Color(0xFF1A1333)),
                     ),
                   );
                 }
@@ -118,11 +118,11 @@ class TodayTasksScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(Icons.checklist_rounded,
-                            color: Colors.white54, size: 64),
+                            color: Color(0x8AFFFFFF), size: 64),
                         const SizedBox(height: 12),
                         const Text('No tasks yet!',
                             style: TextStyle(
-                                color: Colors.white70,
+                                color: Color(0xB3FFFFFF),
                                 fontSize: 18)),
                         const SizedBox(height: 12),
                         ElevatedButton.icon(
@@ -136,7 +136,7 @@ class TodayTasksScreen extends StatelessWidget {
                           label: const Text('Add Task'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _primaryColor,
-                            foregroundColor: Colors.white,
+                            foregroundColor: Color(0xFF1A1333),
                           ),
                         ),
                       ],
@@ -148,7 +148,7 @@ class TodayTasksScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   children: [
                     if (pending.isNotEmpty) ...[
-                      _sectionHeader('Pending', Colors.white70),
+                      _sectionHeader('Pending', Color(0xB3FFFFFF)),
                       ...pending.map((doc) => _taskTile(
                           doc, _colorFor(doc['priority'] ?? 'Low'))),
                     ],
@@ -169,7 +169,7 @@ class TodayTasksScreen extends StatelessWidget {
             MaterialPageRoute(builder: (_) => const AddTaskScreen()),
           ),
           backgroundColor: _primaryColor,
-          child: const Icon(Icons.add, color: Colors.white),
+          child: const Icon(Icons.add, color: Color(0xFF1A1333)),
         ),
       ),
     );
@@ -180,7 +180,7 @@ class TodayTasksScreen extends StatelessWidget {
     child: Text(
       label,
       style: TextStyle(
-          color: color == Colors.white70 ? const Color(0xFF2D3142) : color,
+          color: color == Color(0xB3FFFFFF) ? const Color(0xFFFFFFFF) : color,
           fontWeight: FontWeight.bold,
           fontSize: 15),
     ),
@@ -201,14 +201,14 @@ class TodayTasksScreen extends StatelessWidget {
         ),
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
-        child: const Icon(Icons.delete_outline, color: Colors.white),
+        child: const Icon(Icons.delete_outline, color: Color(0xFF1A1333)),
       ),
       onDismissed: (_) => _delete(doc.id),
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color(0xFF1A1333),
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
@@ -230,13 +230,13 @@ class TodayTasksScreen extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: done ? Colors.green : Colors.transparent,
                   border: Border.all(
-                    color: done ? Colors.green : Colors.white60,
+                    color: done ? Colors.green : Color(0x99FFFFFF),
                     width: 2,
                   ),
                 ),
                 child: done
                     ? const Icon(Icons.check,
-                    size: 14, color: Colors.white)
+                    size: 14, color: Color(0xFF1A1333))
                     : null,
               ),
             ),
@@ -248,7 +248,7 @@ class TodayTasksScreen extends StatelessWidget {
                   Text(
                     data['title'] ?? '',
                     style: TextStyle(
-                      color: done ? const Color(0xFF9CA3AF) : const Color(0xFF2D3142),
+                      color: done ? const Color(0xFF9CA3AF) : const Color(0xFFFFFFFF),
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
                       decoration: done
@@ -300,7 +300,7 @@ class TodayTasksScreen extends StatelessWidget {
                   child: Text(
                     data['priority'] ?? '',
                     style: TextStyle(
-                      color: done ? Colors.white38 : color,
+                      color: done ? Color(0x61FFFFFF) : color,
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
                     ),
@@ -310,7 +310,7 @@ class TodayTasksScreen extends StatelessWidget {
                 Text(
                   data['category'] ?? '',
                   style: const TextStyle(
-                      color: Colors.white54, fontSize: 11),
+                      color: Color(0x8AFFFFFF), fontSize: 11),
                 ),
               ],
             ),
@@ -320,3 +320,5 @@ class TodayTasksScreen extends StatelessWidget {
     );
   }
 }
+
+

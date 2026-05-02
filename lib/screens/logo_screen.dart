@@ -76,7 +76,7 @@ class _LogoScreenState extends State<LogoScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     const textStyle = TextStyle(
-      color: Colors.black54,
+      color: Color(0xFFAFA8BA),
       fontSize: 18,
       fontWeight: FontWeight.bold,
       letterSpacing: 1.0,
@@ -84,7 +84,7 @@ class _LogoScreenState extends State<LogoScreen> with SingleTickerProviderStateM
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF1A1333),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -127,3 +127,4 @@ class _LogoScreenState extends State<LogoScreen> with SingleTickerProviderStateM
     );
   }
 }
+

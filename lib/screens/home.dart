@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 52,
             fit: BoxFit.contain,
           ),
-          iconTheme: const IconThemeData(color: Colors.black87), // Dark icons for white bg
+          iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)), // Dark icons for white bg
         ),
         bottomNavigationBar: const CustomBottomNav(currentIndex: 0),
         body: SafeArea(
@@ -104,3 +104,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+

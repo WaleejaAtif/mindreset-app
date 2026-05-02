@@ -187,8 +187,8 @@ class _ReflectScreenState extends State<ReflectScreen> {
                   MaterialPageRoute(builder: (_) => const SettingsScreen()),
                 ).then((_) => _loadUserData());
               },
-              icon: const Icon(Icons.settings, color: Color(0xFF2D3142)),
-              label: const Text('Settings', style: TextStyle(color: Color(0xFF2D3142))),
+              icon: const Icon(Icons.settings, color: Color(0xFFFFFFFF)),
+              label: const Text('Settings', style: TextStyle(color: Color(0xFFFFFFFF))),
             ),
             TextButton.icon(
               onPressed: () async {
@@ -196,8 +196,8 @@ class _ReflectScreenState extends State<ReflectScreen> {
                 if (!mounted) return;
                 Navigator.of(context).pushNamedAndRemoveUntil('/login', (_) => false);
               },
-              icon: const Icon(Icons.logout, color: Color(0xFF2D3142)),
-              label: const Text('Logout', style: TextStyle(color: Color(0xFF2D3142))),
+              icon: const Icon(Icons.logout, color: Color(0xFFFFFFFF)),
+              label: const Text('Logout', style: TextStyle(color: Color(0xFFFFFFFF))),
             ),
           ],
         ),
@@ -208,7 +208,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
           child: Text(
             _userName.isNotEmpty ? _userName[0].toUpperCase() : 'U',
             style: const TextStyle(
-              color: Colors.white,
+              color: Color(0xFF1A1333),
               fontSize: 36,
               fontWeight: FontWeight.bold,
             ),
@@ -218,14 +218,14 @@ class _ReflectScreenState extends State<ReflectScreen> {
         Text(
           _userName,
           style: const TextStyle(
-            color: Color(0xFF2D3142),
+            color: Color(0xFFFFFFFF),
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
         ),
         const Text(
           'Focus Level: Advanced',
-          style: TextStyle(color: Colors.black54, fontSize: 14),
+          style: TextStyle(color: Color(0xFFAFA8BA), fontSize: 14),
         ),
       ],
     );
@@ -269,9 +269,9 @@ class _ReflectScreenState extends State<ReflectScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.78),
+        color: Color(0xFF1A1333).withValues(alpha: 0.78),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white, width: 1.5),
+        border: Border.all(color: Color(0xFF1A1333), width: 1.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,7 +279,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
           const Text(
             'Today Record',
             style: TextStyle(
-              color: Color(0xFF2D3142),
+              color: Color(0xFFFFFFFF),
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -287,7 +287,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
           const SizedBox(height: 12),
           if (lines.isEmpty)
             const Text('No activity recorded today yet.',
-                style: TextStyle(color: Colors.black54))
+                style: TextStyle(color: Color(0xFFAFA8BA)))
           else
             ...lines.map(
               (line) => Padding(
@@ -353,7 +353,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
       child: Text(
         title,
         style: const TextStyle(
-          color: Color(0xFF2D3142),
+          color: Color(0xFFFFFFFF),
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
@@ -365,9 +365,9 @@ class _ReflectScreenState extends State<ReflectScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.72),
+        color: Color(0xFF1A1333).withValues(alpha: 0.72),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white),
+        border: Border.all(color: Color(0xFF1A1333)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -376,7 +376,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
           const SizedBox(width: 6),
           Text(label,
               style: const TextStyle(
-                  color: Color(0xFF2D3142), fontWeight: FontWeight.w700)),
+                  color: Color(0xFFFFFFFF), fontWeight: FontWeight.w700)),
         ],
       ),
     );
@@ -400,20 +400,20 @@ class _ReflectScreenState extends State<ReflectScreen> {
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white, width: 1.5),
+          border: Border.all(color: Color(0xFF1A1333), width: 1.5),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: const Color(0xFF2D3142), size: 30),
+            Icon(icon, color: const Color(0xFFFFFFFF), size: 30),
             const SizedBox(height: 12),
             Text(value,
                 style: const TextStyle(
-                    color: Color(0xFF2D3142),
+                    color: Color(0xFFFFFFFF),
                     fontSize: 18,
                     fontWeight: FontWeight.bold)),
             Text(title,
-                style: const TextStyle(color: Colors.black54, fontSize: 12)),
+                style: const TextStyle(color: Color(0xFFAFA8BA), fontSize: 12)),
           ],
         ),
       ),
@@ -436,22 +436,24 @@ class _ReflectScreenState extends State<ReflectScreen> {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white, width: 1.5),
+        border: Border.all(color: Color(0xFF1A1333), width: 1.5),
       ),
       child: ListTile(
         onTap: onTap,
         leading: CircleAvatar(
-          backgroundColor: Colors.white.withValues(alpha: 0.5),
+          backgroundColor: Color(0xFF1A1333).withValues(alpha: 0.5),
           child: Icon(icon, color: const Color(0xFF755F84)),
         ),
         title: Text(title,
             style: const TextStyle(
-                color: Color(0xFF2D3142), fontWeight: FontWeight.w600)),
+                color: Color(0xFFFFFFFF), fontWeight: FontWeight.w600)),
         subtitle: Text(subtitle,
-            style: const TextStyle(color: Colors.black54, fontSize: 12)),
+            style: const TextStyle(color: Color(0xFFAFA8BA), fontSize: 12)),
         trailing:
-            const Icon(Icons.arrow_forward_ios, color: Colors.black26, size: 14),
+            const Icon(Icons.arrow_forward_ios, color: Color(0x42FFFFFF), size: 14),
       ),
     );
   }
 }
+
+

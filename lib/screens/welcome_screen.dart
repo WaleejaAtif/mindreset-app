@@ -59,7 +59,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
     const textStyle = TextStyle(
       fontSize: 46,
       fontWeight: FontWeight.w300, // explicitly light
-      color: Colors.black, // requested black
+      color: Color(0xFFFFFFFF), // requested black
       letterSpacing: 1.5,
     );
 
@@ -82,7 +82,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
                     width: 8,
                     height: 8,
                     decoration: const BoxDecoration(
-                      color: Colors.black,
+                      color: Color(0xFFFFFFFF),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -92,7 +92,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
             const Text('ı', style: TextStyle(
               fontSize: 46,
               fontWeight: FontWeight.w300,
-              color: Colors.black,
+              color: Color(0xFFFFFFFF),
               letterSpacing: 1.5,
               height: 0.8, // Reduced height so it sits snug under the dot
             )),
@@ -113,7 +113,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
         Text(
           title,
           style: const TextStyle(
-            color: Color(0xFF2D3142),
+            color: Color(0xFFFFFFFF),
             fontSize: 18,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.5,
@@ -154,7 +154,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF1A1333),
       body: SafeArea(
         child: Column(
           children: [
@@ -201,7 +201,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
                   borderRadius: BorderRadius.circular(28),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
+                      color: Color(0xFFFFFFFF).withValues(alpha: 0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -213,7 +213,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
-                    foregroundColor: const Color(0xFF2D3142), // Dark text for contrast
+                    foregroundColor: const Color(0xFFFFFFFF), // Dark text for contrast
                     shadowColor: Colors.transparent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(28),
@@ -236,3 +236,4 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
     );
   }
 }
+

@@ -56,9 +56,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'MindReset',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        scaffoldBackgroundColor: Colors.white,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: const Color(0xFF0F0C20),
+        primaryColor: const Color(0xFF8B5CF6),
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFF8B5CF6),
+          secondary: Color(0xFFC084FC),
+          surface: Color(0xFF1E1442),
+          background: Color(0xFF0F0C20),
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF0F0C20),
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
       ),
       initialRoute: '/logo',
       routes: {
@@ -104,3 +115,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

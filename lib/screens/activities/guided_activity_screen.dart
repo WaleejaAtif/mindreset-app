@@ -12,12 +12,12 @@ class GuidedActivityScreen extends StatelessWidget {
     final icon = IconData(item['iconCode'] ?? Icons.star.codePoint, fontFamily: 'MaterialIcons');
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8FD),
+      backgroundColor: const Color(0xFF0F0C20),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
-        title: const Text('Activity', style: TextStyle(color: Colors.black87)),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+        title: const Text('Activity', style: TextStyle(color: Color(0xFFFFFFFF))),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -38,13 +38,13 @@ class GuidedActivityScreen extends StatelessWidget {
               Text(
                 item['title'] ?? 'Strategy',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),
+                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFFFFFFFF)),
               ),
               const SizedBox(height: 20),
               Text(
                 item['desc'] ?? '',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 18, color: Colors.black54, height: 1.5),
+                style: const TextStyle(fontSize: 18, color: Color(0xFFAFA8BA), height: 1.5),
               ),
               if (suggestions != null && suggestions!.isNotEmpty) ...[
                 const SizedBox(height: 30),
@@ -67,7 +67,7 @@ class GuidedActivityScreen extends StatelessWidget {
                           children: [
                             Icon(Icons.lightbulb_outline, size: 20, color: color),
                             const SizedBox(width: 12),
-                            Expanded(child: Text(s, style: const TextStyle(fontSize: 15, color: Colors.black87))),
+                            Expanded(child: Text(s, style: const TextStyle(fontSize: 15, color: Color(0xFFFFFFFF)))),
                           ],
                         ),
                       )),
@@ -96,7 +96,7 @@ class GuidedActivityScreen extends StatelessWidget {
                   },
                   child: const Text(
                     "I did it!",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333)),
                   ),
                 ),
               ),
@@ -107,3 +107,4 @@ class GuidedActivityScreen extends StatelessWidget {
     );
   }
 }
+

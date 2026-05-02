@@ -31,7 +31,7 @@ class LearnScreen extends StatelessWidget {
             onNotification: (notification) {
               if (notification is ScrollUpdateNotification) {
                 if (notification.metrics.pixels > 50) {
-                  appBarColor.value = Colors.white.withValues(alpha: 0.9);
+                  appBarColor.value = Color(0xFF1A1333).withValues(alpha: 0.9);
                 } else {
                   appBarColor.value = Colors.transparent;
                 }
@@ -66,7 +66,7 @@ class LearnScreen extends StatelessWidget {
                           child: const Text(
                             'Learning Today',
                             style: TextStyle(
-                              color: Colors.white, // Overridden by ShaderMask
+                              color: Color(0xFF1A1333), // Overridden by ShaderMask
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
@@ -217,11 +217,11 @@ class LearnScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Color(0xFF1A1333),
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
+                color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
                 blurRadius: 15,
                 offset: const Offset(0, 5),
               ),
@@ -254,7 +254,7 @@ class LearnScreen extends StatelessWidget {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => Navigator.pushNamed(context, route),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: textColor, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), elevation: 0),
+            style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF1A1333), foregroundColor: textColor, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), elevation: 0),
             child: Text(buttonText, style: const TextStyle(fontWeight: FontWeight.bold)),
           )
         ],
@@ -274,7 +274,7 @@ class LearnScreen extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(24),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8, offset: const Offset(0, 4))],
+          boxShadow: [BoxShadow(color: Color(0xFFFFFFFF).withOpacity(0.05), blurRadius: 8, offset: const Offset(0, 4))],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,19 +282,19 @@ class LearnScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
+                color: Color(0xFF1A1333).withOpacity(0.3),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, size: 40, color: iconColor),
             ),
             const Spacer(),
-            Text(title, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16, color: Colors.white)),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16, color: Color(0xFF1A1333))),
             const SizedBox(height: 4),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(child: Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.white70), overflow: TextOverflow.ellipsis)),
-                const Icon(Icons.arrow_forward, size: 18, color: Colors.white70),
+                Expanded(child: Text(subtitle, style: const TextStyle(fontSize: 12, color: Color(0xB3FFFFFF)), overflow: TextOverflow.ellipsis)),
+                const Icon(Icons.arrow_forward, size: 18, color: Color(0xB3FFFFFF)),
               ],
             ),
           ],
@@ -311,11 +311,11 @@ class LearnScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Color(0xFF1A1333),
             borderRadius: BorderRadius.circular(22),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
+                color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -329,7 +329,7 @@ class LearnScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: const TextStyle(color: Color(0xFF2D3142), fontWeight: FontWeight.bold)),
+                    Text(title, style: const TextStyle(color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold)),
                     Text(subtitle, style: const TextStyle(color: Color(0xFF6B7280), fontSize: 13)),
                   ],
                 ),
@@ -366,13 +366,13 @@ class LearnScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
+              color: Color(0xFF1A1333).withOpacity(0.14),
               borderRadius: BorderRadius.circular(999),
             ),
             child: const Text(
               'NEW SMART ASSISTANT',
               style: TextStyle(
-                color: Colors.white,
+                color: Color(0xFF1A1333),
                 fontWeight: FontWeight.w800,
                 fontSize: 11,
                 letterSpacing: 0.8,
@@ -383,7 +383,7 @@ class LearnScreen extends StatelessWidget {
           const Text(
             'Talk to a smart bot made for Learning Today.',
             style: TextStyle(
-              color: Colors.white,
+              color: Color(0xFF1A1333),
               fontSize: 24,
               fontWeight: FontWeight.w900,
             ),
@@ -392,7 +392,7 @@ class LearnScreen extends StatelessWidget {
           Text(
             'Ask about focus, procrastination, exams, or burnout. It chats back with calm support and picks the best next tool for you, like Pomodoro, Focus Games, or Explore Your Peace.',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.82),
+              color: Color(0xFF1A1333).withOpacity(0.82),
               height: 1.45,
               fontSize: 14,
             ),
@@ -411,7 +411,7 @@ class LearnScreen extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: () => Navigator.pushNamed(context, '/learningAssistant'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
+              backgroundColor: Color(0xFF1A1333),
               foregroundColor: const Color(0xFF5E17EB),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -439,16 +439,17 @@ class _AssistantTag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.16),
+        color: Color(0xFF1A1333).withOpacity(0.16),
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
         label,
         style: const TextStyle(
-          color: Colors.white,
+          color: Color(0xFF1A1333),
           fontWeight: FontWeight.w600,
         ),
       ),
     );
   }
 }
+

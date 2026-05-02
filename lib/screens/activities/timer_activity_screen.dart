@@ -89,12 +89,12 @@ class _TimerActivityScreenState extends State<TimerActivityScreen> {
     final progress = 1 - (_remainingSeconds / totalSeconds);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8FD),
+      backgroundColor: const Color(0xFF0F0C20),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
-        title: Text(widget.item['title'] ?? 'Timer', style: const TextStyle(color: Colors.black87)),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+        title: Text(widget.item['title'] ?? 'Timer', style: const TextStyle(color: Color(0xFFFFFFFF))),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -106,7 +106,7 @@ class _TimerActivityScreenState extends State<TimerActivityScreen> {
               Text(
                 widget.item['desc'] ?? '',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16, color: Colors.black54),
+                style: const TextStyle(fontSize: 16, color: Color(0xFFAFA8BA)),
               ),
               if (widget.suggestions != null && widget.suggestions!.isNotEmpty) ...[
                 const SizedBox(height: 20),
@@ -129,7 +129,7 @@ class _TimerActivityScreenState extends State<TimerActivityScreen> {
                           children: [
                             Icon(Icons.check_circle_outline, size: 16, color: color),
                             const SizedBox(width: 8),
-                            Expanded(child: Text(s, style: const TextStyle(fontSize: 14, color: Colors.black87))),
+                            Expanded(child: Text(s, style: const TextStyle(fontSize: 14, color: Color(0xFFFFFFFF)))),
                           ],
                         ),
                       )),
@@ -156,7 +156,7 @@ class _TimerActivityScreenState extends State<TimerActivityScreen> {
                     style: const TextStyle(
                       fontSize: 64,
                       fontWeight: FontWeight.w300,
-                      color: Colors.black87,
+                      color: Color(0xFFFFFFFF),
                       fontFeatures: [FontFeature.tabularFigures()],
                     ),
                   ),
@@ -170,7 +170,7 @@ class _TimerActivityScreenState extends State<TimerActivityScreen> {
                     heroTag: 'play_pause',
                     backgroundColor: color,
                     onPressed: _toggleTimer,
-                    child: Icon(_isRunning ? Icons.pause : Icons.play_arrow, color: Colors.white, size: 36),
+                    child: Icon(_isRunning ? Icons.pause : Icons.play_arrow, color: Color(0xFF1A1333), size: 36),
                   ),
                 ],
               ),
@@ -189,3 +189,4 @@ class _TimerActivityScreenState extends State<TimerActivityScreen> {
     );
   }
 }
+

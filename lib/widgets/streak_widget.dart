@@ -173,10 +173,10 @@ class BigStreakCard extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white, width: 1.5), // Frosted white border
+        border: Border.all(color: Color(0xFF1A1333), width: 1.5), // Frosted white border
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05), // Soft elegant shadow
+            color: Color(0xFFFFFFFF).withValues(alpha: 0.05), // Soft elegant shadow
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -234,7 +234,7 @@ class BigStreakCard extends StatelessWidget {
               "days streak",
               style: TextStyle(
                 fontSize: 22,
-                color: Colors.white, // Overridden by ShaderMask
+                color: Color(0xFF1A1333), // Overridden by ShaderMask
                 fontWeight: FontWeight.w800,
                 fontFamily: 'LeagueSpartan',
               ),
@@ -252,7 +252,7 @@ class BigStreakCard extends StatelessWidget {
                 ? "You're on fire! 🔥🔥"
                 : "Unstoppable! 🔥🔥🔥",
             style: const TextStyle(
-              color: Colors.white70, // Light text for dark background
+              color: Color(0xB3FFFFFF), // Light text for dark background
               fontSize: 13,
             ),
           ),
@@ -263,7 +263,7 @@ class BigStreakCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.1), // Dark mode calendar background
+              color: Color(0xFF1A1333).withValues(alpha: 0.1), // Dark mode calendar background
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -278,7 +278,7 @@ class BigStreakCard extends StatelessWidget {
                     Text(
                       week[i],
                       style: const TextStyle(
-                          color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold),
+                          color: Color(0x8AFFFFFF), fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     Container(
@@ -295,12 +295,12 @@ class BigStreakCard extends StatelessWidget {
                             ? Icon(
                           Icons.check,
                           size: 18,
-                          color: Colors.white,
+                          color: Color(0xFF1A1333),
                         )
                             : Text(
                                 dateNum,
                                 style: TextStyle(
-                                  color: isToday ? Colors.white : Colors.white70,
+                                  color: isToday ? Color(0xFF1A1333) : Color(0xB3FFFFFF),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
                                 ),
@@ -317,3 +317,4 @@ class BigStreakCard extends StatelessWidget {
     );
   }
 }
+

@@ -84,3 +84,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'mindreset-f15f3.firebasestorage.app',
   );
 }
+

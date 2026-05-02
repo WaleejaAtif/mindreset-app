@@ -40,12 +40,12 @@ class _SwitchTaskScreenState extends State<SwitchTaskScreen> {
     final color = Color(widget.item['colorHex'] ?? 0xFF9a882a);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8FD),
+      backgroundColor: const Color(0xFF0F0C20),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
-        title: Text(widget.item['title'] ?? 'Switch Task', style: const TextStyle(color: Colors.black87)),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+        title: Text(widget.item['title'] ?? 'Switch Task', style: const TextStyle(color: Color(0xFFFFFFFF))),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -58,7 +58,7 @@ class _SwitchTaskScreenState extends State<SwitchTaskScreen> {
                     children: [
                       Icon(Icons.swap_calls, size: 100, color: color),
                       const SizedBox(height: 20),
-                      const Text("Momentum Switched!", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87)),
+                      const Text("Momentum Switched!", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFFFFFFFF))),
                       const SizedBox(height: 10),
                       Text("Now focusing on:\n${_newTaskController.text}", textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: color)),
                     ],
@@ -69,7 +69,7 @@ class _SwitchTaskScreenState extends State<SwitchTaskScreen> {
                   children: [
                     Text(
                       widget.item['desc'] ?? '',
-                      style: const TextStyle(fontSize: 16, color: Colors.black54),
+                      style: const TextStyle(fontSize: 16, color: Color(0xFFAFA8BA)),
                     ),
                     const SizedBox(height: 40),
                     const Text("What task are you leaving?", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -94,7 +94,7 @@ class _SwitchTaskScreenState extends State<SwitchTaskScreen> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(backgroundColor: color, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                         onPressed: _switchTasks,
-                        child: const Text("Switch Momentum", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                        child: const Text("Switch Momentum", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333))),
                       ),
                     ),
                   ],
@@ -104,3 +104,4 @@ class _SwitchTaskScreenState extends State<SwitchTaskScreen> {
     );
   }
 }
+

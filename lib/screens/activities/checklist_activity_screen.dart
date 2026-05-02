@@ -45,12 +45,12 @@ class _ChecklistActivityScreenState extends State<ChecklistActivityScreen> {
     final color = Color(widget.item['colorHex'] ?? 0xFFb3957c);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8FD),
+      backgroundColor: const Color(0xFF0F0C20),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black87),
-        title: Text(widget.item['title'] ?? 'Break Tasks', style: const TextStyle(color: Colors.black87)),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+        title: Text(widget.item['title'] ?? 'Break Tasks', style: const TextStyle(color: Color(0xFFFFFFFF))),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -61,7 +61,7 @@ class _ChecklistActivityScreenState extends State<ChecklistActivityScreen> {
             children: [
               Text(
                 widget.item['desc'] ?? '',
-                style: const TextStyle(fontSize: 16, color: Colors.black87),
+                style: const TextStyle(fontSize: 16, color: Color(0xFFFFFFFF)),
               ),
               if (widget.suggestions != null && widget.suggestions!.isNotEmpty) ...[
                 const SizedBox(height: 12),
@@ -78,10 +78,10 @@ class _ChecklistActivityScreenState extends State<ChecklistActivityScreen> {
               const SizedBox(height: 20),
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color(0xFF1A1333),
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4)),
+                    BoxShadow(color: Color(0xFFFFFFFF).withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4)),
                   ],
                 ),
                 child: TextField(
@@ -115,7 +115,7 @@ class _ChecklistActivityScreenState extends State<ChecklistActivityScreen> {
                           return Container(
                             margin: const EdgeInsets.only(bottom: 12),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Color(0xFF1A1333),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(color: task['completed'] ? color.withOpacity(0.5) : Colors.transparent),
                             ),
@@ -129,7 +129,7 @@ class _ChecklistActivityScreenState extends State<ChecklistActivityScreen> {
                                 task['title'],
                                 style: TextStyle(
                                   decoration: task['completed'] ? TextDecoration.lineThrough : null,
-                                  color: task['completed'] ? Colors.grey : Colors.black87,
+                                  color: task['completed'] ? Colors.grey : Color(0xFFFFFFFF),
                                 ),
                               ),
                               trailing: IconButton(
@@ -155,7 +155,7 @@ class _ChecklistActivityScreenState extends State<ChecklistActivityScreen> {
                   },
                   child: const Text(
                     "Finish & Claim Points",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1A1333)),
                   ),
                 ),
               ),
@@ -166,3 +166,4 @@ class _ChecklistActivityScreenState extends State<ChecklistActivityScreen> {
     );
   }
 }
+

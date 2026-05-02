@@ -80,11 +80,11 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: const IconThemeData(color: Color(0xFF2D3142)),
+          iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
           title: Text(
             DateFormat('MMMM yyyy').format(_selectedDay),
             style: const TextStyle(
-                color: Color(0xFF2D3142), fontWeight: FontWeight.bold),
+                color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold),
           ),
         ),
         body: SafeArea(
@@ -120,7 +120,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? _primaryColor
-                                : Colors.white,
+                                : Color(0xFF1A1333),
                             borderRadius: BorderRadius.circular(14),
                             boxShadow: isSelected ? [
                               BoxShadow(
@@ -130,7 +130,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                               ),
                             ] : [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.05),
+                                color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
                                 blurRadius: 8,
                                 offset: const Offset(0, 4),
                               ),
@@ -148,7 +148,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                                 DateFormat('EEE').format(day),
                                 style: TextStyle(
                                   color: isSelected
-                                      ? Colors.white70
+                                      ? Color(0xB3FFFFFF)
                                       : const Color(0xFF6B7280),
                                   fontSize: 11,
                                 ),
@@ -158,8 +158,8 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                                 '${day.day}',
                                 style: TextStyle(
                                   color: isSelected
-                                      ? Colors.white
-                                      : const Color(0xFF2D3142),
+                                      ? Color(0xFF1A1333)
+                                      : const Color(0xFFFFFFFF),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
                                 ),
@@ -186,7 +186,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                         return const Center(
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation(
-                                Colors.white),
+                                Color(0xFF1A1333)),
                           ),
                         );
                       }
@@ -260,7 +260,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                                   right: 20),
                               child: const Icon(
                                   Icons.delete_outline,
-                                  color: Colors.white),
+                                  color: Color(0xFF1A1333)),
                             ),
                             onDismissed: (_) => _delete(doc.id),
                             child: Container(
@@ -268,7 +268,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                               const EdgeInsets.only(bottom: 10),
                               padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Color(0xFF1A1333),
                                 borderRadius:
                                 BorderRadius.circular(14),
                                 boxShadow: [
@@ -297,14 +297,14 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                                         border: Border.all(
                                           color: done
                                               ? Colors.green
-                                              : Colors.white60,
+                                              : Color(0x99FFFFFF),
                                           width: 2,
                                         ),
                                       ),
                                       child: done
                                           ? const Icon(Icons.check,
                                           size: 14,
-                                          color: Colors.white)
+                                          color: Color(0xFF1A1333))
                                           : null,
                                     ),
                                   ),
@@ -315,7 +315,7 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                                       style: TextStyle(
                                         color: done
                                             ? const Color(0xFF9CA3AF)
-                                            : const Color(0xFF2D3142),
+                                            : const Color(0xFFFFFFFF),
                                         fontWeight: FontWeight.bold,
                                         decoration: done
                                             ? TextDecoration
@@ -364,9 +364,11 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
             MaterialPageRoute(builder: (_) => const AddTaskScreen()),
           ),
           backgroundColor: _primaryColor,
-          child: const Icon(Icons.add, color: Colors.white),
+          child: const Icon(Icons.add, color: Color(0xFF1A1333)),
         ),
       ),
     );
   }
 }
+
+

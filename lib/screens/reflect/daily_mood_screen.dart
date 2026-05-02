@@ -232,13 +232,13 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF1A1333)),
           onPressed: () => Navigator.maybePop(context),
         ),
         title: const Text(
           'Daily Mood',
           style: TextStyle(
-            color: Colors.white,
+            color: Color(0xFF1A1333),
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
@@ -300,18 +300,18 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
                         decoration: BoxDecoration(
                           color: sel
                               ? _brandOlive
-                              : Colors.white.withOpacity(0.10),
+                              : Color(0xFF1A1333).withOpacity(0.10),
                           borderRadius: BorderRadius.circular(25),
                           border: Border.all(
                             color: sel
                                 ? _brandOlive
-                                : Colors.white.withOpacity(0.20),
+                                : Color(0xFF1A1333).withOpacity(0.20),
                           ),
                         ),
                         child: Text(
                           _monthName(m),
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Color(0xFF1A1333),
                             fontSize: 13,
                             fontWeight:
                                 sel ? FontWeight.bold : FontWeight.normal,
@@ -352,12 +352,12 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
                         decoration: BoxDecoration(
                           color: isSel
                               ? _brandOlive
-                              : Colors.white.withOpacity(0.08),
+                              : Color(0xFF1A1333).withOpacity(0.08),
                           borderRadius: BorderRadius.circular(18),
                           border: Border.all(
                             color: isTdy && !isSel
                                 ? _brandOlive.withOpacity(0.7)
-                                : Colors.white.withOpacity(
+                                : Color(0xFF1A1333).withOpacity(
                                     isSel ? 0.4 : 0.10),
                             width: 1.5,
                           ),
@@ -381,8 +381,8 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
                                 letterSpacing: 0.8,
                                 fontWeight: FontWeight.w600,
                                 color: isSel
-                                    ? Colors.white
-                                    : Colors.white60,
+                                    ? Color(0xFF1A1333)
+                                    : Color(0x99FFFFFF),
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -391,7 +391,7 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
                               style: TextStyle(
                                 fontSize: isSel ? 24 : 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: Color(0xFF1A1333),
                               ),
                               child: Text('$day'),
                             ),
@@ -402,7 +402,7 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
                                 height: 6,
                                 decoration: BoxDecoration(
                                   color: isSel
-                                      ? Colors.white
+                                      ? Color(0xFF1A1333)
                                       : _brandOlive,
                                   shape: BoxShape.circle,
                                 ),
@@ -428,7 +428,7 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: Color(0xFF1A1333),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -470,7 +470,7 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
                               ? "Today's Summary"
                               : 'Day Summary — ${_selectedDate.day} ${_monthName(_selectedDate.month)}',
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: Color(0xFF1A1333),
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -523,14 +523,14 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
           const SizedBox(height: 8),
           Icon(
             Icons.calendar_today_outlined,
-            color: Colors.white.withOpacity(0.25),
+            color: Color(0xFF1A1333).withOpacity(0.25),
             size: 40,
           ),
           const SizedBox(height: 12),
           Text(
             'No data for this day',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.45),
+              color: Color(0xFF1A1333).withOpacity(0.45),
               fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
@@ -540,7 +540,7 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
             'Log your mood, sleep, and tasks to see history.',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.25),
+              color: Color(0xFF1A1333).withOpacity(0.25),
               fontSize: 12,
             ),
           ),
@@ -612,7 +612,7 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
                       Text(
                         'Tasks',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.55),
+                          color: Color(0xFF1A1333).withOpacity(0.55),
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 0.5,
@@ -636,7 +636,7 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
                               child: Text(
                                 task,
                                 style: const TextStyle(
-                                  color: Colors.white,
+                                  color: Color(0xFF1A1333),
                                   fontSize: 13,
                                 ),
                               ),
@@ -670,10 +670,10 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
           width: double.infinity,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.07),
+            color: Color(0xFF1A1333).withOpacity(0.07),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: Colors.white.withOpacity(0.12),
+              color: Color(0xFF1A1333).withOpacity(0.12),
               width: 1.2,
             ),
             boxShadow: [
@@ -705,7 +705,7 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
           Text(
             label,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.55),
+              color: Color(0xFF1A1333).withOpacity(0.55),
               fontSize: 12,
               fontWeight: FontWeight.w500,
               letterSpacing: 0.5,
@@ -715,7 +715,7 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
           Text(
             value,
             style: const TextStyle(
-              color: Colors.white,
+              color: Color(0xFF1A1333),
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
@@ -739,7 +739,7 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
   }
 
   Widget _divider() => Divider(
-        color: Colors.white.withOpacity(0.08),
+        color: Color(0xFF1A1333).withOpacity(0.08),
         height: 1,
         thickness: 1,
       );
@@ -769,12 +769,12 @@ class _MoodEmoji extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? _brandOlive.withOpacity(0.25)
-              : Colors.white.withOpacity(0.06),
+              : Color(0xFF1A1333).withOpacity(0.06),
           borderRadius: BorderRadius.circular(isSelected ? 16 : 14),
           border: Border.all(
             color: isSelected
                 ? _brandOlive
-                : Colors.white.withOpacity(0.12),
+                : Color(0xFF1A1333).withOpacity(0.12),
             width: isSelected ? 2 : 1,
           ),
           boxShadow: isSelected
@@ -796,3 +796,4 @@ class _MoodEmoji extends StatelessWidget {
     );
   }
 }
+

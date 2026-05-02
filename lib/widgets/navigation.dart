@@ -26,22 +26,23 @@ class _CustomBottomNavState extends State<CustomBottomNav>
     // Gradient Hex Colors for selected bubble
     const Color tone1 = Color(0xFFB18AFF);
     const Color tone2 = Color(0xFFA172FF);
-    const Color bgColor = Color(0xFF8C52FF);
+    const Color bgColor = Colors.transparent;
 
     return Container(
-      height: 65, // Standard height for a straight bottom bar
+      height: 80, // Slightly taller for the floating effect
       width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: bgColor,
+        border: Border(top: BorderSide(color: Color(0x1AFFFFFF), width: 1)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildNavItem(context, 0, Icons.home_rounded, '/home', itemWidth, tone1, tone2),
-          _buildNavItem(context, 1, Icons.school_rounded, '/learn', itemWidth, tone1, tone2),
-          _buildNavItem(context, 2, Icons.self_improvement_rounded, '/meditate', itemWidth, tone1, tone2),
-          _buildNavItem(context, 3, Icons.event_note_rounded, '/planner', itemWidth, tone1, tone2),
-          _buildNavItem(context, 4, Icons.edit_rounded, '/reflect', itemWidth, tone1, tone2),
+          _buildNavItem(context, 1, Icons.image_rounded, '/learn', itemWidth, tone1, tone2),
+          _buildNavItem(context, 2, Icons.mic_rounded, '/meditate', itemWidth, tone1, tone2), // Microphone icon from image
+          _buildNavItem(context, 3, Icons.calendar_today_rounded, '/planner', itemWidth, tone1, tone2),
+          _buildNavItem(context, 4, Icons.grid_view_rounded, '/reflect', itemWidth, tone1, tone2),
         ],
       ),
     );
@@ -94,7 +95,7 @@ class _CustomBottomNavState extends State<CustomBottomNav>
             // --- ICON ---
             Icon(
               icon,
-              color: isSelected ? Colors.white : Colors.white70,
+              color: isSelected ? Color(0xFF1A1333) : Color(0xB3FFFFFF),
               size: 26,
             ),
           ],
@@ -103,3 +104,4 @@ class _CustomBottomNavState extends State<CustomBottomNav>
     );
   }
 }
+
