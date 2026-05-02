@@ -382,6 +382,7 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
     final keyboardInset = MediaQuery.of(context).viewInsets.bottom;
 
     return AnimatedBackground(
+      isAuraTheme: false,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,

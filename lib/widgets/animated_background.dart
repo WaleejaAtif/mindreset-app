@@ -5,12 +5,14 @@ class AnimatedBackground extends StatefulWidget {
   final Widget child;
   final bool hasBlur;
   final bool isLightMode;
+  final bool isAuraTheme;
 
   const AnimatedBackground({
     super.key,
     required this.child,
     this.hasBlur = true,
     this.isLightMode = false,
+    this.isAuraTheme = true,
   });
 
   @override
@@ -98,12 +100,19 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
                   gradient: LinearGradient(
                     begin: _topAlignmentAnimation.value,
                     end: _bottomAlignmentAnimation.value,
-                    colors: const [
-                      Color(0xFF2C1A4D), // Soft glowing purple
-                      Color(0xFF150E28), // Deep purple
-                      Color(0xFF0D0B1A), // Near black
-                      Color(0xFF1A0F33), // Deep purple-blue
-                    ],
+                    colors: widget.isAuraTheme
+                        ? const [
+                            Color(0xFF2C1A4D), // Soft glowing purple
+                            Color(0xFF150E28), // Deep purple
+                            Color(0xFF0D0B1A), // Near black
+                            Color(0xFF1A0F33), // Deep purple-blue
+                          ]
+                        : const [
+                            Color(0xFF5E17EB), // Deep Purple
+                            Color(0xFF8C52FF), // Vibrant Purple
+                            Color(0xFF38B6FF), // Light Blue
+                            Color(0xFF5CE1E6), // Mint/Cyan
+                          ],
                     stops: const [0.0, 0.4, 0.7, 1.0],
                   ),
                 ),
