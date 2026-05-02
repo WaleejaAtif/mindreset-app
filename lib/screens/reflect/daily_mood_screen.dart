@@ -4,39 +4,53 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // ── Brand colors (matching PlannerScreen) ──────────────────────────────────
-const Color _primaryColor = Color(0xFF8C52FF);
 const Color _brandOlive   = Color(0xFF6D774C);
-const Color _darkBg       = Color(0xFF0F0F1A);
-const Color _cardBg       = Color(0xFF1A1A2E);
 
 // ── Mood data model ─────────────────────────────────────────────────────────
 class DailyData {
-  final String mood;
-  final String emoji;
-  final String sleep;
-  final String exercise;
-  final int pomodoro;
-  final List<String> tasks;
+  final String? mood;
+  final String? emoji;
+  final String? sleep;
+  final int pomodoroCompleted;
+  final int gamesPlayed;
+  final bool exerciseCompleted;
+  final bool chattedWithAi;
+  final int focusStrategiesTaken;
+  final int studyTipsTaken;
+  final int tasksCreated;
+  final bool? highPriorityTaskCompleted;
 
-  const DailyData({
-    required this.mood,
-    required this.emoji,
-    required this.sleep,
-    required this.exercise,
-    required this.pomodoro,
-    required this.tasks,
+  DailyData({
+    this.mood,
+    this.emoji,
+    this.sleep,
+    this.pomodoroCompleted = 0,
+    this.gamesPlayed = 0,
+    this.exerciseCompleted = false,
+    this.chattedWithAi = false,
+    this.focusStrategiesTaken = 0,
+    this.studyTipsTaken = 0,
+    this.tasksCreated = 0,
+    this.highPriorityTaskCompleted,
   });
 
   factory DailyData.fromMap(Map<String, dynamic> map) {
     return DailyData(
-      mood:      map['mood']     as String? ?? '',
-      emoji:     map['emoji']    as String? ?? '😐',
-      sleep:     map['sleep']    as String? ?? '--',
-      exercise:  map['exercise'] as String? ?? '--',
-      pomodoro:  (map['pomodoro'] as num?)?.toInt() ?? 0,
-      tasks:     List<String>.from(map['tasks'] as List? ?? []),
+      mood: map['mood'] as String?,
+      emoji: map['emoji'] as String?,
+      sleep: map['sleep'] as String?,
+      pomodoroCompleted: map['pomodoroCompleted'] as int? ?? 0,
+      gamesPlayed: map['gamesPlayed'] as int? ?? 0,
+      exerciseCompleted: map['exerciseCompleted'] as bool? ?? false,
+      chattedWithAi: map['chattedWithAi'] as bool? ?? false,
+      focusStrategiesTaken: map['focusStrategiesTaken'] as int? ?? 0,
+      studyTipsTaken: map['studyTipsTaken'] as int? ?? 0,
+      tasksCreated: map['tasksCreated'] as int? ?? 0,
+      highPriorityTaskCompleted: map['highPriorityTaskCompleted'] as bool?,
     );
   }
+
+  bool get hasData => mood != null || sleep != null || pomodoroCompleted > 0 || gamesPlayed > 0 || exerciseCompleted || chattedWithAi || focusStrategiesTaken > 0 || studyTipsTaken > 0 || tasksCreated > 0 || highPriorityTaskCompleted != null;
 }
 
 // ── Main screen ──────────────────────────────────────────────────────────────
@@ -60,13 +74,11 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
   DailyData? _dailyData;
   bool _loadingData = false;
 
-  // ── Animation controllers ──────────────────────────────────────────────
-  late AnimationController _cardAnimCtrl;
-  late Animation<double> _cardFade;
-  late Animation<Offset> _cardSlide;
+  // ── Monthly data state ─────────────────────────────────────────────────
+  Map<int, DailyData?> _monthlyData = {};
+  bool _loadingMonthly = false;
 
-  // ── Emoji selection state (preserved) ──────────────────────────────────
-  String? _selectedEmoji;
+  // ── Animation controllers ──────────────────────────────────────────────
 
   @override
   void initState() {
@@ -74,20 +86,11 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
     _selectedDate = DateTime.now();
     _stripMonth   = DateTime.now().month;
 
-    _cardAnimCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 380),
-    );
-    _cardFade  = CurvedAnimation(parent: _cardAnimCtrl, curve: Curves.easeOut);
-    _cardSlide = Tween<Offset>(
-      begin: const Offset(0, 0.06),
-      end:   Offset.zero,
-    ).animate(CurvedAnimation(parent: _cardAnimCtrl, curve: Curves.easeOutCubic));
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToSelectedDate();
       _scrollToCurrentMonth();
       _fetchDailyData(_selectedDate);
+      _fetchMonthlyData(_selectedDate.year, _stripMonth);
     });
   }
 
@@ -95,7 +98,6 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
   void dispose() {
     _dateScrollCtrl.dispose();
     _monthScrollCtrl.dispose();
-    _cardAnimCtrl.dispose();
     super.dispose();
   }
 
@@ -132,7 +134,6 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
       _loadingData = true;
       _dailyData   = null;
     });
-    _cardAnimCtrl.reset();
 
     try {
       final uid = FirebaseAuth.instance.currentUser?.uid;
@@ -145,7 +146,6 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
             _dailyData   = mock;
             _loadingData = false;
           });
-          _cardAnimCtrl.forward();
         }
         return;
       }
@@ -163,12 +163,10 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
           _dailyData   = doc.exists ? DailyData.fromMap(doc.data()!) : null;
           _loadingData = false;
         });
-        _cardAnimCtrl.forward();
       }
     } catch (_) {
       if (mounted) {
         setState(() => _loadingData = false);
-        _cardAnimCtrl.forward();
       }
     }
   }
@@ -177,22 +175,80 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
   DailyData? _mockData(DateTime date) {
     final today = DateTime.now();
     if (date.day == today.day && date.month == today.month) {
-      return const DailyData(
-        mood: 'Happy', emoji: '😄',
-        sleep: '7h', exercise: 'Yes',
-        pomodoro: 4,
-        tasks: ['Study AI', 'Workout', 'Read book'],
+      return DailyData(
+        mood: 'Happy',
+        emoji: '😄',
+        sleep: '7h',
+        pomodoroCompleted: 4,
+        gamesPlayed: 1,
+        exerciseCompleted: true,
+        chattedWithAi: true,
+        focusStrategiesTaken: 2,
+        studyTipsTaken: 1,
+        tasksCreated: 3,
+        highPriorityTaskCompleted: true,
       );
     }
     if (date.day == today.day - 1) {
-      return const DailyData(
-        mood: 'Okay', emoji: '🙂',
-        sleep: '6h', exercise: 'No',
-        pomodoro: 2,
-        tasks: ['Morning run', 'Team meeting'],
+      return DailyData(
+        mood: 'Okay',
+        emoji: '🙂',
+        sleep: '6h',
+        pomodoroCompleted: 2,
+        gamesPlayed: 0,
+        exerciseCompleted: false,
+        chattedWithAi: false,
+        focusStrategiesTaken: 1,
+        studyTipsTaken: 0,
+        tasksCreated: 2,
+        highPriorityTaskCompleted: false,
       );
     }
     return null;
+  }
+
+  // ── Fetch monthly data ──────────────────────────────────────────────────
+  Future<void> _fetchMonthlyData(int year, int month) async {
+    setState(() {
+      _loadingMonthly = true;
+      _monthlyData = {};
+    });
+
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) {
+        // Mock data for unauthenticated
+        final daysInMonth = _daysInMonth(month);
+        for (int day = 1; day <= daysInMonth; day++) {
+          final date = DateTime(year, month, day);
+          _monthlyData[day] = _mockData(date);
+        }
+        if (mounted) {
+          setState(() => _loadingMonthly = false);
+        }
+        return;
+      }
+
+      final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
+      final daysInMonth = _daysInMonth(month);
+      for (int day = 1; day <= daysInMonth; day++) {
+        final dateKey = '$year-${month.toString().padLeft(2,'0')}-${day.toString().padLeft(2,'0')}';
+        final doc = await userRef.collection('daily_logs').doc(dateKey).get();
+        if (doc.exists) {
+          _monthlyData[day] = DailyData.fromMap(doc.data()!);
+        } else {
+          _monthlyData[day] = null;
+        }
+      }
+
+      if (mounted) {
+        setState(() => _loadingMonthly = false);
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _loadingMonthly = false);
+      }
+    }
   }
 
   // ── Date tap ────────────────────────────────────────────────────────────
@@ -226,7 +282,7 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _darkBg,
+      backgroundColor: const Color(0xFF0F0F1A),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -291,6 +347,7 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
                           _scrollToSelectedDate();
                         });
                         _fetchDailyData(_selectedDate);
+                        _fetchMonthlyData(_selectedDate.year, m);
                       },
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 280),
@@ -396,7 +453,15 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
                               child: Text('$day'),
                             ),
                             const SizedBox(height: 4),
-                            if (isTdy)
+                            if (_monthlyData[day]?.hasData ?? false)
+                              Text(
+                                _monthlyData[day]!.emoji ?? '😐',
+                                style: TextStyle(
+                                  fontSize: isSel ? 18 : 14,
+                                  color: Colors.white.withOpacity(0.8),
+                                ),
+                              )
+                            else if (isTdy)
                               Container(
                                 width: 6,
                                 height: 6,
@@ -417,71 +482,21 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
 
               const SizedBox(height: 24),
 
-              // ── "How are you feeling" section (PRESERVED) ────────────
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _isToday ? 'How are you feeling today?' : 'Mood for ${_monthName(_selectedDate.month)} ${_selectedDate.day}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: ['😄','🙂','😐','😔','😢'].map((emoji) =>
-                        _MoodEmoji(
-                          emoji: emoji,
-                          isSelected: _selectedEmoji == emoji,
-                          onTap: () => setState(() => _selectedEmoji = emoji),
-                        ),
-                      ).toList(),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 28),
-
-              // ── Daily history card ───────────────────────────────────
+              // ── Selected Day Details ─────────────────────────────────
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 4,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            color: _brandOlive,
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          _isToday
-                              ? "Today's Summary"
-                              : 'Day Summary — ${_selectedDate.day} ${_monthName(_selectedDate.month)}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 14),
-                    _buildHistoryCard(),
-                  ],
-                ),
+                child: _buildSelectedDayDetails(),
               ),
+
+              const SizedBox(height: 24),
+
+              // ── Monthly Summary ──────────────────────────────────────
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _buildMonthlySummary(),
+              ),
+
+              const SizedBox(height: 100),
             ],
           ),
         ),
@@ -489,29 +504,229 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
     );
   }
 
-  // ── History card widget ─────────────────────────────────────────────────
-  Widget _buildHistoryCard() {
-    if (_loadingData) {
-      return _glassCard(
-        child: const Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 24),
-            child: CircularProgressIndicator(
-              color: _brandOlive,
-              strokeWidth: 2.5,
+  // ── Selected Day Details ──────────────────────────────────────────────
+  Widget _buildSelectedDayDetails() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 4,
+              height: 20,
+              decoration: BoxDecoration(
+                color: _brandOlive,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              _isToday
+                  ? "Today's Details"
+                  : 'Day Details — ${_selectedDate.day} ${_monthName(_selectedDate.month)}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        if (_loadingData)
+          _glassCard(
+            child: const Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 24),
+                child: CircularProgressIndicator(
+                  color: _brandOlive,
+                  strokeWidth: 2.5,
+                ),
+              ),
+            ),
+          )
+        else if (_dailyData == null)
+          _buildEmptyCard()
+        else
+          _buildDataCard(_dailyData!),
+      ],
+    );
+  }
+
+  // ── Monthly Summary ────────────────────────────────────────────────────
+  Widget _buildMonthlySummary() {
+    if (_loadingMonthly) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 4,
+                height: 20,
+                decoration: BoxDecoration(
+                  color: _brandOlive,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(width: 10),
+              const Text(
+                'Monthly Summary',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          _glassCard(
+            child: const Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 24),
+                child: CircularProgressIndicator(
+                  color: _brandOlive,
+                  strokeWidth: 2.5,
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       );
     }
 
-    return FadeTransition(
-      opacity: _cardFade,
-      child: SlideTransition(
-        position: _cardSlide,
-        child: _dailyData == null
-            ? _buildEmptyCard()
-            : _buildDataCard(_dailyData!),
+    int goodMood = 0, neutralMood = 0, badMood = 0;
+    int goodSleep = 0, poorSleep = 0;
+    int games = 0, aiChats = 0, exercises = 0;
+
+    _monthlyData.forEach((day, data) {
+      if (data != null) {
+        // Mood
+        if (data.mood != null) {
+          final lower = data.mood!.toLowerCase();
+          if (lower.contains('very good') || lower.contains('amazing')) {
+            goodMood++;
+          } else if (lower.contains('neutral') || lower.contains('okay') || lower.contains('fair')) {
+            neutralMood++;
+          } else if (lower.contains('bad') || lower.contains('low') || lower.contains('poor') || lower.contains('terrible')) {
+            badMood++;
+          }
+        }
+
+        // Sleep
+        if (data.sleep != null) {
+          final lower = data.sleep!.toLowerCase();
+          if (lower.contains('good') || lower.contains('7-8') || lower.contains('8+') || lower.contains('excellent')) {
+            goodSleep++;
+          } else {
+            poorSleep++;
+          }
+        }
+
+        // Activities
+        games += data.gamesPlayed;
+        if (data.chattedWithAi) aiChats++;
+        if (data.exerciseCompleted) exercises++;
+      }
+    });
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 4,
+              height: 20,
+              decoration: BoxDecoration(
+                color: _brandOlive,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: 10),
+            const Text(
+              'Monthly Summary',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        _glassCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Mood Summary
+              _summaryRow('Mood', [
+                _SummaryItem('Good', goodMood, const Color(0xFF59D99D)),
+                _SummaryItem('Neutral', neutralMood, const Color(0xFFFFD166)),
+                _SummaryItem('Bad', badMood, const Color(0xFFFF7F7F)),
+              ]),
+              _divider(),
+              // Sleep Summary
+              _summaryRow('Sleep', [
+                _SummaryItem('Good sleep', goodSleep, const Color(0xFF7EC8E3)),
+                _SummaryItem('Poor sleep', poorSleep, const Color(0xFFFFB347)),
+              ]),
+              _divider(),
+              // Activities Summary
+              _summaryRow('Activities', [
+                _SummaryItem('Games', games, const Color(0xFF8A7CFF)),
+                _SummaryItem('AI Chatbot', aiChats, const Color(0xFF65C7F7)),
+                _SummaryItem('Exercises', exercises, const Color(0xFFAB7DAC)),
+              ]),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _summaryRow(String title, List<_SummaryItem> items) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.55),
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 12,
+            runSpacing: 8,
+            children: items.map((item) => _summaryChip(item)).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _summaryChip(_SummaryItem item) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: item.color.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: item.color.withOpacity(0.3), width: 1),
+      ),
+      child: Text(
+        '${item.label}: ${item.count}',
+        style: TextStyle(
+          color: item.color,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -557,102 +772,111 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
         children: [
 
           // Mood row
-          _historyRow(
-            icon: '😊',
-            label: 'Mood',
-            value: '${data.emoji}  ${data.mood}',
-            accent: const Color(0xFFFFB347),
-          ),
-
-          _divider(),
+          if (data.mood != null) ...[
+            _historyRow(
+              icon: data.emoji ?? '😐',
+              label: 'Mood',
+              value: data.mood!,
+              accent: const Color(0xFFFFB347),
+            ),
+            _divider(),
+          ],
 
           // Sleep row
-          _historyRow(
-            icon: '🛌',
-            label: 'Sleep',
-            value: data.sleep,
-            accent: const Color(0xFF7EC8E3),
-          ),
-
-          _divider(),
+          if (data.sleep != null) ...[
+            _historyRow(
+              icon: '🛌',
+              label: 'Sleep',
+              value: data.sleep!,
+              accent: const Color(0xFF7EC8E3),
+            ),
+            _divider(),
+          ],
 
           // Exercise row
-          _historyRow(
-            icon: '🏃',
-            label: 'Exercise',
-            value: data.exercise,
-            accent: const Color(0xFF90EE90),
-          ),
-
-          _divider(),
+          if (data.exerciseCompleted) ...[
+            _historyRow(
+              icon: '🏃',
+              label: 'Exercise',
+              value: 'Completed',
+              accent: const Color(0xFF90EE90),
+            ),
+            _divider(),
+          ],
 
           // Pomodoro row
-          _historyRow(
-            icon: '⏱️',
-            label: 'Pomodoro',
-            value: data.pomodoro > 0
-                ? '${data.pomodoro} session${data.pomodoro == 1 ? '' : 's'} ✓'
-                : 'Not achieved',
-            accent: const Color(0xFFFF7F7F),
-          ),
-
-          if (data.tasks.isNotEmpty) ...[
+          if (data.pomodoroCompleted > 0) ...[
+            _historyRow(
+              icon: '⏱️',
+              label: 'Pomodoro',
+              value: '${data.pomodoroCompleted} session${data.pomodoroCompleted == 1 ? '' : 's'}',
+              accent: const Color(0xFFFF7F7F),
+            ),
             _divider(),
+          ],
 
-            // Tasks section
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _iconBadge('📋', const Color(0xFFD4AAFF)),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Tasks',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.55),
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      ...data.tasks.map((task) => Padding(
-                        padding: const EdgeInsets.only(bottom: 6),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 6,
-                              height: 6,
-                              decoration: const BoxDecoration(
-                                color: _brandOlive,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                task,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ),
-                            const Icon(
-                              Icons.check_circle_outline,
-                              color: _brandOlive,
-                              size: 14,
-                            ),
-                          ],
-                        ),
-                      )),
-                    ],
-                  ),
-                ),
-              ],
+          // Tasks row
+          if (data.tasksCreated > 0) ...[
+            _historyRow(
+              icon: '📝',
+              label: 'Tasks',
+              value: '${data.tasksCreated} created',
+              accent: const Color(0xFF9370DB),
+            ),
+            _divider(),
+          ],
+
+          // Games row
+          if (data.gamesPlayed > 0) ...[
+            _historyRow(
+              icon: '🎮',
+              label: 'Games',
+              value: '${data.gamesPlayed} played',
+              accent: const Color(0xFFFF69B4),
+            ),
+            _divider(),
+          ],
+
+          // AI Chat row
+          if (data.chattedWithAi) ...[
+            _historyRow(
+              icon: '🤖',
+              label: 'AI Chat',
+              value: 'Yes',
+              accent: const Color(0xFF00CED1),
+            ),
+            _divider(),
+          ],
+
+          // Focus Strategies row
+          if (data.focusStrategiesTaken > 0) ...[
+            _historyRow(
+              icon: '🎯',
+              label: 'Focus',
+              value: '${data.focusStrategiesTaken} strategies',
+              accent: const Color(0xFFFFD700),
+            ),
+            _divider(),
+          ],
+
+          // Study Tips row
+          if (data.studyTipsTaken > 0) ...[
+            _historyRow(
+              icon: '📚',
+              label: 'Study Tips',
+              value: '${data.studyTipsTaken} tips',
+              accent: const Color(0xFF32CD32),
+            ),
+            _divider(),
+          ],
+
+          // High Priority Task
+          if (data.highPriorityTaskCompleted != null) ...[
+            _historyRow(
+              icon: '⭐',
+              label: 'Priority Task',
+              value: data.highPriorityTaskCompleted! ? 'Completed' : 'Not Completed',
+              accent: const Color(0xFFFF4500),
             ),
           ],
         ],
@@ -745,55 +969,12 @@ class _DailyMoodScreenState extends State<DailyMoodScreen>
       );
 }
 
-// ── Mood emoji widget (PRESERVED + enhanced) ─────────────────────────────────
-class _MoodEmoji extends StatelessWidget {
-  final String emoji;
-  final bool isSelected;
-  final VoidCallback onTap;
+// ── Summary Item helper ───────────────────────────────────────────────────
+class _SummaryItem {
+  final String label;
+  final int count;
+  final Color color;
 
-  const _MoodEmoji({
-    required this.emoji,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 220),
-        curve: Curves.easeOutBack,
-        width:  isSelected ? 58 : 50,
-        height: isSelected ? 58 : 50,
-        decoration: BoxDecoration(
-          color: isSelected
-              ? _brandOlive.withOpacity(0.25)
-              : Color(0xFF1A1333).withOpacity(0.06),
-          borderRadius: BorderRadius.circular(isSelected ? 16 : 14),
-          border: Border.all(
-            color: isSelected
-                ? _brandOlive
-                : Color(0xFF1A1333).withOpacity(0.12),
-            width: isSelected ? 2 : 1,
-          ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: _brandOlive.withOpacity(0.35),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  )
-                ]
-              : [],
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          emoji,
-          style: TextStyle(fontSize: isSelected ? 30 : 26),
-        ),
-      ),
-    );
-  }
+  const _SummaryItem(this.label, this.count, this.color);
 }
 

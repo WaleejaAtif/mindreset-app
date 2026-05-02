@@ -131,6 +131,8 @@ class _ReflectScreenState extends State<ReflectScreen> {
                       const SizedBox(height: 24),
                       _buildAchievementSummary(),
                       const SizedBox(height: 24),
+                      _buildSuggestionBlock(),
+                      const SizedBox(height: 24),
                       _sectionTitle('Analytics'),
                       const SizedBox(height: 12),
                       _listCard(
@@ -454,6 +456,215 @@ class _ReflectScreenState extends State<ReflectScreen> {
       ),
     );
   }
+
+  Widget _buildSuggestionBlock() {
+    final mood = _todayLog['mood']?.toString() ?? '';
+    final sleep = _todayLog['sleep']?.toString() ?? '';
+    final suggestions = _getSuggestionsForMood(mood, sleep);
+    final moodLevel = _getMoodLevel(mood);
+    final goal = _getGoalForMood(moodLevel);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Color(0xFF1A1333).withValues(alpha: 0.78),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Color(0xFF1A1333), width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Personalized Suggestions',
+            style: TextStyle(
+              color: Color(0xFFFFFFFF),
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Text(
+                'Mood: ',
+                style: const TextStyle(
+                  color: Color(0xFFAFA8BA),
+                  fontSize: 13,
+                ),
+              ),
+              Text(
+                mood.isNotEmpty ? mood : 'Not set',
+                style: const TextStyle(
+                  color: Color(0xFFFFFFFF),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              Text(
+                'Goal: ',
+                style: const TextStyle(
+                  color: Color(0xFFAFA8BA),
+                  fontSize: 13,
+                ),
+              ),
+              Text(
+                goal,
+                style: const TextStyle(
+                  color: Color(0xFF755F84),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: suggestions
+                .map((suggestion) => _suggestionChip(suggestion['label'], suggestion['icon'], suggestion['color']))
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _suggestionChip(String label, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.4), width: 1),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: color),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: TextStyle(
+              color: color,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _getMoodLevel(String mood) {
+    final lowerMood = mood.toLowerCase();
+    if (lowerMood.contains('very good') || lowerMood.contains('great') || lowerMood.contains('amazing')) {
+      return 'very_good';
+    } else if (lowerMood.contains('good')) {
+      return 'good';
+    } else if (lowerMood.contains('neutral') || lowerMood.contains('okay') || lowerMood.contains('fair')) {
+      return 'neutral';
+    } else if (lowerMood.contains('bad') || lowerMood.contains('low') || lowerMood.contains('poor')) {
+      return 'bad';
+    } else if (lowerMood.contains('very bad') || lowerMood.contains('very low') || lowerMood.contains('terrible')) {
+      return 'very_bad';
+    }
+    return 'neutral';
+  }
+
+  String _getGoalForMood(String moodLevel) {
+    switch (moodLevel) {
+      case 'very_bad':
+        return 'Calm the user and stabilize emotions';
+      case 'bad':
+        return 'Reduce overwhelm and encourage small action';
+      case 'neutral':
+        return 'Build momentum and engagement';
+      case 'good':
+        return 'Maintain productivity and consistency';
+      case 'very_good':
+        return 'Maximize productivity and reinforce habits';
+      default:
+        return 'Gentle engagement';
+    }
+  }
+
+  List<Map<String, dynamic>> _getSuggestionsForMood(String mood, String sleep) {
+    final moodLevel = _getMoodLevel(mood);
+    final lowerSleep = sleep.toLowerCase();
+    final isSleepLow = lowerSleep.contains('low') || lowerSleep.contains('poor') || lowerSleep.contains('<3') || lowerSleep.contains('3-4');
+    
+    List<Map<String, dynamic>> suggestions = [];
+
+    if (isSleepLow) {
+      suggestions = [
+        {'label': 'Breathing Exercises', 'icon': Icons.air_rounded, 'color': const Color(0xFF59D99D)},
+        {'label': 'Grounding', 'icon': Icons.spa_rounded, 'color': const Color(0xFFAB7DAC)},
+        {'label': 'Sound Therapy', 'icon': Icons.music_note_rounded, 'color': const Color(0xFF8A7CFF)},
+        {'label': 'AI Chatbot', 'icon': Icons.chat_rounded, 'color': const Color(0xFF65C7F7)},
+      ];
+    } else {
+      switch (moodLevel) {
+        case 'very_bad':
+          suggestions = [
+            {'label': 'Breathing Exercises', 'icon': Icons.air_rounded, 'color': const Color(0xFF59D99D)},
+            {'label': 'Grounding', 'icon': Icons.spa_rounded, 'color': const Color(0xFFAB7DAC)},
+            {'label': 'Sound Therapy', 'icon': Icons.music_note_rounded, 'color': const Color(0xFF8A7CFF)},
+            {'label': 'AI Chatbot', 'icon': Icons.chat_rounded, 'color': const Color(0xFF65C7F7)},
+          ];
+          break;
+        case 'bad':
+          suggestions = [
+            {'label': 'Short Breathing', 'icon': Icons.air_rounded, 'color': const Color(0xFF59D99D)},
+            {'label': 'Mini Pomodoro', 'icon': Icons.timer_rounded, 'color': const Color(0xFFFFD166)},
+            {'label': 'Small Task', 'icon': Icons.task_alt_rounded, 'color': const Color(0xFF65C7F7)},
+            {'label': 'Light Sound', 'icon': Icons.music_note_rounded, 'color': const Color(0xFF8A7CFF)},
+          ];
+          break;
+        case 'neutral':
+          suggestions = [
+            {'label': 'Standard Pomodoro', 'icon': Icons.timer_rounded, 'color': const Color(0xFFFFD166)},
+            {'label': 'Top Tasks', 'icon': Icons.checklist_rounded, 'color': const Color(0xFF65C7F7)},
+            {'label': 'Focus Games', 'icon': Icons.videogame_asset_rounded, 'color': const Color(0xFF8A7CFF)},
+            {'label': 'Mood Tracking', 'icon': Icons.show_chart_rounded, 'color': const Color(0xFF59D99D)},
+          ];
+          break;
+        case 'good':
+          suggestions = [
+            {'label': 'Full Pomodoro', 'icon': Icons.timer_rounded, 'color': const Color(0xFFFFD166)},
+            {'label': 'Priority Tasks', 'icon': Icons.checklist_rounded, 'color': const Color(0xFF65C7F7)},
+            {'label': 'Streak Tracking', 'icon': Icons.local_fire_department_rounded, 'color': const Color(0xFFFF9F6E)},
+            {'label': 'Focus Sounds', 'icon': Icons.music_note_rounded, 'color': const Color(0xFF8A7CFF)},
+          ];
+          break;
+        case 'very_good':
+          suggestions = [
+            {'label': 'Multiple Pomodoro', 'icon': Icons.timer_rounded, 'color': const Color(0xFFFFD166)},
+            {'label': 'High Priority Tasks', 'icon': Icons.checklist_rounded, 'color': const Color(0xFF65C7F7)},
+            {'label': 'Rewards & Achievements', 'icon': Icons.emoji_events_rounded, 'color': const Color(0xFFFF9F6E)},
+            {'label': 'Reflection Entry', 'icon': Icons.edit_rounded, 'color': const Color(0xFF8A7CFF)},
+          ];
+          break;
+        default:
+          suggestions = [
+            {'label': 'Tasks', 'icon': Icons.checklist_rounded, 'color': const Color(0xFF65C7F7)},
+            {'label': 'Focus', 'icon': Icons.lightbulb_rounded, 'color': const Color(0xFFFFD166)},
+            {'label': 'Sounds', 'icon': Icons.music_note_rounded, 'color': const Color(0xFF8A7CFF)},
+            {'label': 'Learning', 'icon': Icons.school_rounded, 'color': const Color(0xFF59D99D)},
+          ];
+          break;
+      }
+    }
+
+    return suggestions;
+  }
 }
+
 
 
