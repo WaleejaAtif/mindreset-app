@@ -171,7 +171,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     _buildSingleSelectPage(
                       title: "How do you identify?",
                       subtitle: "Help us personalize your experience.",
-                      options: ["Male", "Female", "Non-binary", "Prefer not to say"],
+                      options: ["Male", "Female"],
                       currentValue: gender,
                       onSelect: (val) {
                         setState(() => gender = val);

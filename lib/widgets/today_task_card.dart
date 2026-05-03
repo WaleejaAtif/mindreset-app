@@ -236,16 +236,12 @@ class _TimelineTaskRow extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFE3F2FD), Color(0xFF90CAF9)], // Bluish gradient
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                  color: const Color(0xFF9a809a),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Color(0xFF1A1333), width: 1.5),
+                  border: Border.all(color: const Color(0xFF9a809a).withOpacity(0.6), width: 1.5),
                   boxShadow: [
                     BoxShadow(
-                      color: color.withValues(alpha: 0.1),
+                      color: Colors.black.withOpacity(0.08),
                       blurRadius: 12,
                       offset: const Offset(0, 6),
                     ),

@@ -282,9 +282,13 @@ class _MonthlyMoodScreenState extends State<MonthlyMoodScreen> {
       margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Color(0xFF1A1333).withValues(alpha: 0.88),
+        gradient: LinearGradient(
+          colors: [const Color(0xFFb3957c), const Color(0xFFD7CCC8)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE5E7EB)),
+        border: Border.all(color: const Color(0xFFb3957c).withOpacity(0.6)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

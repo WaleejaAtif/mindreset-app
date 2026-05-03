@@ -271,9 +271,9 @@ class _ReflectScreenState extends State<ReflectScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Color(0xFF1A1333).withValues(alpha: 0.78),
+        color: const Color(0xFF9a809a),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Color(0xFF1A1333), width: 1.5),
+        border: Border.all(color: const Color(0xFF9a809a).withOpacity(0.6), width: 1.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -468,9 +468,9 @@ class _ReflectScreenState extends State<ReflectScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Color(0xFF1A1333).withValues(alpha: 0.78),
+        color: const Color(0xFFFFE0B2),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Color(0xFF1A1333), width: 1.5),
+        border: Border.all(color: const Color(0xFFFFE0B2).withOpacity(0.6), width: 1.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

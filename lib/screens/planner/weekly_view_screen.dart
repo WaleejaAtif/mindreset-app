@@ -83,11 +83,15 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        color: Color(0xFF1A1333),
+                        gradient: LinearGradient(
+                          colors: [const Color(0xFF6f7f61), const Color(0xFFC8E6C9)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: isToday ? _primaryColorW.withValues(alpha: 0.15) : Color(0xFFFFFFFF).withValues(alpha: 0.05),
+                            color: isToday ? _primaryColorW.withValues(alpha: 0.15) : Colors.black.withOpacity(0.08),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
                           ),
@@ -95,7 +99,7 @@ class _WeeklyViewScreenState extends State<WeeklyViewScreen> {
                         border: Border.all(
                           color: isToday
                               ? _primaryColorW.withValues(alpha: 0.6)
-                              : Colors.transparent,
+                              : const Color(0xFF6f7f61).withOpacity(0.6),
                         ),
                       ),
                       child: Theme(

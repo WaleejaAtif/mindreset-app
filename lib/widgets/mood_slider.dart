@@ -431,16 +431,12 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
       margin: const EdgeInsets.symmetric(horizontal: 0),
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10), // Reduced padding
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF2C1A4D), Color(0xFF1E1442)], // Dark purple glass
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: const Color(0xFF9a809a),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0x33FFFFFF), width: 1.5), // Subtle bright border
+        border: Border.all(color: const Color(0xFF9a809a).withOpacity(0.6), width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3), // Darker shadow for depth
+            color: Colors.black.withOpacity(0.08),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),

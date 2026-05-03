@@ -835,12 +835,12 @@ class _SoundTherapyScreenState extends State<SoundTherapyScreen>
                   height: 68,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: const Color(0xFF1E1635),
+                    color: const Color(0xFF9a809a),
                     border: Border.all(
-                        color: Colors.white.withOpacity(0.12)),
+                        color: const Color(0xFF9a809a).withOpacity(0.6)),
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.black.withOpacity(0.08),
                           blurRadius: 20)
                     ],
                   ),

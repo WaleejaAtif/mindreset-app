@@ -268,12 +268,13 @@ class _DailyViewScreenState extends State<DailyViewScreen> {
                               const EdgeInsets.only(bottom: 10),
                               padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
-                                color: Color(0xFF1A1333),
+                                color: const Color(0xFFD7CCC8),
                                 borderRadius:
                                 BorderRadius.circular(14),
+                                border: Border.all(color: const Color(0xFFD7CCC8).withOpacity(0.6)),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: color.withValues(alpha: 0.15),
+                                    color: Colors.black.withOpacity(0.08),
                                     blurRadius: 8,
                                     offset: const Offset(0, 4),
                                   ),

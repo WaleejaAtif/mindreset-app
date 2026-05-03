@@ -11,7 +11,7 @@ import 'home.dart';
 import '../../widgets/animated_background.dart';
 import '../../widgets/navigation.dart';
 
-const Color _primaryColor = Color(0xFF8C52FF); // Vibrant Purple
+const Color _primaryColor = Color(0xFF8C52FF);
 
 class PlannerScreen extends StatelessWidget {
   const PlannerScreen({super.key});
@@ -21,7 +21,7 @@ class PlannerScreen extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF2C1A4D), Color(0xFF0D0B1A)], // Light purple to light blue gradient
+          colors: [Color(0xFF2C1A4D), Color(0xFF0D0B1A)],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -32,7 +32,6 @@ class PlannerScreen extends StatelessWidget {
         extendBody: true,
         bottomNavigationBar: const CustomBottomNav(currentIndex: 3),
 
-        // 🔥 BACK BUTTON ADDED
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -52,125 +51,172 @@ class PlannerScreen extends StatelessWidget {
         ),
 
         body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Plan your day',
-                    style: TextStyle(
-                      color: Color(0xFFFFFFFF),
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Plan your day',
+                  style: TextStyle(
+                    color: Color(0xFFFFFFFF),
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 6),
+
+                const Text(
+                  'Stay focused, stay organized',
+                  style: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
+                ),
+
+                const SizedBox(height: 30),
+
+                Expanded(
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 14,
+                    mainAxisSpacing: 14,
+                    childAspectRatio: 1.1,
+                    children: [
+                      // ── Today's Tasks ──────────────────────────────
+                      _PlannerCard(
+                        icon: Icons.today,
+                        label: "Today's Tasks",
+                        subtitle: 'View & manage today',
+                        gradientColors: const [Color(0xFF976565), Color(0xFF976565)],
+                        iconColor: const Color(0xFF4A1F1F),
+                        labelColor: const Color(0xFF2D0A0A),
+                        subtitleColor: const Color(0xFF5C2E2E),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const TodayTasksScreen()),
+                        ),
+                      ),
+
+                      // ── Daily View ─────────────────────────────────
+                      _PlannerCard(
+                        icon: Icons.calendar_view_day,
+                        label: 'Daily View',
+                        subtitle: 'Browse by date',
+                        gradientColors: const [Color(0xFFc2a7c3), Color(0xFFE1BEE7)],
+                        iconColor: const Color(0xFF7B4F7E),
+                        labelColor: const Color(0xFF4A1F5C),
+                        subtitleColor: const Color(0xFF6B3D7A),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const DailyViewScreen()),
+                        ),
+                      ),
+
+                      // ── Weekly View ────────────────────────────────
+                      _PlannerCard(
+                        icon: Icons.view_week,
+                        label: 'Weekly View',
+                        subtitle: 'This week at a glance',
+                        gradientColors: const [Color(0xFF6f7f61), Color(0xFFC8E6C9)],
+                        iconColor: const Color(0xFF3B4F2E),
+                        labelColor: const Color(0xFF1A2E10),
+                        subtitleColor: const Color(0xFF3A5028),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const WeeklyViewScreen()),
+                        ),
+                      ),
+
+                      // ── Monthly Mood ───────────────────────────────
+                      _PlannerCard(
+                        icon: Icons.mood,
+                        label: 'Monthly Mood',
+                        subtitle: 'Mood calendar',
+                        gradientColors: const [Color(0xFFb3957c), Color(0xFFD7CCC8)],
+                        iconColor: const Color(0xFF6B4226),
+                        labelColor: const Color(0xFF3E1F0A),
+                        subtitleColor: const Color(0xFF5C3520),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const MonthlyMoodScreen()),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // ── Add New Task Button ────────────────────────────
+                SizedBox(
+                  width: double.infinity,
+                  height: 54,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [
+                          Color(0xFF976565), // rose — Today's Tasks
+                          Color(0xFF7B4F7E), // purple — Daily View
+                          Color(0xFF6f7f61), // green — Weekly View
+                          Color(0xFFb3957c), // beige — Monthly Mood
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                  ),
-
-                  const SizedBox(height: 6),
-
-                  const Text(
-                    'Stay focused, stay organized',
-                    style: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  Expanded(
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 14,
-                      mainAxisSpacing: 14,
-                      childAspectRatio: 1.1,
-                      children: [
-                        _PlannerCard(
-                          icon: Icons.today,
-                          label: "Today's Tasks",
-                          subtitle: 'View & manage today',
-                          color: const Color(0xFF976565),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const TodayTasksScreen()),
-                          ),
-                        ),
-                        _PlannerCard(
-                          icon: Icons.calendar_view_day,
-                          label: 'Daily View',
-                          subtitle: 'Browse by date',
-                          color: const Color(0xFF7D509F),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const DailyViewScreen()),
-                          ),
-                        ),
-                        _PlannerCard(
-                          icon: Icons.view_week,
-                          label: 'Weekly View',
-                          subtitle: 'This week at a glance',
-                          color: const Color(0xFF957C2E),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const WeeklyViewScreen()),
-                          ),
-                        ),
-                        _PlannerCard(
-                          icon: Icons.mood,
-                          label: 'Monthly Mood',
-                          subtitle: 'Mood calendar',
-                          color: const Color(0xFF4A7C8E),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const MonthlyMoodScreen()),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(
-                    width: double.infinity,
-                    height: 54,
                     child: ElevatedButton.icon(
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(builder: (_) => const AddTaskScreen()),
                       ),
-                      icon: const Icon(Icons.add, color: Colors.white),
+                      icon: const Icon(Icons.add, color: Color(0xFFFFF8F0)),
                       label: const Text(
                         'Add New Task',
-                        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          color: Color(0xFFFFF8F0),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                        ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: _primaryColor,
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                       ),
                     ),
                   ),
+                ),
 
-                  const SizedBox(height: 84),
-                ],
-              ),
+                const SizedBox(height: 84),
+              ],
             ),
           ),
+        ),
       ),
     );
   }
 }
 
-// CARD (UNCHANGED UI)
+// ── CARD WIDGET ────────────────────────────────────────────────────────────────
 class _PlannerCard extends StatelessWidget {
   final IconData icon;
   final String label;
   final String subtitle;
-  final Color color;
+  final List<Color> gradientColors;
+  final Color iconColor;
+  final Color labelColor;
+  final Color subtitleColor;
   final VoidCallback onTap;
 
   const _PlannerCard({
     required this.icon,
     required this.label,
     required this.subtitle,
-    required this.color,
+    required this.gradientColors,
+    required this.iconColor,
+    required this.labelColor,
+    required this.subtitleColor,
     required this.onTap,
   });
 
@@ -180,16 +226,16 @@ class _PlannerCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFF2C1A4D), Color(0xFF0D0B1A)], // Light purple to light blue gradient
+          gradient: LinearGradient(
+            colors: gradientColors,
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: Color(0xFF1A1333), width: 1.5), // Frosted border
+          border: Border.all(color: gradientColors[0].withOpacity(0.6), width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
+              color: Colors.black.withOpacity(0.08),
               blurRadius: 15,
               offset: const Offset(0, 8),
             ),
@@ -203,18 +249,29 @@ class _PlannerCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.15),
+                color: gradientColors[0].withOpacity(0.25),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: color, size: 22),
+              child: Icon(icon, color: iconColor, size: 22),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label,
-                    style: const TextStyle(color: Color(0xFFFFFFFF), fontWeight: FontWeight.bold, fontSize: 14)),
-                Text(subtitle,
-                    style: const TextStyle(color: Color(0xFF6B7280), fontSize: 11)),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: labelColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    color: subtitleColor,
+                    fontSize: 11,
+                  ),
+                ),
               ],
             ),
           ],
@@ -223,5 +280,3 @@ class _PlannerCard extends StatelessWidget {
     );
   }
 }
-
-

@@ -644,9 +644,9 @@ class _BreathingScreenState extends State<BreathingScreen>
         child: Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.13),
+            color: const Color(0xFF9a809a),
             borderRadius: BorderRadius.circular(28),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+            border: Border.all(color: const Color(0xFF9a809a).withOpacity(0.6)),
           ),
           child: Row(
             children: [
@@ -774,7 +774,7 @@ class _BreathingScreenState extends State<BreathingScreen>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Colors.white.withValues(alpha: 0.18),
+                const Color(0xFF906F8F).withOpacity(0.18),
                 const Color(0xFF5ED8C6).withValues(alpha: 0.12),
                 const Color(0xFF06101B).withValues(alpha: 0.34),
               ],
