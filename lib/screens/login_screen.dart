@@ -188,6 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
   InputDecoration _inputDecoration(String label, IconData icon) {
     return InputDecoration(
       hintText: label,
+      hintStyle: const TextStyle(color: Colors.black54),
       prefixIcon: Icon(icon, color: _primaryColor),
       filled: true,
       fillColor: Colors.grey.shade100,
@@ -326,6 +327,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   TextField(
                     controller: _loginEmailCtrl,
+                    style: const TextStyle(color: Colors.black),
                     decoration: _inputDecoration("Email", Icons.email),
                   ),
                   const SizedBox(height: 20),
@@ -333,6 +335,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextField(
                     controller: _loginPassCtrl,
                     obscureText: true,
+                    style: const TextStyle(color: Colors.black),
                     decoration: _inputDecoration("Password", Icons.lock),
                   ),
                   Align(
@@ -423,12 +426,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   TextField(
                     controller: _regFirstNameCtrl,
+                    style: const TextStyle(color: Colors.black),
                     decoration: _inputDecoration("First Name", Icons.person),
                   ),
                   const SizedBox(height: 20),
 
                   TextField(
                     controller: _regLastNameCtrl,
+                    style: const TextStyle(color: Colors.black),
                     decoration: _inputDecoration("Last Name", Icons.person_outline),
                   ),
                   const SizedBox(height: 20),
@@ -436,6 +441,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextField(
                     controller: _regContactCtrl,
                     keyboardType: TextInputType.phone,
+                    style: const TextStyle(color: Colors.black),
                     decoration: _inputDecoration("Contact Number", Icons.phone),
                   ),
                   const SizedBox(height: 20),
@@ -443,6 +449,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextField(
                     controller: _regEmailCtrl,
                     keyboardType: TextInputType.emailAddress,
+                    style: const TextStyle(color: Colors.black),
                     decoration: _inputDecoration("Email", Icons.email),
                   ),
                   const SizedBox(height: 20),
@@ -450,6 +457,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextField(
                     controller: _regPassCtrl,
                     obscureText: true,
+                    style: const TextStyle(color: Colors.black),
                     decoration: _inputDecoration("Password", Icons.lock),
                   ),
                   const SizedBox(height: 20),

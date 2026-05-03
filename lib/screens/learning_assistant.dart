@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
@@ -202,13 +203,14 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
 
       // Generate greeting logic
       String greeting =
-          'Hello ${_userContext!.name}, I am Zenify. How are you doing? I am here to assist.';
+          'Hi ${_userContext!.name}, I am Zenify bot — your personal ADHD wellness coach. How are you feeling right now?';
+      
       if (_userContext!.mood <= 1 && _userContext!.pendingTasks == 0) {
         greeting =
-            "Hello ${_userContext!.name}, I am Zenify. I can see you are feeling low, but you have completed all your tasks. Since your task list is clear, let's help you relax first with a breathing exercise from the meditation section.";
+            "Hi ${_userContext!.name}, I am Zenify bot. I can see you might be feeling a bit low today. Since your task list is clear, would you like me to guide you through a gentle breathing exercise to help you relax?";
       } else if (_userContext!.pendingTasks > 0) {
         greeting =
-            "Hello ${_userContext!.name}, I am Zenify. I see you have ${_userContext!.pendingTasks} tasks pending. Don't worry, divide them into small steps and start with one.";
+            "Hi ${_userContext!.name}, I am Zenify bot. I see you have ${_userContext!.pendingTasks} tasks on your plate. It's okay if that feels overwhelming—we can break them down into tiny steps together. How is your energy level right now?";
       }
 
       if (mounted) {
@@ -227,7 +229,7 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
         setState(() {
           _messages = [
             const _ChatEntry(
-              text: 'Hi, I am Zenify Assistant. How can I help you today?',
+              text: 'Hi, I am Zenify bot — your ADHD wellness coach. How can I support you today?',
               isUser: false,
             ),
           ];
@@ -275,10 +277,37 @@ class _LearningAssistantScreenState extends State<LearningAssistantScreen> {
         },
       );
 
+      String displayText = reply.reply;
+      final jsonRegex = RegExp(r'```json\s*(\{.*?\})\s*```', dotAll: true);
+      final match = jsonRegex.firstMatch(displayText);
+      
+      if (match != null) {
+        final jsonStr = match.group(1);
+        displayText = displayText.replaceFirst(match.group(0)!, '').trim();
+        try {
+          if (jsonStr != null) {
+            final parsedJson = jsonDecode(jsonStr);
+            final user = FirebaseAuth.instance.currentUser;
+            if (user != null) {
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user.uid)
+                  .collection('ai_sessions')
+                  .add({
+                ...parsedJson,
+                'timestamp': FieldValue.serverTimestamp(),
+              });
+            }
+          }
+        } catch (e) {
+          debugPrint('Failed to parse or save AI session JSON: $e');
+        }
+      }
+
       setState(() {
         _messages = [
           ..._messages,
-          _ChatEntry(text: reply.reply, isUser: false),
+          _ChatEntry(text: displayText, isUser: false),
         ];
         _statusLine = reply.statusLine;
         _isThinking = false;

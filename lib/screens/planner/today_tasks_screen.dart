@@ -314,6 +314,13 @@ class TodayTasksScreen extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(width: 8),
+            IconButton(
+              icon: const Icon(Icons.delete_outline, color: Colors.redAccent, size: 20),
+              constraints: const BoxConstraints(),
+              padding: EdgeInsets.zero,
+              onPressed: () => _delete(doc.id),
+            ),
           ],
         ),
       ),

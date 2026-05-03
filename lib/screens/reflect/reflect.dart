@@ -97,8 +97,8 @@ class _ReflectScreenState extends State<ReflectScreen> {
                               value: '$_streakDays Days',
                               icon: Icons.local_fire_department_rounded,
                               gradientColors: const [
-                                Color(0xFF9A882A),
-                                Color(0xFFFFE0B2),
+                                Color(0xFF957C2E), // Gold/Orange dark
+                                Color(0xFF4A3E17),
                               ],
                               onTap: () => Navigator.push(
                                 context,
@@ -115,8 +115,8 @@ class _ReflectScreenState extends State<ReflectScreen> {
                               value: '${_badgeCount()} Won',
                               icon: Icons.emoji_events_rounded,
                               gradientColors: const [
-                                Color(0xFF4D7EA8),
-                                Color(0xFF9AD1D4),
+                                Color(0xFF005B9F), // Deep blue
+                                Color(0xFF002B4E),
                               ],
                               onTap: () => Navigator.push(
                                 context,
@@ -140,8 +140,8 @@ class _ReflectScreenState extends State<ReflectScreen> {
                         subtitle: 'Weekly mood & sleep trends',
                         icon: Icons.show_chart_rounded,
                         gradientColors: const [
-                          Color(0xFFC2A7C3),
-                          Color(0xFFE1BEE7),
+                          Color(0xFF2C1A4D),
+                          Color(0xFF1A1333),
                         ],
                         onTap: () => Navigator.push(
                           context,
@@ -155,8 +155,8 @@ class _ReflectScreenState extends State<ReflectScreen> {
                         subtitle: 'History of your reflections',
                         icon: Icons.history_rounded,
                         gradientColors: const [
-                          Color(0xFF6F7F61),
-                          Color(0xFFC8E6C9),
+                          Color(0xFF2C1A4D),
+                          Color(0xFF1A1333),
                         ],
                         onTap: () => Navigator.push(
                           context,
@@ -266,44 +266,70 @@ class _ReflectScreenState extends State<ReflectScreen> {
   }
 
   Widget _buildDailyRecord() {
-    final lines = _recordLines();
+    final records = _recordLines();
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF9a809a),
+        color: const Color(0xFF1A1333),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF9a809a).withOpacity(0.6), width: 1.5),
+        border: Border.all(color: const Color(0xFF381E72), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Today Record',
-            style: TextStyle(
-              color: Color(0xFFFFFFFF),
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            children: const [
+              Icon(Icons.assignment_rounded, color: Color(0xFFB39DDB), size: 22),
+              SizedBox(width: 8),
+              Text(
+                'Today\'s Record',
+                style: TextStyle(
+                  color: Color(0xFFFFFFFF),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
-          if (lines.isEmpty)
+          const SizedBox(height: 16),
+          if (records.isEmpty)
             const Text('No activity recorded today yet.',
-                style: TextStyle(color: Color(0xFFAFA8BA)))
+                style: TextStyle(color: Color(0xFFAFA8BA), fontSize: 14))
           else
-            ...lines.map(
-              (line) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
+            ...records.map(
+              (rec) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('* ',
-                        style: TextStyle(
-                            color: Color(0xFF755F84),
-                            fontWeight: FontWeight.bold)),
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: rec['color'].withValues(alpha: 0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(rec['icon'], size: 16, color: rec['color']),
+                    ),
+                    const SizedBox(width: 12),
                     Expanded(
-                      child: Text(line,
-                          style: const TextStyle(color: Color(0xFF374151))),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          rec['text'],
+                          style: const TextStyle(
+                              color: Color(0xFFE2DCE9),
+                              fontSize: 14,
+                              height: 1.3),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -314,28 +340,42 @@ class _ReflectScreenState extends State<ReflectScreen> {
     );
   }
 
-  List<String> _recordLines() {
-    final lines = <String>[];
+  List<Map<String, dynamic>> _recordLines() {
+    final lines = <Map<String, dynamic>>[];
     final mood = _todayLog['mood']?.toString();
     final sleep = _todayLog['sleep']?.toString();
-    if (mood != null && mood.isNotEmpty) lines.add('Mood is set on $mood');
-    if (sleep != null && sleep.isNotEmpty) lines.add('Sleep is $sleep');
+    if (mood != null && mood.isNotEmpty) {
+      lines.add({'text': 'Mood is set to $mood', 'icon': Icons.mood, 'color': const Color(0xFFCB6CE6)});
+    }
+    if (sleep != null && sleep.isNotEmpty) {
+      lines.add({'text': 'Sleep recorded: $sleep', 'icon': Icons.nights_stay, 'color': const Color(0xFF38B6FF)});
+    }
     final focus = (_todayLog['focusStrategiesTaken'] as num?)?.toInt() ?? 0;
-    if (focus > 0) lines.add('$focus focus strategy taken');
+    if (focus > 0) {
+      lines.add({'text': '$focus focus strategy taken', 'icon': Icons.psychology, 'color': const Color(0xFFFFDE59)});
+    }
     final study = (_todayLog['studyTipsTaken'] as num?)?.toInt() ?? 0;
-    if (study > 0) lines.add('$study study tip taken');
-    if (_todayLog['chattedWithAi'] == true) lines.add('Chatted with AI assistant');
+    if (study > 0) {
+      lines.add({'text': '$study study tip taken', 'icon': Icons.lightbulb, 'color': const Color(0xFFFF914D)});
+    }
+    if (_todayLog['chattedWithAi'] == true) {
+      lines.add({'text': 'Chatted with AI assistant', 'icon': Icons.chat_bubble_outline, 'color': const Color(0xFF5CE1E6)});
+    }
     final games = (_todayLog['gamesPlayed'] as num?)?.toInt() ?? 0;
-    if (games > 0) lines.add('Played $games game${games == 1 ? '' : 's'}');
+    if (games > 0) {
+      lines.add({'text': 'Played $games game${games == 1 ? '' : 's'}', 'icon': Icons.videogame_asset, 'color': const Color(0xFFFF5757)});
+    }
     final created = (_todayLog['tasksCreated'] as num?)?.toInt() ?? 0;
-    if (created > 0) lines.add('$created task${created == 1 ? '' : 's'} created');
+    if (created > 0) {
+      lines.add({'text': '$created task${created == 1 ? '' : 's'} created', 'icon': Icons.add_task, 'color': const Color(0xFF00BF63)});
+    }
     final highTask = _todayLog['highPriorityTaskCompleted']?.toString();
     if (highTask != null && highTask.isNotEmpty) {
-      lines.add('High priority "$highTask" task has been completed');
+      lines.add({'text': 'High priority "$highTask" completed', 'icon': Icons.priority_high, 'color': const Color(0xFFFF5757)});
     }
     if (_todayLog['groundingCompleted'] == true ||
         ((_todayLog['groundingExercisesTaken'] as num?)?.toInt() ?? 0) > 0) {
-      lines.add('Took grounding exercise');
+      lines.add({'text': 'Completed grounding exercise', 'icon': Icons.self_improvement, 'color': const Color(0xFFCB6CE6)});
     }
     return lines;
   }
@@ -443,16 +483,16 @@ class _ReflectScreenState extends State<ReflectScreen> {
       child: ListTile(
         onTap: onTap,
         leading: CircleAvatar(
-          backgroundColor: Color(0xFF1A1333).withValues(alpha: 0.5),
-          child: Icon(icon, color: const Color(0xFF755F84)),
+          backgroundColor: const Color(0xFF8C52FF), // Vibrant Purple
+          child: Icon(icon, color: Colors.white),
         ),
         title: Text(title,
             style: const TextStyle(
                 color: Color(0xFFFFFFFF), fontWeight: FontWeight.w600)),
         subtitle: Text(subtitle,
-            style: const TextStyle(color: Color(0xFFAFA8BA), fontSize: 12)),
+            style: const TextStyle(color: Color(0xFFB39DDB), fontSize: 12)), // Light purple subtext
         trailing:
-            const Icon(Icons.arrow_forward_ios, color: Color(0x42FFFFFF), size: 14),
+            const Icon(Icons.arrow_forward_ios, color: Color(0x8AFFFFFF), size: 14),
       ),
     );
   }
@@ -468,9 +508,20 @@ class _ReflectScreenState extends State<ReflectScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFE0B2),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF1A1A1D), Color(0xFF2D2D34)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFFFE0B2).withOpacity(0.6), width: 1.5),
+        border: Border.all(color: const Color(0xFF1A1333), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFFFFFFF).withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -516,7 +567,7 @@ class _ReflectScreenState extends State<ReflectScreen> {
               Text(
                 goal,
                 style: const TextStyle(
-                  color: Color(0xFF755F84),
+                  color: Color(0xFF8C52FF), // Vibrant Purple
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),

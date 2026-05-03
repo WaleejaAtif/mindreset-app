@@ -254,7 +254,7 @@ class LearnScreen extends StatelessWidget {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => Navigator.pushNamed(context, route),
-            style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF1A1333), foregroundColor: textColor, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), elevation: 0),
+            style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF1A1333), foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), elevation: 0),
             child: Text(buttonText, style: const TextStyle(fontWeight: FontWeight.bold)),
           )
         ],

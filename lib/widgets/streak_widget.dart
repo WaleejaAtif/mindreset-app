@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'animated_border_card.dart';
 
 class StreakWidget extends StatefulWidget {
   const StreakWidget({Key? key}) : super(key: key);
@@ -164,24 +165,27 @@ class BigStreakCard extends StatelessWidget {
     // Today's index (Monday=0, Sunday=6)
     final todayIndex = DateTime.now().weekday - 1;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF1A1A1D), Color(0xFF2D2D34)], // Blackish gradient
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Color(0xFF1A1333), width: 1.5), // Frosted white border
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xFFFFFFFF).withValues(alpha: 0.05), // Soft elegant shadow
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+    return AnimatedBorderCard(
+      borderRadius: BorderRadius.circular(24),
+      baseColor: const Color(0xFF1A1A1D),
+      glowColor: const Color(0xFF2D2D34),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF1A1A1D), Color(0xFF2D2D34)], // Blackish gradient
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-        ],
-      ),
+          borderRadius: BorderRadius.circular(21),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFFFFFFFF).withValues(alpha: 0.05), // Soft elegant shadow
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
       child: Column(
         children: [
           // --- GLOWING FLAME ICON ---
@@ -314,6 +318,7 @@ class BigStreakCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }

@@ -62,8 +62,8 @@ class _SplashScreenState extends State<SplashScreen> {
       height: 8.0,
       width: 8.0,
       decoration: BoxDecoration(
-        // Use primaryDark for the active dot, and a lighter/opacity color for inactive dots
-        color: isActive ? primaryDark : primaryDark.withOpacity(0.3),
+        // Use white for the active dot, and lower opacity for inactive dots
+        color: isActive ? Colors.white : Colors.white.withOpacity(0.3),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
     );
@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Text(
               data['text']!,
               style: const TextStyle(
-                color: primaryDark, // Dark text for light background
+                color: Color(0xFFFFFFFF), // White text for dark background
                 fontSize: 25, // Reduced text size
                 fontFamily: 'Bilderberg', // Custom font
                 fontWeight: FontWeight.w900,
@@ -101,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.transparent,
       body: AnimatedBackground(
         hasBlur: false,
-        isLightMode: true,
+        isLightMode: false,
         child: Stack(
           children: <Widget>[
             // PageView for swiping between screens

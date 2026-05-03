@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import '../../services/activity_service.dart';
 
-const Color _primaryColor = Color(0xFF755F84);
+const Color _primaryColor = Color(0xFF8C52FF);
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
@@ -101,14 +101,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         title: const Text(
           'Add New Task',
           style: TextStyle(
-            color: Color(0xff3a2355),
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
         backgroundColor: Color(0xFF1A1333),
         elevation: 0,
-        iconTheme: const IconThemeData(color: Color(0xff3a2355)),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -148,19 +148,19 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     decoration: BoxDecoration(
                       color: selected
                           ? _primaryColor
-                          : Colors.grey.shade100,
+                          : const Color(0xFF5E17EB).withOpacity(0.3),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                         color: selected
                             ? _primaryColor
-                            : Colors.grey.shade300,
+                            : Colors.transparent,
                       ),
                     ),
                     child: Text(
                       c,
                       style: TextStyle(
                         color:
-                        selected ? Colors.white : Color(0xFFFFFFFF),
+                        selected ? Colors.white : Colors.white70,
                         fontWeight: selected
                             ? FontWeight.bold
                             : FontWeight.normal,
@@ -182,12 +182,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 14, vertical: 16),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
+                  color: const Color(0xFF5E17EB).withOpacity(0.3),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
                     color: selectedDate != null
                         ? _primaryColor
-                        : Colors.grey.shade300,
+                        : Colors.transparent,
                   ),
                 ),
                 child: Row(
@@ -201,8 +201,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       style: TextStyle(
                         fontSize: 14,
                         color: selectedDate == null
-                            ? Colors.grey
-                            : const Color(0xff3a2355),
+                            ? Colors.white54
+                            : Colors.white,
                       ),
                     ),
                     Icon(
@@ -210,7 +210,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       size: 18,
                       color: selectedDate != null
                           ? _primaryColor
-                          : Colors.grey,
+                          : Colors.white54,
                     ),
                   ],
                 ),
@@ -258,6 +258,29 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 16),
+            if (!_saving)
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.redAccent, width: 1.5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  child: const Text(
+                    'Delete / Discard Task',
+                    style: TextStyle(
+                      color: Colors.redAccent,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
             const SizedBox(height: 20),
           ],
         ),
@@ -285,10 +308,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       TextField(
         controller: controller,
         maxLines: maxLines,
+        style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           hintText: hint,
+          hintStyle: const TextStyle(color: Colors.white54),
           filled: true,
-          fillColor: Colors.grey.shade100,
+          fillColor: const Color(0xFF5E17EB).withOpacity(0.3),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide: BorderSide.none,

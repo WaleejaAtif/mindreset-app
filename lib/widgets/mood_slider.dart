@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'animated_border_card.dart';
 
 // --- COLORS ---
 const Color _primaryColor = Color(0xFF755F84);
@@ -427,16 +428,20 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
     const Color sliderGreen = Color(0xffdca889);
     const Color headerBlue = Color(0xff608ba5);
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 0),
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10), // Reduced padding
-      decoration: BoxDecoration(
-        color: const Color(0xFF9a809a),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF9a809a).withOpacity(0.6), width: 1.5),
+    return AnimatedBorderCard(
+      borderRadius: BorderRadius.circular(20),
+      baseColor: const Color(0xFF1A1333),
+      glowColor: const Color(0xFF884288),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 0),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10), // Reduced padding
+        decoration: BoxDecoration(
+          color: const Color(0xFF1A1333),
+          borderRadius: BorderRadius.circular(17),
+
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withOpacity(0.2),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -583,6 +588,7 @@ class _SleepSwipeAnalyzerState extends State<SleepSwipeAnalyzer> {
           ),
       ],
     ),
+  ),
   );
 }
 }

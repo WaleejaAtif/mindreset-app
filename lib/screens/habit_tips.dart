@@ -64,7 +64,18 @@ class _HabitTipsScreenState extends State<HabitTipsScreen> {
       return _defaultTips;
     }
 
-    return snapshot.docs.map((doc) => doc.data()).toList();
+    final List<Map<String, dynamic>> uniqueTips = [];
+    final Set<String> titles = {};
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      final title = data['title']?.toString() ?? '';
+      if (!titles.contains(title)) {
+        titles.add(title);
+        uniqueTips.add(data);
+      }
+    }
+
+    return uniqueTips;
   }
 
   @override

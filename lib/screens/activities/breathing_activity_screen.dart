@@ -130,13 +130,13 @@ class _BreathingActivityScreenState extends State<BreathingActivityScreen>
                 height: 60,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFFFFFFF),
+                    backgroundColor: color,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   onPressed: () {
                     Navigator.pop(context, true);
                   },
-                  child: const Text("Finish Session", style: TextStyle(color: Colors.white, fontSize: 18)),
+                  child: const Text("Finish Session", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                 ),
               ),
             ),

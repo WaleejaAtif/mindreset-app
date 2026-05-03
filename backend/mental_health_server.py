@@ -382,7 +382,7 @@ def _generate_gemini_reply(
                 "contents": _to_gemini_contents(history, message),
                 "generationConfig": {
                     "temperature": 0.4,
-                    "maxOutputTokens": min(max(max_new_tokens, _default_max_new_tokens, 32), 128),
+                    "maxOutputTokens": min(max(max_new_tokens, _default_max_new_tokens, 32), 1024),
                 },
             },
             timeout=12,
@@ -544,7 +544,7 @@ def provider_test(request: ProviderTestRequest) -> ProviderReply:
 if __name__ == "__main__":
     uvicorn.run(
         "mental_health_server:app",
-        host=os.environ.get("MENTAL_HEALTH_HOST", "127.0.0.1"),
+        host=os.environ.get("MENTAL_HEALTH_HOST", "0.0.0.0"),
         port=int(os.environ.get("MENTAL_HEALTH_PORT", "8000")),
         reload=False,
     )

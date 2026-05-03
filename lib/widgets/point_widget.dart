@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'animated_border_card.dart';
 
 class PointWidget extends StatelessWidget {
   final int points;
@@ -17,24 +18,27 @@ class PointWidget extends StatelessWidget {
             : points % rewardGoal);
     final progressText = '${(progress * 100).round()}%';
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF9a882a), Color(0xFFFFE0B2)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: Color(0xFF1A1333), width: 1.5),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+    return AnimatedBorderCard(
+      borderRadius: BorderRadius.circular(28),
+      baseColor: const Color(0xFF9a882a),
+      glowColor: const Color(0xFFFFE0B2),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF9a882a), Color(0xFFFFE0B2)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-        ],
-      ),
+          borderRadius: BorderRadius.circular(25),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFFFFFFFF).withValues(alpha: 0.05),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -269,6 +273,7 @@ class PointWidget extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }

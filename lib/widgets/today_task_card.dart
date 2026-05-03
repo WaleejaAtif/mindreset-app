@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'animated_border_card.dart';
 
 class TodayTaskCard extends StatelessWidget {
   const TodayTaskCard({Key? key}) : super(key: key);
@@ -106,16 +107,20 @@ class TodayTaskCard extends StatelessWidget {
 
             // ✅ Empty state
             if (docs.isEmpty)
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFFFFFFF), Color(0xFFEAF4FF)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(20), // Softer corners
-                  border: Border.all(color: Color(0xFF1A1333), width: 1.5), // White frosted border
+              AnimatedBorderCard(
+                borderRadius: BorderRadius.circular(20),
+                baseColor: const Color(0xFF1A1A1D),
+                glowColor: const Color(0xFF2D2D34),
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF1A1A1D), Color(0xFF2D2D34)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(17), // Softer corners
+
                   boxShadow: [
                     BoxShadow(
                       color: Color(0xFFFFFFFF).withValues(alpha: 0.05), // Soft shadow
@@ -138,6 +143,7 @@ class TodayTaskCard extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
               ),
 
             // ✅ Task list
@@ -233,12 +239,16 @@ class _TimelineTaskRow extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 16),
-              child: Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF9a809a),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF9a809a).withOpacity(0.6), width: 1.5),
+              child: AnimatedBorderCard(
+                borderRadius: BorderRadius.circular(16),
+                baseColor: const Color(0xFF1A1333),
+                glowColor: const Color(0xFF884288),
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1A1333),
+                    borderRadius: BorderRadius.circular(13),
+
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.08),
@@ -306,6 +316,7 @@ class _TimelineTaskRow extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
               ),
             ),
           ),
